@@ -8,6 +8,8 @@ task :update do
     "choria/mcollective_agent_nettest",
     "choria/mcollective_agent_bolt_tasks",
     "choria/mcollective_data_sysctl",
+    "puppetlabs/apply",
+    "puppetlabs/package",
     "puppetlabs/inifile", 
     "puppetlabs/puppet_authorization",
     "camptocamp/puppetserver"

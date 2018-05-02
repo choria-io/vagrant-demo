@@ -9,9 +9,9 @@
   "files/federation_broker.service": "16c69e77de3505ca8a00bf7539ff4fa6",
   "files/mcollective/agent/choria_util.ddl": "cee467b6f9cb73225ed68a30722e1133",
   "files/mcollective/agent/choria_util.rb": "b4774e20812687bc5d6565192ec33f6d",
-  "files/mcollective/application/choria.rb": "5beef0a3c82c5983148b3a64907739e1",
-  "files/mcollective/application/federation.rb": "0ee7ca9972d1078b38b5c69904fa49e9",
-  "files/mcollective/application/playbook.rb": "1fab157ebc0af068328dbf23bf807455",
+  "files/mcollective/application/choria.rb": "baeb12572448adf2c794f6213f259d02",
+  "files/mcollective/application/federation.rb": "d0a66577ca31469d8f52a1cb463d28d2",
+  "files/mcollective/application/playbook.rb": "9143184123a394e823b18a6fc58f70a6",
   "files/mcollective/audit/choria.rb": "46888e269727607e415382425bdfd42a",
   "files/mcollective/connector/nats.ddl": "11dda788fcd607a5a5dcc0a44d2cc44a",
   "files/mcollective/connector/nats.rb": "c1bbda3077301ead1a519cbad1200fb8",
@@ -55,6 +55,6 @@
   "files/mcollective/util/playbook.rb": "2f46210e90c8ef7c797046915cf2ae92",
   "hiera.yaml": "70105221080ffc4f67efbb6bcaab4ef2",
   "manifests/init.pp": "f16a8339aa9d60edc376f6f6e0263157",
-  "metadata.json": "62420a0e6646334f82864b2cf5d6a016",
+  "metadata.json": "2cdc5039ddec036053af1839475f4c60",
   "templates/federation_config.epp": "99298d2fdfac1cd0f3cf54377016e2d3"
 }

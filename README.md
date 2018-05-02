@@ -393,6 +393,56 @@ Finished processing 3 / 3 hosts in 190.16 ms
 
 The fields shown are configurable - see [the process agent](https://forge.puppet.com/choria/mcollective_agent_process)
 
+### Puppet Tasks
+
+A few Puppet Tasks are available, use `mco tasks` to explore this feature:
+
+```
+$ mco tasks --detail
+Known tasks in the production environment
+
+  apt                                  Allows you to perform apt functions
+  mcollective_agent_bolt_tasks::ping   A basic echo task to test Choria Tasks functionality
+  package                              Manage and inspect the state of packages
+
+Use mco task <TASK> to see task help
+```
+
+```
+$ mco tasks run package --action status --name puppet-agent -v
+Retrieving task metadata for task package from the Puppet Server
+Discovering hosts using the mc method for 2 second(s) .... 3
+Attempting to download and run task package on 3 nodes
+
+Downloading and verifying 1 file(s) from the Puppet Server to all nodes: ✓  3 / 3
+Running task package and waiting up to 60 seconds for it to complete
+
+choria0.choria
+   {"status":"up to date","version":"5.5.1-1.el7"}
+
+choria1.choria
+   {"status":"up to date","version":"5.5.1-1.el7"}
+
+puppet.choria
+   {"status":"up to date","version":"5.5.1-1.el7"}
+
+
+
+Summary for task 78b2e6016e235086a9bf021eba588fe8
+
+                       Task Name: package
+                          Caller: choria=vagrant.mcollective
+                       Completed: 3
+                         Running: 0
+
+                      Successful: 3
+                          Failed: 0
+
+                Average Run Time: 2.11s
+```
+
+The official [Puppet Tasks Documentation](https://choria.io/docs/tasks) should get you familiar with this feature.
+
 ### Scripting and raw RPC
 
 So far everything you have seen was purpose specific command line applications built to have

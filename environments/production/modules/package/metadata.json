@@ -1,0 +1,50 @@
+{
+  "name": "puppetlabs-package",
+  "version": "0.2.0",
+  "author": "puppet",
+  "summary": "Tasks that manipulate a package",
+  "license": "Apache-2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-package",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-package",
+  "issues_url": "https://github.com/puppetlabs/puppetlabs-package/issues",
+  "dependencies": [
+  
+  ],
+  "data_provider": null,
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
+    },
+    {
+      "operatingsystem": "windows",
+      "operatingsystemrelease": [
+        "2012 R2"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.1.0 < 6.0.0"
+    }
+  ],
+  "description": "Tasks that manipulate a package",
+  "pdk-version": "1.4.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.4.1-0-g52adbbb"
+}

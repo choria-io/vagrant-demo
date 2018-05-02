@@ -1,0 +1,15 @@
+{
+  "Gemfile": "810edcbb4743c7a77f5cb8ded0fec55b",
+  "README.md": "f714405641717c65c6d16b98e4529ca9",
+  "Rakefile": "e45f9fec0467900617ac707c7f256502",
+  "metadata.json": "f2f4e6da62e3fda4731a13a0233a33c3",
+  "spec/acceptance/nodesets/docker/centos-7.yml": "8a3892807bdd62306ae4774f41ba11ae",
+  "spec/acceptance/nodesets/docker/debian-8.yml": "ac8e871d1068c96de5e85a89daaec6df",
+  "spec/acceptance/nodesets/docker/ubuntu-14.04.yml": "dc42ee922a96908d85b8f0f08203ce58",
+  "spec/acceptance/resource_spec.rb": "c6cc1a48536e2bad846d26600c1d1753",
+  "spec/default_facts.yml": "4de3cb611af6981a6d22bc77d7dd6f6f",
+  "spec/spec_helper.rb": "6a8493cc89df06740a1f7ed364aed66c",
+  "spec/spec_helper_acceptance.rb": "43cbb20a45606d323ec57d4d8ebb507f",
+  "tasks/resource.json": "6dd2a27e45bc6da3ad7fe1166532341a",
+  "tasks/resource.rb": "b7f68cbe5392eeaf26134b5ba7eecb3c"
+}
