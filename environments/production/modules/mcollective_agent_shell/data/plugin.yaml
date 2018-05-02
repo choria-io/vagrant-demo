@@ -1,0 +1,15 @@
+---
+mcollective_agent_shell::config_name: shell
+mcollective_agent_shell::common_files:
+- agent/shell.ddl
+- agent/shell.json
+mcollective_agent_shell::common_directories: []
+mcollective_agent_shell::server_files:
+- agent/shell.rb
+- agent/shell/job.rb
+mcollective_agent_shell::server_directories:
+- agent/shell
+mcollective_agent_shell::client_files:
+- application/shell.rb
+mcollective_agent_shell::client_directories: []
+

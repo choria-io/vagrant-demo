@@ -1,0 +1,155 @@
+{
+  "$schema": "https://choria.io/schemas/mcorpc/agent:1.json",
+  "metadata": {
+    "name": "filemgr",
+    "description": "File Manager",
+    "author": "Mike Pountney <mike.pountney@gmail.com>",
+    "license": "Apache-2.0",
+    "version": "2.0.1",
+    "url": "https://github.com/choria-plugins/filemgr-agent",
+    "timeout": 5
+  },
+  "actions": [
+    {
+      "action": "remove",
+      "input": {
+        "file": {
+          "prompt": "File",
+          "description": "File to remove",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "^.+$",
+          "maxlength": 256
+        }
+      },
+      "output": {
+      },
+      "display": "failed",
+      "description": "Removes a file"
+    },
+    {
+      "action": "status",
+      "input": {
+        "file": {
+          "prompt": "File",
+          "description": "File to get information for",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "^.+$",
+          "maxlength": 256
+        },
+        "dirlist": {
+          "prompt": "List directory contents?",
+          "description": "If file is a directory, show a contents listing?",
+          "type": "boolean",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "name": {
+          "description": "File name",
+          "display_as": "Name",
+          "default": null
+        },
+        "output": {
+          "description": "Human readable information about the file",
+          "display_as": "Status",
+          "default": null
+        },
+        "present": {
+          "description": "Indicates if the file exist using 0 or 1",
+          "display_as": "Present",
+          "default": null
+        },
+        "size": {
+          "description": "File size",
+          "display_as": "Size",
+          "default": null
+        },
+        "mode": {
+          "description": "File mode",
+          "display_as": "Mode",
+          "default": null
+        },
+        "md5": {
+          "description": "File MD5 digest",
+          "display_as": "MD5",
+          "default": null
+        },
+        "mtime": {
+          "description": "File modification time",
+          "display_as": "Modification time",
+          "default": null
+        },
+        "ctime": {
+          "description": "File change time",
+          "display_as": "Change time",
+          "default": null
+        },
+        "atime": {
+          "description": "File access time",
+          "display_as": "Access time",
+          "default": null
+        },
+        "mtime_seconds": {
+          "description": "File modification time in seconds",
+          "display_as": "Modification time",
+          "default": null
+        },
+        "ctime_seconds": {
+          "description": "File change time in seconds",
+          "display_as": "Change time",
+          "default": null
+        },
+        "atime_seconds": {
+          "description": "File access time in seconds",
+          "display_as": "Access time",
+          "default": null
+        },
+        "uid": {
+          "description": "File owner",
+          "display_as": "Owner",
+          "default": null
+        },
+        "gid": {
+          "description": "File group",
+          "display_as": "Group",
+          "default": null
+        },
+        "type": {
+          "description": "File type",
+          "display_as": "Type",
+          "default": null
+        },
+        "dir_listing": {
+          "description": "Directory Listing",
+          "display_as": "Directory Listing",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Basic information about a file"
+    },
+    {
+      "action": "touch",
+      "input": {
+        "file": {
+          "prompt": "File",
+          "description": "File to touch",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "^.+$",
+          "maxlength": 256
+        }
+      },
+      "output": {
+      },
+      "display": "failed",
+      "description": "Creates an empty file or touch it's timestamp"
+    }
+  ]
+}

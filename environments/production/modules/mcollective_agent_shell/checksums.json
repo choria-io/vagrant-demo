@@ -1,0 +1,18 @@
+{
+  "CHANGELOG.md": "431ffb8ad4ae3df84a2c2c883b8632e9",
+  "LICENSE": "3b83ef96387f14655fc854ddc3c6bd57",
+  "LICENSE.txt": "5abc38a0c85a1f6c8f655a25cbe62dc9",
+  "NOTICE": "66f9d2c0cf0969827e8df6b6952baf58",
+  "NOTICE.txt": "e72061ec3165207cc72e6db104253789",
+  "README.md": "e603fb4e0fb57a8855c0f818eeb63757",
+  "data/defaults.yaml": "849e6d47baed1258a2ae85411d00c687",
+  "data/plugin.yaml": "5ce466f62cc6df666ef2d6f9e511d682",
+  "files/mcollective/agent/shell/job.rb": "0fa1c7d34fa1797caea430ddafb3f95e",
+  "files/mcollective/agent/shell.ddl": "838f515d42d6e980efd5f6645012c547",
+  "files/mcollective/agent/shell.json": "2bc5787c32e925486b208bcfb6793263",
+  "files/mcollective/agent/shell.rb": "7f05f562230f1fc4555ef6bdbbe9096a",
+  "files/mcollective/application/shell.rb": "406d7ebff2a8486385e3d396aaeeb038",
+  "hiera.yaml": "686844de205da23a5552c4a50a517929",
+  "manifests/init.pp": "62d9fc2bd245b7bd2034936dbbc291ad",
+  "metadata.json": "d52a6e3f021037bb790652aec009dda1"
+}

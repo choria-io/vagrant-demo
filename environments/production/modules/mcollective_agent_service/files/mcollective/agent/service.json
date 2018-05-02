@@ -1,0 +1,138 @@
+{
+  "$schema": "https://choria.io/schemas/mcorpc/agent:1.json",
+  "metadata": {
+    "name": "service",
+    "description": "Manages Operating System Services",
+    "author": "R.I.Pienaar <rip@devco.net>",
+    "license": "Apache-2.0",
+    "version": "4.0.1",
+    "url": "https://github.com/choria-plugins/service-agent",
+    "timeout": 60
+  },
+  "actions": [
+    {
+      "action": "restart",
+      "input": {
+        "service": {
+          "prompt": "Service Name",
+          "description": "The service to restart",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "service_name",
+          "maxlength": 90
+        }
+      },
+      "output": {
+        "status": {
+          "description": "The status of the service after restarting",
+          "display_as": "Service Status",
+          "default": "unknown"
+        }
+      },
+      "display": "failed",
+      "description": "Restart a service",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "status"
+          ]
+        }
+      ]
+    },
+    {
+      "action": "start",
+      "input": {
+        "service": {
+          "prompt": "Service Name",
+          "description": "The service to start",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "service_name",
+          "maxlength": 90
+        }
+      },
+      "output": {
+        "status": {
+          "description": "The status of the service after starting",
+          "display_as": "Service Status",
+          "default": "unknown"
+        }
+      },
+      "display": "failed",
+      "description": "Start a service",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "status"
+          ]
+        }
+      ]
+    },
+    {
+      "action": "status",
+      "input": {
+        "service": {
+          "prompt": "Service Name",
+          "description": "The service to get the status for",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "service_name",
+          "maxlength": 90
+        }
+      },
+      "output": {
+        "status": {
+          "description": "The status of the service",
+          "display_as": "Service Status",
+          "default": "unknown"
+        }
+      },
+      "display": "always",
+      "description": "Gets the status of a service",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "status"
+          ]
+        }
+      ]
+    },
+    {
+      "action": "stop",
+      "input": {
+        "service": {
+          "prompt": "Service Name",
+          "description": "The service to stop",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "service_name",
+          "maxlength": 90
+        }
+      },
+      "output": {
+        "status": {
+          "description": "The status of the service after stopping",
+          "display_as": "Service Status",
+          "default": "unknown"
+        }
+      },
+      "display": "failed",
+      "description": "Stop a service",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "status"
+          ]
+        }
+      ]
+    }
+  ]
+}

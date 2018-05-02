@@ -1,0 +1,24 @@
+choria::manage_package_repo: true
+
+mcollective_agent_nettest::gem_dependencies:
+    "net-ping": "2.0.2"
+
+mcollective_agent_process::gem_dependencies:
+    "sys-proctable": "1.2.0"
+
+mcollective::client: true
+mcollective::site_policies:
+  - action: "allow"
+    callers: "choria=vagrant.mcollective"
+    actions: "*"
+    facts: "*"
+    classes: "*"
+
+mcollective::plugin_classes:
+  - mcollective_data_sysctl
+  - mcollective_agent_shell
+  - mcollective_agent_process
+  - mcollective_agent_nettest
+  - mcollective_agent_bolt_tasks
+
+extra_packages: []

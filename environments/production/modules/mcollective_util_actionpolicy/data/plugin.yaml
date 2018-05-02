@@ -1,0 +1,14 @@
+---
+mcollective_util_actionpolicy::config_name: actionpolicy
+mcollective_util_actionpolicy::common_files:
+- util/actionpolicy.rb
+- util/actionpolicy.ddl
+mcollective_util_actionpolicy::common_directories: []
+mcollective_util_actionpolicy::server_files: []
+mcollective_util_actionpolicy::server_directories: []
+mcollective_util_actionpolicy::client_files: []
+mcollective_util_actionpolicy::client_directories: []
+mcollective_util_actionpolicy::server_config:
+  allow_unconfigured: 1
+  enable_default: 0
+

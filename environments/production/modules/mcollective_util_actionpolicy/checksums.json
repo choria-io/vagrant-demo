@@ -1,0 +1,13 @@
+{
+  "CHANGELOG.md": "a85fe567f63d23d62e5d1d8d6214e53e",
+  "LICENSE": "ff586b348804a14aa19776dc0c9138d2",
+  "NOTICE": "5b62938364b4442ee16061eaa502e9d3",
+  "README.md": "e9906ab16e8b3ea30eff763bd3f46fe8",
+  "data/defaults.yaml": "edcd18b48bd2a3b51776e256a3059922",
+  "data/plugin.yaml": "eb273648d715a76f1f84b17026fc87eb",
+  "files/mcollective/util/actionpolicy.ddl": "6799e5b3d88837e2abf298e949c723a3",
+  "files/mcollective/util/actionpolicy.rb": "c292eaa99394ad9f142543ccd4ef75f5",
+  "hiera.yaml": "686844de205da23a5552c4a50a517929",
+  "manifests/init.pp": "36e0d0d792c4c9774e7e44181c26ca53",
+  "metadata.json": "951dbb61e21cfdfacdd387dbd12bb71c"
+}

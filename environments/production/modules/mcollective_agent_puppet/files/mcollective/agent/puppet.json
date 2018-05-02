@@ -1,0 +1,422 @@
+{
+  "$schema": "https://choria.io/schemas/mcorpc/agent:1.json",
+  "metadata": {
+    "name": "puppet",
+    "description": "Manages the Life Cycle of the Puppet Agent",
+    "author": "R.I.Pienaar <rip@devco.net>",
+    "license": "Apache-2.0",
+    "version": "2.0.2",
+    "url": "https://github.com/choria-plugins/puppet-agent",
+    "timeout": 20
+  },
+  "actions": [
+    {
+      "action": "disable",
+      "input": {
+        "message": {
+          "prompt": "Message",
+          "description": "Supply a reason for disabling the Puppet agent",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "shellsafe",
+          "maxlength": 120
+        }
+      },
+      "output": {
+        "status": {
+          "description": "Status",
+          "display_as": "Status",
+          "default": ""
+        },
+        "enabled": {
+          "description": "Is the agent currently locked",
+          "display_as": "Enabled",
+          "default": null
+        }
+      },
+      "display": "failed",
+      "description": "Disable the Puppet agent",
+      "aggregate": [
+        {
+          "function": "boolean_summary",
+          "args": [
+            "enabled",
+            {
+              "true": "enabled",
+              "false": "disabled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "enable",
+      "input": {
+      },
+      "output": {
+        "status": {
+          "description": "Status",
+          "display_as": "Status",
+          "default": ""
+        },
+        "enabled": {
+          "description": "Is the agent currently locked",
+          "display_as": "Enabled",
+          "default": null
+        }
+      },
+      "display": "failed",
+      "description": "Enable the Puppet agent",
+      "aggregate": [
+        {
+          "function": "boolean_summary",
+          "args": [
+            "enabled",
+            {
+              "true": "enabled",
+              "false": "disabled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "last_run_summary",
+      "input": {
+        "logs": {
+          "prompt": "Parse log from last_run_report.yaml",
+          "description": "Whether or not to parse the logs from last_run_report.yaml",
+          "type": "boolean",
+          "default": false,
+          "optional": true
+        }
+      },
+      "output": {
+        "out_of_sync_resources": {
+          "description": "Resources that were not in desired state",
+          "display_as": "Out of Sync Resources",
+          "default": -1
+        },
+        "failed_resources": {
+          "description": "Resources that failed to apply",
+          "display_as": "Failed Resources",
+          "default": -1
+        },
+        "corrected_resources": {
+          "description": "Resources that were correctively changed",
+          "display_as": "Corrected Resources",
+          "default": -1
+        },
+        "changed_resources": {
+          "description": "Resources that were changed",
+          "display_as": "Changed Resources",
+          "default": -1
+        },
+        "total_resources": {
+          "description": "Total resources managed on a node",
+          "display_as": "Total Resources",
+          "default": 0
+        },
+        "config_retrieval_time": {
+          "description": "Time taken to retrieve the catalog from the master",
+          "display_as": "Config Retrieval Time",
+          "default": -1
+        },
+        "total_time": {
+          "description": "Total time taken to retrieve and process the catalog",
+          "display_as": "Total Time",
+          "default": 0
+        },
+        "logs": {
+          "description": "Log lines from the last Puppet run",
+          "display_as": "Last Run Logs",
+          "default": {
+          }
+        },
+        "lastrun": {
+          "description": "When the Agent last applied a catalog in local time",
+          "display_as": "Last Run",
+          "default": 0
+        },
+        "since_lastrun": {
+          "description": "How long ago did the Agent last apply a catalog in local time",
+          "display_as": "Since Last Run",
+          "default": "Unknown"
+        },
+        "config_version": {
+          "description": "Puppet config version for the previously applied catalog",
+          "display_as": "Config Version",
+          "default": null
+        },
+        "type_distribution": {
+          "description": "Resource counts per type managed by Puppet",
+          "display_as": "Type Distribution",
+          "default": {
+          }
+        },
+        "summary": {
+          "description": "Summary data as provided by Puppet",
+          "display_as": "Summary",
+          "default": {
+          }
+        }
+      },
+      "display": "always",
+      "description": "Get the summary of the last Puppet run",
+      "aggregate": [
+        {
+          "function": "average",
+          "args": [
+            "config_retrieval_time",
+            {
+              "format": "Average: %0.2f"
+            }
+          ]
+        },
+        {
+          "function": "average",
+          "args": [
+            "total_time",
+            {
+              "format": "Average: %0.2f"
+            }
+          ]
+        },
+        {
+          "function": "average",
+          "args": [
+            "total_resources",
+            {
+              "format": "Average: %d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "resource",
+      "input": {
+        "name": {
+          "prompt": "Name",
+          "description": "Resource Name",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "^.+$",
+          "maxlength": 150
+        },
+        "type": {
+          "prompt": "Type",
+          "description": "Resource Type",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "^.+$",
+          "maxlength": 50
+        }
+      },
+      "output": {
+        "result": {
+          "description": "The result from the Puppet resource",
+          "display_as": "Result",
+          "default": ""
+        },
+        "changed": {
+          "description": "Was a change applied based on the resource",
+          "display_as": "Changed",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Evaluate Puppet RAL resources",
+      "aggregate": [
+        {
+          "function": "boolean_summary",
+          "args": [
+            "changed",
+            {
+              "true": "Changed",
+              "false": "No Change"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "runonce",
+      "input": {
+        "force": {
+          "prompt": "Force",
+          "description": "Will force a run immediately else subject to default splay time",
+          "type": "boolean",
+          "default": null,
+          "optional": true
+        },
+        "server": {
+          "prompt": "Puppet Master",
+          "description": "Address and port of the Puppet Master in server:port format",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "puppet_server_address",
+          "maxlength": 50
+        },
+        "tags": {
+          "prompt": "Tags",
+          "description": "Restrict the Puppet run to a comma list of tags",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "puppet_tags",
+          "maxlength": 120
+        },
+        "noop": {
+          "prompt": "No-op",
+          "description": "Do a Puppet dry run",
+          "type": "boolean",
+          "default": null,
+          "optional": true
+        },
+        "splay": {
+          "prompt": "Splay",
+          "description": "Sleep for a period before initiating the run",
+          "type": "boolean",
+          "default": null,
+          "optional": true
+        },
+        "splaylimit": {
+          "prompt": "Splay Limit",
+          "description": "Maximum amount of time to sleep before run",
+          "type": "number",
+          "default": null,
+          "optional": true
+        },
+        "environment": {
+          "prompt": "Environment",
+          "description": "Which Puppet environment to run",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": "puppet_variable",
+          "maxlength": 50
+        },
+        "use_cached_catalog": {
+          "prompt": "Use Cached Catalog",
+          "description": "Determine if to use the cached catalog or not",
+          "type": "boolean",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "summary": {
+          "description": "Summary of command run",
+          "display_as": "Summary",
+          "default": ""
+        },
+        "initiated_at": {
+          "description": "Timestamp of when the runonce command was issues",
+          "display_as": "Initiated at",
+          "default": 0
+        }
+      },
+      "display": "failed",
+      "description": "Invoke a single Puppet run"
+    },
+    {
+      "action": "status",
+      "input": {
+      },
+      "output": {
+        "applying": {
+          "description": "Is a catalog being applied",
+          "display_as": "Applying",
+          "default": false
+        },
+        "idling": {
+          "description": "Is the Puppet agent daemon running but not doing any work",
+          "display_as": "Idling",
+          "default": false
+        },
+        "enabled": {
+          "description": "Is the agent currently locked",
+          "display_as": "Enabled",
+          "default": null
+        },
+        "daemon_present": {
+          "description": "Is the Puppet agent daemon running on this system",
+          "display_as": "Daemon Running",
+          "default": false
+        },
+        "lastrun": {
+          "description": "When the Agent last applied a catalog in local time",
+          "display_as": "Last Run",
+          "default": 0
+        },
+        "since_lastrun": {
+          "description": "How long ago did the Agent last apply a catalog in local time",
+          "display_as": "Since Last Run",
+          "default": "Unknown"
+        },
+        "status": {
+          "description": "Current status of the Puppet agent",
+          "display_as": "Status",
+          "default": "unknown"
+        },
+        "disable_message": {
+          "description": "Message supplied when agent was disabled",
+          "display_as": "Lock Message",
+          "default": ""
+        },
+        "message": {
+          "description": "Descriptive message defining the overall agent status",
+          "display_as": "Message",
+          "default": "unknown"
+        }
+      },
+      "display": "always",
+      "description": "Get the current status of the Puppet agent",
+      "aggregate": [
+        {
+          "function": "boolean_summary",
+          "args": [
+            "enabled",
+            {
+              "true": "enabled",
+              "false": "disabled"
+            }
+          ]
+        },
+        {
+          "function": "boolean_summary",
+          "args": [
+            "daemon_present",
+            {
+              "true": "running",
+              "false": "stopped"
+            }
+          ]
+        },
+        {
+          "function": "summary",
+          "args": [
+            "applying"
+          ]
+        },
+        {
+          "function": "summary",
+          "args": [
+            "status"
+          ]
+        },
+        {
+          "function": "summary",
+          "args": [
+            "idling"
+          ]
+        }
+      ]
+    }
+  ]
+}

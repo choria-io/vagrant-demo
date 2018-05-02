@@ -1,0 +1,16 @@
+lookup_options:
+  mcollective_agent_nettest::gem_dependencies:
+    merge:
+      strategy: deep
+  mcollective_agent_nettest::package_dependencies:
+    merge:
+      strategy: deep
+  mcollective_agent_nettest::config:
+    merge:
+      strategy: deep
+  mcollective_agent_nettest::client_config:
+    merge:
+      strategy: deep
+  mcollective_agent_nettest::server_config:
+    merge:
+      strategy: deep

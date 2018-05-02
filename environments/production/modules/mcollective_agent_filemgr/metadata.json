@@ -1,0 +1,23 @@
+{
+  "name": "choria-mcollective_agent_filemgr",
+  "version": "2.0.1",
+  "author": "Mike Pountney <mike.pountney@gmail.com>",
+  "summary": "File Manager",
+  "license": "Apache-2.0",
+  "source": "https://github.com/choria-plugins/filemgr-agent",
+  "project_page": "https://github.com/choria-plugins/filemgr-agent",
+  "issues_url": "https://github.com/choria-plugins/filemgr-agent/issues",
+  "dependencies": [
+    {
+      "name": "choria/mcollective",
+      "version_requirement": ">= 0.4.0 < 2.0.0"
+    }
+  ],
+  "data_provider": null,
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.9.0"
+    }
+  ]
+}

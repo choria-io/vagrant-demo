@@ -1,0 +1,8 @@
+---
+version: 5
+hierarchy:
+  - name: "Per-os data (yaml version)"
+    path: "os/%{facts.operatingsystem}.yaml"
+  - name: "Other YAML hierarchy levels"
+    paths:
+      - "common.yaml"

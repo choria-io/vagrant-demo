@@ -1,0 +1,23 @@
+{
+  "name": "choria-mcollective_data_sysctl",
+  "version": "3.0.0",
+  "author": "R.I.Pienaar <rip@devco.net>",
+  "summary": "Retrieve values for a given sysctl",
+  "license": "Apache-2.0",
+  "source": "https://github.com/choria-plugins/sysctl-data",
+  "project_page": "https://github.com/choria-plugins/sysctl-data",
+  "issues_url": "https://github.com/choria-plugins/sysctl-data/issues",
+  "dependencies": [
+    {
+      "name": "choria/mcollective",
+      "version_requirement": ">= 0.4.0 < 2.0.0"
+    }
+  ],
+  "data_provider": null,
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.9.0"
+    }
+  ]
+}

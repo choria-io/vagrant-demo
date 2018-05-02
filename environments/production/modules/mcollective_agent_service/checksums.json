@@ -1,0 +1,22 @@
+{
+  "CHANGELOG.md": "86dd292c62843276e08732b556c554f0",
+  "LICENSE": "3b83ef96387f14655fc854ddc3c6bd57",
+  "NOTICE": "6b27945a7fe548b47e7a6c185c216aee",
+  "README.md": "11b9f6232a525cf05afb70e94da01ef4",
+  "data/defaults.yaml": "9de4ab38cc015be7994f2addd11251b7",
+  "data/plugin.yaml": "35d65ed7903365de99723bada380657d",
+  "files/mcollective/agent/service.ddl": "7b99dad0983db25a7e59cab0fbfa1768",
+  "files/mcollective/agent/service.json": "89ea027d1b9b4f32d0ee17eb46f5bae0",
+  "files/mcollective/agent/service.rb": "cbf84ed615eeda9789650b05ec504566",
+  "files/mcollective/application/service.rb": "c95359f947af5f0d904fa3df80cb9820",
+  "files/mcollective/data/service_data.ddl": "97f9251fec21119610e4fb68f6587eda",
+  "files/mcollective/data/service_data.rb": "bc651898c7dcd373d609c933fbd6021f",
+  "files/mcollective/util/service/base.rb": "abea7b8fadbf3425a7b68b49b9435ff6",
+  "files/mcollective/util/service/puppetservice.rb": "905db93e1c06ad5a7154fa2f9199f31c",
+  "files/mcollective/util/service/serviceservice.rb": "60378963726cf6d8fd69ea78be15f345",
+  "files/mcollective/validator/service_name.ddl": "98f4b784f598c1c2f67b840ffc4a9b1c",
+  "files/mcollective/validator/service_name.rb": "0388edc572119e4c2f5ca102cebc7bc5",
+  "hiera.yaml": "686844de205da23a5552c4a50a517929",
+  "manifests/init.pp": "1bd96dd7797ed1a6c30fca2fc34f5ac1",
+  "metadata.json": "a44822d3719e736ed4c9ac5eea4ae261"
+}

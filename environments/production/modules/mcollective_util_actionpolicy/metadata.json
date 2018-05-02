@@ -1,0 +1,23 @@
+{
+  "name": "choria-mcollective_util_actionpolicy",
+  "version": "3.0.0",
+  "author": "P.Loubser <pieter.loubser@puppetlabs.com>",
+  "summary": "Choria Action Policy authorization plugin",
+  "license": "Apache-2.0",
+  "source": "https://github.com/choria-plugins/action-policy",
+  "project_page": "https://github.com/choria-plugins/action-policy",
+  "issues_url": "https://github.com/choria-plugins/action-policy/issues",
+  "dependencies": [
+    {
+      "name": "choria/mcollective",
+      "version_requirement": ">= 0.4.0 < 2.0.0"
+    }
+  ],
+  "data_provider": null,
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.9.0"
+    }
+  ]
+}

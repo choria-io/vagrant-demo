@@ -1,0 +1,18 @@
+---
+mcollective_agent_process::config_name: process
+mcollective_agent_process::common_files:
+- data/process_data.rb
+- data/process_data.ddl
+- util/processagent.rb
+- agent/process.ddl
+- agent/process.json
+mcollective_agent_process::common_directories: []
+mcollective_agent_process::server_files:
+- agent/process.rb
+mcollective_agent_process::server_directories: []
+mcollective_agent_process::client_files:
+- application/process.rb
+- aggregate/process_summary.rb
+- aggregate/process_summary.ddl
+mcollective_agent_process::client_directories: []
+

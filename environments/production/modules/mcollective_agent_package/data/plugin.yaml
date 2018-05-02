@@ -1,0 +1,29 @@
+---
+mcollective_agent_package::config_name: package
+mcollective_agent_package::common_files:
+- data/package_data.rb
+- data/package_data.ddl
+- util/package/base.rb
+- util/package/packagehelpers.rb
+- util/package/puppetpackage.rb
+- util/package/yumHelper.py
+- util/package/yumpackage.rb
+- validator/package_name.rb
+- validator/package_name.ddl
+- agent/package.ddl
+- agent/package.json
+mcollective_agent_package::common_directories:
+- util/package
+mcollective_agent_package::server_files:
+- agent/package.rb
+mcollective_agent_package::server_directories: []
+mcollective_agent_package::client_files:
+- application/package.rb
+mcollective_agent_package::client_directories: []
+mcollective_agent_package::policies:
+- action: allow
+  callers: "*"
+  actions: status count md5
+  facts: "*"
+  classes: "*"
+

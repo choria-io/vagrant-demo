@@ -1,0 +1,16 @@
+lookup_options:
+  mcollective_util_actionpolicy::gem_dependencies:
+    merge:
+      strategy: deep
+  mcollective_util_actionpolicy::package_dependencies:
+    merge:
+      strategy: deep
+  mcollective_util_actionpolicy::config:
+    merge:
+      strategy: deep
+  mcollective_util_actionpolicy::client_config:
+    merge:
+      strategy: deep
+  mcollective_util_actionpolicy::server_config:
+    merge:
+      strategy: deep

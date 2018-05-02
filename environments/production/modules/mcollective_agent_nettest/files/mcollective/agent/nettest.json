@@ -1,0 +1,96 @@
+{
+  "$schema": "https://choria.io/schemas/mcorpc/agent:1.json",
+  "metadata": {
+    "name": "nettest",
+    "description": "Perform network tests from a mcollective host",
+    "author": "Dean Smith <dean@zelotus.com>",
+    "license": "BSD",
+    "version": "4.0.2",
+    "url": "https://github.com/choria-plugins/nettest-agent",
+    "timeout": 60
+  },
+  "actions": [
+    {
+      "action": "connect",
+      "input": {
+        "fqdn": {
+          "prompt": "FQDN",
+          "description": "The fully qualified domain name to ping",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "nettest_fqdn",
+          "maxlength": 80
+        },
+        "port": {
+          "prompt": "Port",
+          "description": "The port to connect on",
+          "type": "integer",
+          "default": null,
+          "optional": false
+        }
+      },
+      "output": {
+        "connect": {
+          "description": "Boolean value stating if connection was possible",
+          "display_as": "Connected",
+          "default": null
+        },
+        "connect_status": {
+          "description": "Connection status string",
+          "display_as": "Connection Status",
+          "default": null
+        },
+        "connect_time": {
+          "description": "Time it took to connect to host",
+          "display_as": "Connection time",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Check connectivity of remote server on port",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "connect_status"
+          ]
+        }
+      ]
+    },
+    {
+      "action": "ping",
+      "input": {
+        "fqdn": {
+          "prompt": "FQDN",
+          "description": "The fully qualified domain name to ping",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "nettest_fqdn",
+          "maxlength": 80
+        }
+      },
+      "output": {
+        "rtt": {
+          "description": "The round trip time in ms",
+          "display_as": "RTT",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Returns rrt of ping to host",
+      "aggregate": [
+        {
+          "function": "nettest_mma",
+          "args": [
+            "rtt",
+            {
+              "format": "Min: %.3fms  Max: %.3fms  Average: %.3fms"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

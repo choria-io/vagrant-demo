@@ -1,0 +1,23 @@
+{
+  "name": "choria-mcollective_agent_service",
+  "version": "4.0.1",
+  "author": "R.I.Pienaar <rip@devco.net>",
+  "summary": "Manages Operating System Services",
+  "license": "Apache-2.0",
+  "source": "https://github.com/choria-plugins/service-agent",
+  "project_page": "https://github.com/choria-plugins/service-agent",
+  "issues_url": "https://github.com/choria-plugins/service-agent/issues",
+  "dependencies": [
+    {
+      "name": "choria/mcollective",
+      "version_requirement": ">= 0.4.0 < 2.0.0"
+    }
+  ],
+  "data_provider": null,
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.9.0"
+    }
+  ]
+}

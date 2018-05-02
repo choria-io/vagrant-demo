@@ -1,0 +1,184 @@
+{
+  "$schema": "https://choria.io/schemas/mcorpc/agent:1.json",
+  "metadata": {
+    "name": "shell",
+    "description": "Run commands with the local shell",
+    "author": "Puppet Labs",
+    "license": "Apache-2.0",
+    "version": "1.0.3",
+    "url": "https://github.com/choria-plugins/shell-agent",
+    "timeout": 180
+  },
+  "actions": [
+    {
+      "action": "kill",
+      "input": {
+        "handle": {
+          "prompt": "Handle",
+          "description": "Handle of the command",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "^[0-9a-z\\-]*$",
+          "maxlength": 36
+        }
+      },
+      "output": {
+      },
+      "display": "always",
+      "description": "Kill a command by handle"
+    },
+    {
+      "action": "list",
+      "input": {
+      },
+      "output": {
+        "jobs": {
+          "description": "state of managed jobs",
+          "display_as": "jobs",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Get a list of all running commands"
+    },
+    {
+      "action": "run",
+      "input": {
+        "command": {
+          "prompt": "Command",
+          "description": "Command to run",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": ".*",
+          "maxlength": 10240
+        },
+        "user": {
+          "prompt": "User",
+          "description": "User to run command as",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": ".*",
+          "maxlength": 1024
+        },
+        "timeout": {
+          "prompt": "Timeout",
+          "description": "Timeout to wait for the command to complete",
+          "type": "float",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "stdout": {
+          "description": "stdout from the command",
+          "display_as": "stdout",
+          "default": null
+        },
+        "stderr": {
+          "description": "stderr from the command",
+          "display_as": "stderr",
+          "default": null
+        },
+        "success": {
+          "description": "did the process exit successfully",
+          "display_as": "success",
+          "default": null
+        },
+        "exitcode": {
+          "description": "exit code of the command",
+          "display_as": "exitcode",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Run a command"
+    },
+    {
+      "action": "start",
+      "input": {
+        "command": {
+          "prompt": "Command",
+          "description": "Command to run",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": ".*",
+          "maxlength": 10240
+        },
+        "user": {
+          "prompt": "User",
+          "description": "User to run command as",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": ".*",
+          "maxlength": 1024
+        }
+      },
+      "output": {
+        "handle": {
+          "description": "identifier to a running command",
+          "display_as": "handle",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Spawn a command"
+    },
+    {
+      "action": "status",
+      "input": {
+        "handle": {
+          "prompt": "Handle",
+          "description": "Handle of the command",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "^[0-9a-z\\-]*$",
+          "maxlength": 36
+        },
+        "stdout_offset": {
+          "prompt": "stdout_offset",
+          "description": "stdout_offset",
+          "type": "integer",
+          "default": null,
+          "optional": true
+        },
+        "stderr_offset": {
+          "prompt": "stderr_offset",
+          "description": "stderr_offset",
+          "type": "integer",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "status": {
+          "description": "status of the command",
+          "display_as": "status",
+          "default": null
+        },
+        "stdout": {
+          "description": "stdout of the command",
+          "display_as": "stdout",
+          "default": null
+        },
+        "stderr": {
+          "description": "stderr of the command",
+          "display_as": "stderr",
+          "default": null
+        },
+        "exitcode": {
+          "description": "exitcode of the command",
+          "display_as": "exitcode",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Get status of managed command"
+    }
+  ]
+}

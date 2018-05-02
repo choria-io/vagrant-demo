@@ -1,0 +1,16 @@
+lookup_options:
+  mcollective_data_sysctl::gem_dependencies:
+    merge:
+      strategy: deep
+  mcollective_data_sysctl::package_dependencies:
+    merge:
+      strategy: deep
+  mcollective_data_sysctl::config:
+    merge:
+      strategy: deep
+  mcollective_data_sysctl::client_config:
+    merge:
+      strategy: deep
+  mcollective_data_sysctl::server_config:
+    merge:
+      strategy: deep

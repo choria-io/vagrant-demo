@@ -1,0 +1,9 @@
+---
+mcollective_data_sysctl::config_name: sysctl
+mcollective_data_sysctl::common_files: []
+mcollective_data_sysctl::common_directories: []
+mcollective_data_sysctl::server_files: []
+mcollective_data_sysctl::server_directories: []
+mcollective_data_sysctl::client_files: []
+mcollective_data_sysctl::client_directories: []
+

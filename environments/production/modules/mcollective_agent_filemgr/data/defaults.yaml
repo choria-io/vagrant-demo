@@ -1,0 +1,16 @@
+lookup_options:
+  mcollective_agent_filemgr::gem_dependencies:
+    merge:
+      strategy: deep
+  mcollective_agent_filemgr::package_dependencies:
+    merge:
+      strategy: deep
+  mcollective_agent_filemgr::config:
+    merge:
+      strategy: deep
+  mcollective_agent_filemgr::client_config:
+    merge:
+      strategy: deep
+  mcollective_agent_filemgr::server_config:
+    merge:
+      strategy: deep

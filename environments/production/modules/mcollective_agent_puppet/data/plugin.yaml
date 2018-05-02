@@ -1,0 +1,40 @@
+---
+mcollective_agent_puppet::config_name: puppet
+mcollective_agent_puppet::common_files:
+- data/puppet_data.rb
+- data/resource_data.rb
+- data/puppet_data.ddl
+- data/resource_data.ddl
+- util/puppet_agent_mgr.rb
+- util/puppet_agent_mgr/mgr_v2.rb
+- util/puppet_agent_mgr/mgr_v3.rb
+- util/puppet_agent_mgr/mgr_windows.rb
+- util/puppet_server_address_validation.rb
+- util/puppetrunner.rb
+- validator/puppet_resource_validator.rb
+- validator/puppet_server_address_validator.rb
+- validator/puppet_tags_validator.rb
+- validator/puppet_variable_validator.rb
+- validator/puppet_resource_validator.ddl
+- validator/puppet_server_address_validator.ddl
+- validator/puppet_tags_validator.ddl
+- validator/puppet_variable_validator.ddl
+- agent/puppet.ddl
+- agent/puppet.json
+mcollective_agent_puppet::common_directories:
+- util/puppet_agent_mgr
+mcollective_agent_puppet::server_files:
+- agent/puppet.rb
+mcollective_agent_puppet::server_directories: []
+mcollective_agent_puppet::client_files:
+- application/puppet.rb
+- aggregate/boolean_summary.rb
+- aggregate/boolean_summary.ddl
+mcollective_agent_puppet::client_directories: []
+mcollective_agent_puppet::policies:
+- action: allow
+  callers: "*"
+  actions: last_run_summary status
+  facts: "*"
+  classes: "*"
+
