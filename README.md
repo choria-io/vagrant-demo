@@ -65,7 +65,7 @@ choria1.choria                           time=25.75 ms
 
 ## Discovery
 
-Choria has Puppet integrated discovery features, lets get a report of the roles assigned to the nodes:
+Choria has Puppet integrated discovery features so you can address your server estate by metadata and not their names. Lets get a report of the roles assigned to the nodes:
 
 ```
 $ mco facts role
@@ -205,7 +205,7 @@ Inventory for puppet.choria:
 
 This is useful when debugging discovery issues or just to obtain information about a specific node. Any of the facts and classes you see can be used in discovery.
 
-### Basic Choria behavior described
+### Basic Choria CLI behavior
 
 Choria commands will try to only show you the most appropriate information. What this
 means is if you tried to restart a service using Choria it will not show you every
