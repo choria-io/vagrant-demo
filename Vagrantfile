@@ -26,6 +26,10 @@ Vagrant.configure("2") do |config|
       s.args = "puppetserver"
     end
 
+    vmconfig.vm.provision :shell do |s|
+      s.inline = "bash /vagrant/analytics.sh >/dev/null 2>&1 || /usr/bin/true"
+    end
+
     vmconfig.vm.provision "puppet" do |puppet|
       puppet.environment_path = "environments"
     end
