@@ -1,4 +1,5 @@
 require 'digest/md5'
+require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:ini_setting) do
   ensurable do
@@ -37,6 +38,11 @@ Puppet::Type.newtype(:ini_setting) do
       end
       value.strip
     end
+  end
+
+  newparam(:force_new_section_creation, boolean: true, parent: Puppet::Parameter::Boolean) do
+    desc 'Create setting only if the section exists'
+    defaultto(true)
   end
 
   newparam(:path) do

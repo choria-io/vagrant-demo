@@ -22,7 +22,7 @@ module MCollective
  can use the status comment to review a completed task later.
       USAGE
 
-      exclude_argument_sections "common", "rpc"
+      exclude_argument_sections "rpc"
 
       def post_option_parser(configuration)
         configuration[:__command] = ARGV.shift || "list"
@@ -68,7 +68,7 @@ module MCollective
                           :type => :boolean
       end
 
-      def run_options
+      def run_options # rubocop:disable Metrics/MethodLength
         application_options[:usage].clear
 
         self.class.usage <<-USAGE
@@ -135,6 +135,19 @@ Examples:
                           :description => "JSON input to pass to the task",
                           :required => false,
                           :type => String
+
+        self.class.option :__batch_size,
+                          :arguments => ["--batch SIZE"],
+                          :description => "Run tasks on nodes in batches",
+                          :required => false,
+                          :type => String
+
+        self.class.option :__batch_sleep,
+                          :arguments => ["--batch-sleep SECONDS"],
+                          :description => "Time to sleep between invocations of batches of nodes",
+                          :required => false,
+                          :default => 1,
+                          :type => Integer
       end
 
       def say(msg="")
@@ -171,6 +184,13 @@ Examples:
 
         if configuration[:__background]
           puts("Starting task %s in the background" % [Util.colorize(:bold, task)])
+
+          if configuration[:__batch_size]
+            bolt_tasks.batch_size = configuration[:__batch_size]
+            bolt_tasks.batch_sleep_time = configuration[:__batch_sleep]
+            bolt_tasks.progress = true
+          end
+
           printrpc bolt_tasks.run_no_wait(request)
           printrpcstats
 
@@ -186,11 +206,13 @@ Examples:
 
           request_and_report(:run_and_wait, request)
         end
+      ensure
+        reset_client!
       end
 
       def download_files(task, files)
-        original_batch_size = bolt_tasks.batch_size
         bolt_tasks.batch_size = 50
+        bolt_tasks.batch_sleep_time = 1
 
         failed = false
 
@@ -199,7 +221,11 @@ Examples:
         idx = 0
 
         bolt_tasks.download(:environment => "production", :task => task, :files => files.to_json) do |_, s|
-          print(cli.twirl("Downloading and verifying %d file(s) from the Puppet Server to all nodes:" % [files.size], cnt, idx + 1)) unless configuration[:__json_format]
+          unless configuration[:__json_format]
+            print(cli.twirl("Downloading and verifying %d file(s) from the Puppet Server to all nodes:" % [files.size], cnt, idx + 1))
+            puts if cnt == idx + 1
+          end
+
           idx += 1
           downloads << s
         end
@@ -220,8 +246,6 @@ Examples:
           puts
           abort("Could not download the task %s onto all nodes" % task)
         end
-      ensure
-        bolt_tasks.batch_size = original_batch_size
       end
 
       def status_command
@@ -256,11 +280,16 @@ Examples:
         runtime = 0.0
         success_nodes = 0
         fail_nodes = 0
-        progress = configuration[:__summary] ? RPC::Progress.new : nil
+        progress = configuration[:__summary] || configuration[:__batch_size] ? RPC::Progress.new : nil
         cnt = 0
         expected = bolt_tasks.discover.size
         task_names = []
         callers = []
+
+        if configuration[:__batch_size]
+          bolt_tasks.batch_size = configuration[:__batch_size]
+          bolt_tasks.batch_sleep_time = configuration[:__batch_sleep]
+        end
 
         say
 
@@ -284,8 +313,10 @@ Examples:
           task_names << status[:task] if status[:task]
           callers << status[:callerid] if status[:callerid]
 
-          if configuration[:__summary]
+          if progress
             print(progress.twirl(cnt + 1, expected))
+
+            say if cnt + 1 == expected
           else
             cli.print_result(reply)
           end
@@ -300,6 +331,8 @@ Examples:
         task_names.compact!
         task_names.uniq!
 
+        say
+
         cli.print_task_summary(
           taskid,
           task_names,
@@ -313,6 +346,8 @@ Examples:
           runtime,
           bolt_tasks.stats
         )
+      ensure
+        reset_client!
       end
 
       def list_command
@@ -334,6 +369,11 @@ Examples:
 
       def bolt_tasks
         @__bolt_tasks ||= rpcclient("bolt_tasks")
+      end
+
+      def reset_client!
+        bolt_tasks.batch_size = 0
+        bolt_tasks.progress = options[:verbose]
       end
 
       def extract_environment_from_argv

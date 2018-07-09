@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-hocon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "puppetlabs",
   "summary": "Resource types for managing settings in HOCON files",
   "license": "Apache-2.0",
@@ -15,13 +15,16 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8",
+        "9"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "14.04"
+        "14.04",
+        "16.04"
       ]
     }
   ],
@@ -34,5 +37,8 @@
       "name": "ruby",
       "version_requirement": ">=1.9.0"
     }
-  ]
+  ],
+  "pdk-version": "1.5.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates",
+  "template-ref": "heads/master-0-g6654f6d"
 }

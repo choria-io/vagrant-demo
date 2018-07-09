@@ -31,6 +31,16 @@ class mcollective::config {
     "libdir" => $mcollective::libdir
   }
 
+  # These are overrides for the choria shim that we definitely do not want set or have
+  # to set to specific values for whatever reason
+  $shim_overrides = {
+    "rpcaudit"        => "0",
+    "logfile"         => "/var/log/choria-mcorpc.log",
+    "collectives"     => "mcollective",
+    "main_collective" => "mcollective",
+    "daemonize"       => "0"
+  }
+
   # The order of these are important:
   #
   # - common config is effectively defaults, overridable by specific server/client settings
@@ -49,6 +59,15 @@ class mcollective::config {
     settings => $client_config,
   }
 
+  $temp_shim_config = $mcollective::common_config + $mcollective::server_config + $global_config + $shim_overrides
+  $shim_config = ["plugin.rpcaudit.logfile", "registerinterval", "registration", "rpcauditprovider"].reduce($temp_shim_config) |$memo, $key| {
+    $memo.delete($key)
+  }
+
+  mcollective::config_file{"${mcollective::configdir}/choria-shim.cfg":
+    settings => $shim_config,
+  }
+
   $policy_content = epp("mcollective/policy_file.epp", {
     "module"         => "rpcutil",
     "policy_default" => $mcollective::policy_default,
@@ -62,12 +81,5 @@ class mcollective::config {
     mode    => $mcollective::plugin_mode,
     content => $policy_content,
     notify  => Class["mcollective::service"]
-  }
-
-  file{"${mcollective::configdir}/federation":
-    owner  => $mcollective::plugin_owner,
-    group  => $mcollective::plugin_group,
-    mode   => $mcollective::plugin_mode,
-    ensure => "directory"
   }
 }

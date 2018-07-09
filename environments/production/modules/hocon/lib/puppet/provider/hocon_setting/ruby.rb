@@ -1,12 +1,12 @@
 Puppet::Type.type(:hocon_setting).provide(:ruby) do
-  confine :feature => :hocon
+  confine feature: :hocon
 
-  def self.namevar(section_name, setting)
-    "#{setting}"
+  def self.namevar(_section_name, setting)
+    setting.to_s
   end
 
   def exists?
-    unless conf_file.has_value?(setting)
+    unless conf_file.has_value?(setting) # rubocop:disable Style/PreferredHashMethods
       return false
     end
 
@@ -19,7 +19,7 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
       end
     end
 
-    if type == nil &&
+    if type.nil? &&
        conf_value.is_a?(Array) &&
        conf_value.length == 1
 
@@ -30,7 +30,7 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
       return Array(@resource[:value]).any? { |v| value.flatten.include?(v) }
     end
 
-    return true
+    true
   end
 
   def create
@@ -54,22 +54,21 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
   end
 
   def value
-    val = conf_file.has_value?(setting) ?
-        conf_object.get_value(setting).unwrapped : []
+    val = conf_file.has_value?(setting) ? conf_object.get_value(setting).unwrapped : [] # rubocop:disable Style/PreferredHashMethods
     unless val.is_a?(Array)
-      if resource[:type] == 'array_element'
-        # If the current value of the target setting is not an array,
-        # present the current value as an empty array so that an
-        # element is added to an empty array (as opposed to converting
-        # the current value into the first element in an array and
-        # adding the value to set as a second element in the array).
-        val = []
-      else
-        # This is required because of :array_matching => :all.
-        # Without this, Puppet will almost always register changes
-        # to a hocon_setting even when it shouldn't.
-        val = [val]
-      end
+      val = if resource[:type] == 'array_element'
+              # If the current value of the target setting is not an array,
+              # present the current value as an empty array so that an
+              # element is added to an empty array (as opposed to converting
+              # the current value into the first element in an array and
+              # adding the value to set as a second element in the array).
+              []
+            else
+              # This is required because of :array_matching => :all.
+              # Without this, Puppet will almost always register changes
+              # to a hocon_setting even when it shouldn't.
+              [val]
+            end
     end
     val
   end
@@ -89,9 +88,10 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
   end
 
   private
+
   def conf_file
-    if @conf_file.nil? && (not File.exist?(file_path))
-      File.new(file_path, "w")
+    if @conf_file.nil? && !File.exist?(file_path)
+      File.new(file_path, 'w')
     end
     @conf_file ||= Hocon::Parser::ConfigDocumentFactory.parse_file(file_path)
   end
@@ -104,8 +104,8 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
   end
 
   def conf_object
-    if @conf_file.nil? && (not File.exist?(file_path))
-      File.new(file_path, "w")
+    if @conf_file.nil? && !File.exist?(file_path)
+      File.new(file_path, 'w')
     end
     Hocon::ConfigFactory.parse_file(file_path)
   end
@@ -128,7 +128,7 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
     conf_file_modified
   end
 
-  def set_value(value_to_set)
+  def set_value(value_to_set) # rubocop:disable Style/AccessorMethodName
     if resource[:type] == 'array_element'
       tmp_val = []
       val = value
@@ -150,11 +150,11 @@ Puppet::Type.type(:hocon_setting).provide(:ruby) do
       new_value = Hocon::ConfigValueFactory.from_any_ref(value_to_set[0], nil)
     end
 
-    if resource[:type] == 'text'
-      conf_file_modified = conf_file.set_value(setting, new_value)
-    else
-      conf_file_modified = conf_file.set_config_value(setting, new_value)
-    end
+    conf_file_modified = if resource[:type] == 'text'
+                           conf_file.set_value(setting, new_value)
+                         else
+                           conf_file.set_config_value(setting, new_value)
+                         end
     conf_file_modified
   end
 end

@@ -44,7 +44,7 @@ module MCollective
           # @param key [String] the lock name
           # @raise [StandardError] when releaging fails
           def release(key)
-            raise(NotImplementedError, "release not implemented in %s" % [self.class], caller)
+            raise(StandardError, "release not implemented in %s" % [self.class], caller)
           end
 
           # Locks a specific lock in the store
@@ -52,10 +52,9 @@ module MCollective
           # @note when the lock does not exist it should be created
           # @param key [String] the lock name
           # @param timeout [Integer,Float] how long to attempt to get the lock for
-          # @param ttl [Integer,Float] after this long the lock should expire in the event that we died
           # @raise [StandardError] when locking fails
-          def lock(key, timeout, ttl)
-            raise(NotImplementedError, "lock not implemented in %s" % [self.class], caller)
+          def lock(key, timeout)
+            raise(StandardError, "lock not implemented in %s" % [self.class], caller)
           end
 
           # Finds the members in a service
@@ -64,7 +63,7 @@ module MCollective
           # @return [Array<String>] list of service members
           # @raise [StandardError] when the service is unknown or general error happened
           def members(key)
-            raise(NotImplementedError, "members not implemented in %s" % [self.class], caller)
+            raise(StandardError, "members not implemented in %s" % [self.class], caller)
           end
 
           # Deletes a key from a data store
@@ -73,7 +72,7 @@ module MCollective
           # @param key [String] the key to delete
           # @raise [StandardError] when deleting fails
           def delete(key)
-            raise(NotImplementedError, "delete not implemented in %s" % [self.class], caller)
+            raise(StandardError, "delete not implemented in %s" % [self.class], caller)
           end
 
           # Writes a value to the key in a data store
@@ -82,7 +81,7 @@ module MCollective
           # @param value [String] the value to write
           # @raise [StandardError] when writing fails
           def write(key, value)
-            raise(NotImplementedError, "write not implemented in %s" % [self.class], caller)
+            raise(StandardError, "write not implemented in %s" % [self.class], caller)
           end
 
           # Reads a key from a data store
@@ -91,7 +90,7 @@ module MCollective
           # @return [String] string found in the data store
           # @raise [StandardError] when the key does not exist
           def read(key)
-            raise(NotImplementedError, "read not implemented in %s" % [self.class], caller)
+            raise(StandardError, "read not implemented in %s" % [self.class], caller)
           end
         end
       end

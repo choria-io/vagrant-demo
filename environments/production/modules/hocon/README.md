@@ -19,7 +19,7 @@ This module adds resource types to manage settings in HOCON-style configuration 
 
 ## Module Description
 
-The hocon module adds a resource type so that you can use Puppet to manage settings in HOCON configuration files.
+The hocon module adds a resource type so that you can use Puppet to manage settings in HOCON configuration files. If you would like to manage Puppet's auth.conf that is in the HOCON format see the [puppetlabs/puppet_authorization](https://github.com/puppetlabs/puppetlabs-puppet_authorization) module.
 
 ## Setup
 

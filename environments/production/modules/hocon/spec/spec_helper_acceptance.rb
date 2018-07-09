@@ -7,7 +7,7 @@ unless ENV['RS_PROVISION'] == 'no'
   hosts.each do |host|
     puppet_version = (on default, puppet('--version')).output.chomp
 
-    if puppet_version =~ /Puppet Enterprise /
+    if puppet_version =~ %r{Puppet Enterprise }
       on host, puppet('module install puppetlabs-pe_gem')
       on host, puppet('resource package hocon ensure=latest provider=pe_gem')
     elsif ENV['PUPPET_INSTALL_TYPE'] != 'foss' && Gem::Version.new(puppet_version) >= Gem::Version.new('4.0.0')
@@ -29,12 +29,12 @@ RSpec.configure do |c|
   c.before :suite do
     # Install module and dependencies
     hosts.each do |host|
-      if host['platform'] !~ /windows/i
-        copy_root_module_to(host, :source => proj_root, :module_name => 'hocon')
+      if host['platform'] !~ %r{windows}i
+        copy_root_module_to(host, source: proj_root, module_name: 'hocon')
       end
     end
     hosts.each do |host|
-      if host['platform'] =~ /windows/i
+      if host['platform'] =~ %r{windows}i
         on host, puppet('plugin download')
       end
     end

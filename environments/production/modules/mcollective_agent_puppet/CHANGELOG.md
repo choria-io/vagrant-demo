@@ -2,6 +2,12 @@
 
 Change history for `choria/mcollective_agent_puppet`
 
+## 2.1.0
+
+Released 2018-05-21
+
+ * Add a `mcollective_agent_puppet::find_stuck_agents` playbook to find agents that are hung
+
 ## 2.0.2
 
 Released 2018-04-20

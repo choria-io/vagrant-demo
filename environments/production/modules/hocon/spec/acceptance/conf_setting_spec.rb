@@ -4,47 +4,47 @@ tmpdir = default.tmpdir('tmp')
 
 describe 'hocon_setting resource' do
   after :all do
-    shell("rm #{tmpdir}/*.conf", :acceptable_exit_codes => [0,1,2])
+    shell("rm #{tmpdir}/*.conf", acceptable_exit_codes: [0, 1, 2])
   end
 
-  shared_examples 'has_content' do |path,pp,content|
+  shared_examples 'has_content' do |path, pp, content|
     before :all do
-      shell("rm #{path}", :acceptable_exit_codes => [0,1,2])
+      shell("rm #{path}", acceptable_exit_codes: [0, 1, 2])
     end
     after :all do
-      shell("cat #{path}", :acceptable_exit_codes => [0,1,2])
-      shell("rm #{path}", :acceptable_exit_codes => [0,1,2])
+      shell("cat #{path}", acceptable_exit_codes: [0, 1, 2])
+      shell("rm #{path}", acceptable_exit_codes: [0, 1, 2])
     end
 
     it 'applies the manifest twice' do
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     describe file(path) do
-      it { should be_file }
-      #XXX Solaris 10 doesn't support multi-line grep
-      it("should contain #{content}", :unless => fact('osfamily') == 'Solaris') {
-        should contain(content)
+      it { is_expected.to be_file }
+      # XXX Solaris 10 doesn't support multi-line grep
+      it("should contain #{content}", unless: fact('osfamily') == 'Solaris') {
+        is_expected.to contain(content)
       }
     end
   end
 
-  shared_examples 'has_error' do |path,pp,error|
+  shared_examples 'has_error' do |path, pp, error|
     before :all do
-      shell("rm #{path}", :acceptable_exit_codes => [0,1,2])
+      shell("rm #{path}", acceptable_exit_codes: [0, 1, 2])
     end
     after :all do
-      shell("cat #{path}", :acceptable_exit_codes => [0,1,2])
-      shell("rm #{path}", :acceptable_exit_codes => [0,1,2])
+      shell("cat #{path}", acceptable_exit_codes: [0, 1, 2])
+      shell("rm #{path}", acceptable_exit_codes: [0, 1, 2])
     end
 
     it 'applies the manifest and gets a failure message' do
-      expect(apply_manifest(pp, :expect_failures => true).stderr).to match(error)
+      expect(apply_manifest(pp, expect_failures: true).stderr).to match(error)
     end
 
     describe file(path) do
-      it { should_not be_file }
+      it { is_expected.not_to be_file }
     end
   end
 
@@ -66,15 +66,15 @@ describe 'hocon_setting resource' do
       EOS
 
       it 'applies the manifest twice' do
-        apply_manifest(pp, :catch_failures => true)
-        apply_manifest(pp, :catch_changes => true)
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
       end
 
       describe file("#{tmpdir}/hocon_setting.conf") do
-        it { should be_file }
-        #XXX Solaris 10 doesn't support multi-line grep
-        it("should contain one {\n    two=three\n}\nfour=five", :unless => fact('osfamily') == 'Solaris') {
-          should contain("one {\n    two=three\n}\nfour=five")
+        it { is_expected.to be_file }
+        # XXX Solaris 10 doesn't support multi-line grep
+        it("contains one {\n two=three\n}\nfour=five", unless: fact('osfamily') == 'Solaris') {
+          is_expected.to contain("one {\n    two=three\n}\nfour=five")
         }
       end
     end
@@ -98,14 +98,14 @@ describe 'hocon_setting resource' do
       EOS
 
       it 'applies the manifest twice' do
-        apply_manifest(pp, :catch_failures => true)
-        apply_manifest(pp, :catch_changes  => true)
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
       end
 
       describe file("#{tmpdir}/hocon_setting.conf") do
-        it { should be_file }
-        it { should contain('four=five') }
-        it { should_not contain("two=three") }
+        it { is_expected.to be_file }
+        it { is_expected.to contain('four=five') }
+        it { is_expected.not_to contain('two=three') }
       end
     end
 
@@ -118,8 +118,8 @@ describe 'hocon_setting resource' do
         end
       end
       after :all do
-        shell("cat #{tmpdir}/hocon_setting.conf", :acceptable_exit_codes => [0,1,2])
-        shell("rm #{tmpdir}/hocon_setting.conf", :acceptable_exit_codes => [0,1,2])
+        shell("cat #{tmpdir}/hocon_setting.conf", acceptable_exit_codes: [0, 1, 2])
+        shell("rm #{tmpdir}/hocon_setting.conf", acceptable_exit_codes: [0, 1, 2])
       end
 
       pp = <<-EOS
@@ -132,14 +132,14 @@ describe 'hocon_setting resource' do
       EOS
 
       it 'applies the manifest twice' do
-        apply_manifest(pp, :catch_failures => true)
-        apply_manifest(pp, :catch_changes  => true)
+        apply_manifest(pp, catch_failures: true)
+        apply_manifest(pp, catch_changes: true)
       end
 
       describe file("#{tmpdir}/hocon_setting.conf") do
-        it { should be_file }
-        it { should_not contain('four=five') }
-        it { should contain("one {\n    two=three\n}") }
+        it { is_expected.to be_file }
+        it { is_expected.not_to contain('four=five') }
+        it { is_expected.to contain("one {\n    two=three\n}") }
       end
     end
   end
@@ -148,7 +148,7 @@ describe 'hocon_setting resource' do
     {
       "setting => 'test.foo', value => 'bar',"   => "test {\n    foo = bar\n}",
       "setting => 'more.baz', value => 'quux',"  => "more {\n    baz = quux\n}",
-      "setting => 'top', value => 'level',"      => "top: \"level\"",
+      "setting => 'top', value => 'level',"      => 'top: "level"',
     }.each do |parameter_list, content|
       context parameter_list do
         pp = <<-EOS
@@ -164,8 +164,8 @@ describe 'hocon_setting resource' do
     end
 
     {
-      ""                                     => /value is a required/,
-      "setting => 'test.foo',"               => /value is a required/,
+      ''                                     => %r{value is a required},
+      "setting => 'test.foo',"               => %r{value is a required},
     }.each do |parameter_list, error|
       context parameter_list do
         pp = <<-EOS
@@ -201,7 +201,7 @@ describe 'hocon_setting resource' do
       end
     end
 
-    context "path => foo" do
+    context 'path => foo' do
       pp = <<-EOS
         hocon_setting { 'path => foo':
           ensure     => present,
@@ -211,7 +211,7 @@ describe 'hocon_setting resource' do
         }
       EOS
 
-      it_behaves_like 'has_error', 'foo', pp, /must be fully qualified/
+      it_behaves_like 'has_error', 'foo', pp, %r{must be fully qualified}
     end
   end
 
@@ -232,7 +232,7 @@ describe 'hocon_setting resource' do
       }
       EOS
 
-      it_behaves_like 'has_error', 'foo', pp, /Cannot alias/
+      it_behaves_like 'has_error', 'foo', pp, %r{Cannot alias}
     end
 
     context 'setting can be the same if path is different' do

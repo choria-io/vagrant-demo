@@ -318,6 +318,14 @@ Valid options: 'present' and 'absent'.
 
 Default value: 'present'.
 
+##### `force_new_section_creation`
+
+To create a new section and control it, set the parameter to true.
+
+Valid options: `true` and `false`. 
+
+Default value: `true`.
+
 ##### `key_val_separator`
 
 Specifies a string to use between each setting name and value, for example, to determine whether the separator includes whitespace. 

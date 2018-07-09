@@ -17,6 +17,7 @@ Additionally a number of Playbooks are included:
   * `mcollective_agent_puppet::disable` Disables the Puppet Agent
   * `mcollective_agent_puppet::disable_and_wait` Disables the Puppet Agent and wait for in-progress catalog runs to complete
   * `mcollective_agent_puppet::enable` Enables the Puppet Agent
+  * `mcollective_agent_puppet::find_stuck_agents` Finds agents in a stuck state that will not continue without manual intervention
 
 You can use these from other [Choria Playbooks](https://choria.io/docs/playbooks/) or on the CLI
 
