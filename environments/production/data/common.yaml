@@ -1,10 +1,10 @@
 choria::manage_package_repo: true
 
 mcollective_agent_nettest::gem_dependencies:
-    "net-ping": "2.0.2"
+	"net-ping": "2.0.2"
 
 mcollective_agent_process::gem_dependencies:
-    "sys-proctable": "1.2.0"
+	"sys-proctable": "1.2.0"
 
 mcollective::client: true
 mcollective::site_policies:
@@ -13,6 +13,9 @@ mcollective::site_policies:
     actions: "*"
     facts: "*"
     classes: "*"
+
+mcollective_choria::config:
+  use_srv_records: false
 
 mcollective::plugin_classes:
   - mcollective_data_sysctl
