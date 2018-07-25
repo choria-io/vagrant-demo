@@ -4,18 +4,18 @@
 # @param message [Optional[String]] The message to use when disabling Puppet
 # @returns [Choria::TaskResults]
 plan mcollective_agent_puppet::disable (
-  Choria::Nodes $nodes,
+  Choria::Nodes $nodes = [],
   Optional[String] $message = undef
 ) {
   choria::task(
     "action"     => "puppet.disable",
-    "nodes"      => $nodes,
+    "nodes"      => choria::run_playbook("mcollective_agent_puppet::discover", "nodes" => $nodes),
     "fail_ok"    => true,
     "silent"     => true,
     "properties" => {
       "message"  => $message ? {
-        String => $message,
-        default => sprintf("Disabled using the %s playbook", $facts["choria"]["playbook"])
+        String   => $message,
+        default  => sprintf("Disabled using the %s playbook", $facts["choria"]["playbook"])
       }
     }
   )

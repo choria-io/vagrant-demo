@@ -2,7 +2,7 @@ metadata :name        => "puppet",
          :description => "Manages the Life Cycle of the Puppet Agent",
          :author      => "R.I.Pienaar <rip@devco.net>",
          :license     => "Apache-2.0",
-         :version     => "2.1.0",
+         :version     => "2.2.0",
          :url         => "https://github.com/choria-plugins/puppet-agent",
          :timeout => 20
 
@@ -25,6 +25,14 @@ action "resource", :description => "Evaluate Puppet RAL resources" do
           :type        => :string,
           :validation  => '^.+$',
           :optional    => false,
+          :maxlength   => 50
+
+    input :environment,
+          :prompt      => "Environment",
+          :description => "Which Puppet environment to use",
+          :type        => :string,
+          :validation  => :puppet_variable,
+          :optional    => true,
           :maxlength   => 50
 
     output :result,

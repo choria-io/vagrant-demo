@@ -9,19 +9,21 @@
 # @param message [Optional[String]] The message to use when disabling Puppet
 # @returns [Choria::TaskResults]
 plan mcollective_agent_puppet::disable_and_wait (
-  Choria::Nodes $nodes,
+  Choria::Nodes $nodes = [],
   Integer $checks = 10,
   Integer $sleep = 20,
   Optional[String] $message = undef
 ) {
+  $_nodes = choria::run_playbook("mcollective_agent_puppet::discover", "nodes" => $nodes)
+
   choria::run_playbook("mcollective_agent_puppet::disable",
     "message" => $message,
-    "nodes"   => $nodes
+    "nodes"   => $_nodes
   )
 
   choria::task(
     "action"    => "puppet.status",
-    "nodes"     => $nodes,
+    "nodes"     => $_nodes,
     "assert"    => "idling=true",
     "tries"     => $checks,
     "try_sleep" => $sleep,

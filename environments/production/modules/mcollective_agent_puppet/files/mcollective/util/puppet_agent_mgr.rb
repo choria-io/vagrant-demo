@@ -419,6 +419,10 @@ module MCollective
         end
       end
 
+      def environment
+        Puppet.settings[:environment]
+      end
+
       # how many resources are managed
       def managed_resources_count
         managed_resources.size

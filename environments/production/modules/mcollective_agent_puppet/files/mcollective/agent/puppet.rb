@@ -172,12 +172,18 @@ module MCollective
           end
         end
 
+        environment = @puppet_agent.environment
+        if params[:environment]
+          environment = params.delete(:environment)
+        end
+
         if allow_managed_resources_management \
            || !@puppet_agent.managing_resource?(resource_name)
           resource = ::Puppet::Type.type(type).new(params)
           report = ::Puppet::Transaction::Report.new(:mcollective)
           ::Puppet::Util::Log.newdestination(report)
-          catalog = ::Puppet::Resource::Catalog.new
+          env = ::Puppet::Node::Environment.remote(environment)
+          catalog = ::Puppet::Resource::Catalog.new('choria', env)
           catalog.add_resource(resource)
           catalog.apply(:report => report)
 

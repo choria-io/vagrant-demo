@@ -3,11 +3,11 @@
 # @param nodes [Choria::Nodes] The nodes to enable
 # @returns [Choria::TaskResults]
 plan mcollective_agent_puppet::enable (
-  Choria::Nodes $nodes,
+  Choria::Nodes $nodes = [],
 ) {
   choria::task(
     "action"     => "puppet.enable",
-    "nodes"      => $nodes,
+    "nodes"      => choria::run_playbook("mcollective_agent_puppet::discover", "nodes" => $nodes),
     "fail_ok"    => true,
     "silent"     => true
   )

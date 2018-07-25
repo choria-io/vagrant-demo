@@ -49,15 +49,11 @@ module MCollective
       # @param plan [String] the name of a plan
       # @return [Util::BoltSupport::PlanRunner]
       def runner(plan, loglevel=nil)
-        unless configuration[:__modulepath]
-          configuration[:__modulepath] = File.expand_path("~/.puppetlabs/etc/code/modules")
-        end
-
         require "mcollective/util/bolt_support"
         runner = Util::BoltSupport::PlanRunner.new(
           plan,
           configuration[:__tmpdir],
-          configuration[:__modulepath] || Dir.pwd,
+          configuration[:__modulepath],
           configuration[:__loglevel] || "info"
         )
 
@@ -94,7 +90,7 @@ module MCollective
 
           self.class.option :__modulepath,
                             :arguments => ["--modulepath PATH"],
-                            :description => "Path to find Puppet module when using the Plan DSL",
+                            :description => "Path to find Puppet module when using the Playbook DSL",
                             :type => String
 
           self.class.option :__loglevel,
@@ -178,7 +174,7 @@ module MCollective
         end
 
         puts
-        puts "Plan %s ran in %.2f seconds: %s" % [
+        puts "Playbook %s ran in %.2f seconds: %s" % [
           Util.colorize(:bold, configuration[:__playbook]),
           endtime - startime,
           Util.colorize(color, msg)

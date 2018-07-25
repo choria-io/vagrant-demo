@@ -1,5 +1,5 @@
 {
-  "CHANGELOG.md": "fe601a57ad831d04d95596c40ff7354d",
+  "CHANGELOG.md": "c688102d6347cfe6aaf12aabb71b7f7e",
   "CODE_OF_CONDUCT.md": "06691004aa2ee22aa9744c92b386c8c5",
   "CONTRIBUTING.md": "dd2cf5fd8cb548056776e5ffccd974f1",
   "LICENSE": "3b83ef96387f14655fc854ddc3c6bd57",
@@ -30,7 +30,7 @@
   "manifests/packager.pp": "961575788effccc17dc2a5c533127c72",
   "manifests/plugin_dirs.pp": "93d556b4579d9f0517ae49a78c5e8fae",
   "manifests/service.pp": "ab1e191a4f8681268bb2f938f257857d",
-  "metadata.json": "0fa7811889dd7371e506ae23c868444e",
+  "metadata.json": "7a7b9ce822c80d1a4b5817bfcd7eba9f",
   "templates/policy_file.epp": "0a4b4d944a151e11399554c0958f4e03",
   "templates/refresh_facts.erb": "1100f07fcf4ee010a2861a3ec60d4ca0",
   "types/collective.pp": "73312e8bf7088e563a61f045cd7c38fc",

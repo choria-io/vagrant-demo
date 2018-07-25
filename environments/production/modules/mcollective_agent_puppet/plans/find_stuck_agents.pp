@@ -14,15 +14,7 @@ plan mcollective_agent_puppet::find_stuck_agents (
   Choria::Nodes $nodes = [],
   Integer $maxage = 7200,
 ) {
-  if $nodes.empty {
-    $_nodes = choria::discover(
-      "discovery_method" => "mc",
-      "test"             => true,
-      "agents"           => ["puppet"]
-    )
-  } else {
-    $_nodes = $nodes
-  }
+  $_nodes = choria::run_playbook("mcollective_agent_puppet::discover", "nodes" => $nodes),
 
   $stuck = choria::task(
     "nodes"  => $_nodes,
@@ -34,5 +26,5 @@ plan mcollective_agent_puppet::find_stuck_agents (
     $status.host
   }
 
-  $stuck
+  return $stuck
 }

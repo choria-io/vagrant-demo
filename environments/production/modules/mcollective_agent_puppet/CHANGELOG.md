@@ -2,6 +2,13 @@
 
 Change history for `choria/mcollective_agent_puppet`
 
+## 2.2.0
+
+Reeased 2018-07-20
+
+ * Improve bundled plans on the CLI by doing discovery when no nodes are given (#20)
+ * Allow setting the active environment for `puppet resource` allowing remote file fetch from Puppet Server (#24)
+
 ## 2.1.0
 
 Released 2018-05-21

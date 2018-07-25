@@ -17,16 +17,24 @@ module MCollective
 
         # @param plan [String] the name of the plan to use
         # @param tmpdir [String] the path to an already existing temporary directory
-        # @param modulepath [String] a : seperated list of locations to look for modules
+        # @param modulepath [String,nil] a : seperated list of locations to look for modules, uses puppet basemodulepath if nil
         # @param loglevel [debug, info, warn, err]
         def initialize(plan, tmpdir, modulepath, loglevel)
           @plan = plan
           @loglevel = loglevel
-          @modulepath = modulepath.split(":")
           @tmpdir = tmpdir
 
           raise("A temporary directory could not be created") unless @tmpdir
           raise("A temporary directory could not be created") unless File.directory?(@tmpdir)
+
+          @modulepath = modulepath
+
+          unless @modulepath
+            initialize_settings
+            @modulepath = Puppet.settings[:basemodulepath]
+          end
+
+          @modulepath = @modulepath.split(":")
 
           Puppet[:log_level] = @loglevel
         end
@@ -56,7 +64,7 @@ module MCollective
           with_script_compiler do |compiler|
             sig = compiler.plan_signature(@plan)
 
-            raise("Cannot find plan %s in %s" % [@plan, @modulepath.join(":")]) unless sig
+            raise("Cannot find playbook %s in %s" % [@plan, @modulepath.join(":")]) unless sig
 
             sig.params_type.elements.map do |elem|
               [elem.name, {
@@ -85,9 +93,13 @@ module MCollective
           }
         end
 
+        def initialize_settings
+          Puppet.initialize_settings(puppet_cli_options) unless Puppet.settings.global_defaults_initialized?
+        end
+
         # Sets up a temporary environment
         def in_environment
-          Puppet.initialize_settings(puppet_cli_options) unless Puppet.settings.global_defaults_initialized?
+          initialize_settings
 
           Puppet::Pal.in_tmp_environment("choria", :modulepath => @modulepath, :facts => facts) do |env|
             yield(env)
