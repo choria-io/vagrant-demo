@@ -1,7 +1,12 @@
 define puppetserver::config::java_arg (
   $value,
   $ensure = 'present',
+  $setting_type = undef, # For helper
 ) {
+  Class['puppetserver::install'] ->
+  Puppetserver::Config::Java_arg[$title] ~>
+  Class['puppetserver::service']
+  
   case $ensure {
     'present': {
       $changes = [
@@ -23,8 +28,8 @@ define puppetserver::config::java_arg (
   }
 
   $target = $::osfamily ? {
-    Debian => '/etc/default/puppetserver',
-    RedHat => '/etc/sysconfig/puppetserver',
+    'Debian' => '/etc/default/puppetserver',
+    'RedHat' => '/etc/sysconfig/puppetserver',
   }
 
   augeas { "Set puppetserver java_arg ${title}":

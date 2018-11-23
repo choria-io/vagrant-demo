@@ -1,7 +1,11 @@
 # Puppetserver
 
-[![Puppet Forge](http://img.shields.io/puppetforge/v/camptocamp/puppetserver.svg)](https://forge.puppetlabs.com/camptocamp/puppetserver)
-[![Build Status](https://travis-ci.org/camptocamp/puppet-puppetserver.png?branch=master)](https://travis-ci.org/camptocamp/puppet-puppetserver)
+[![Puppet Forge Version](http://img.shields.io/puppetforge/v/camptocamp/puppetserver.svg)](https://forge.puppetlabs.com/camptocamp/puppetserver)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/puppetserver.svg)](https://forge.puppetlabs.com/camptocamp/puppetserver)
+[![Build Status](https://img.shields.io/travis/camptocamp/puppet-puppetserver/master.svg)](https://travis-ci.org/camptocamp/puppet-puppetserver)
+[![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/camptocamp/puppetserver.svg)](https://forge.puppetlabs.com/camptocamp/puppetserver)
+[![Gemnasium](https://img.shields.io/gemnasium/camptocamp/puppet-puppetserver.svg)](https://gemnasium.com/camptocamp/puppet-puppetserver)
+[![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
 
 ## Overview
 
@@ -35,6 +39,33 @@ class { 'puppetserver':
 }
 ```
 
+## Classes
+
+### puppetserver
+
+The main class to install a Puppet Server.
+
+### puppetserver::hiera::eyaml
+
+Install the necessary gems for hiera-eyaml inside the Puppet Server.
+
+Simple usage:
+
+```puppet
+class { '::puppetserver::hiera::eyaml':
+  require => Class['puppetserver::install'],
+}
+```
+
+Specify eyaml method:
+
+```puppet
+class { '::puppetserver::hiera::eyaml':
+  method  => 'gpg',
+  require => Class['puppetserver::install'],
+}
+```
+
 
 ## Definitions
 
@@ -62,6 +93,32 @@ puppetserver::config::puppetserver { 'webserver.conf/webserver/ssl-port':
 }
 ```
 
+### puppetserver::config::boostrap
+
+A Puppetserver bootstrap.cfg entry.
+
+Example:
+
+```puppet
+puppetserver::config::bootstrap { 'puppetlabs.services.ca.certificate-authority-disabled-service/certificate-authority-disabled-service':
+  ensure => present,
+}
+```
+
+## Providers
+
+### puppetserver_gem
+
+This plugin allows to manage gems in the Puppetserver.
+
+Example:
+
+```puppet
+gem { 'hiera-eyaml':
+  ensure   => present,
+  provider => puppetserver_gem,
+}
+```
  
 ## Contributing
 

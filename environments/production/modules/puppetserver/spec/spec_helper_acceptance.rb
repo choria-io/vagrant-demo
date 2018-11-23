@@ -1,18 +1,12 @@
 require 'beaker-rspec'
-require 'pry'
 
 hosts.each do |host|
-  # Install Ruby
-  install_package host, 'ruby'
   # Install Puppet
-  on host, "ruby --version | cut -f2 -d ' ' | cut -f1 -d 'p'" do |version|
-    version = version.stdout.strip
-    if Gem::Version.new(version) < Gem::Version.new('1.9')
-      install_package host, 'rubygems'
-    end
+  if ENV['PUPPET_AIO']
+    install_puppet_agent_on host, {}
+  else
+    install_puppet_on host
   end
-  on host, 'gem install puppet --no-ri --no-rdoc'
-  on host, "mkdir -p #{host['distmoduledir']}"
 end
 
 RSpec.configure do |c|
@@ -30,6 +24,7 @@ RSpec.configure do |c|
     hosts.each do |host|
       on host, puppet('module','install','puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module','install','puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module','install','herculesteam-augeasproviders_core'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module','install','camptocamp-augeas'), { :acceptable_exit_codes => [0,1] }
     end
 

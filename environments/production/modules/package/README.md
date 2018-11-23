@@ -7,7 +7,8 @@
 2. [Requirements](#requirements)
 3. [Usage - Configuration options and additional functionality](#usage)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Getting help - Some Helpful commands](#getting-help)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Getting help - Some Helpful commands](#getting-help)
 
 ## Description
 
@@ -39,6 +40,10 @@ You can also run tasks in the PE console. See PE task documentation for complete
 To view the available actions and parameters, on the command line, run `puppet task show package` or see the package module page on the [Forge](https://forge.puppet.com/puppetlabs/package/tasks).
 
 For a complete list of optional package providers that are supported, see the [Puppet Types](https://docs.puppet.com/puppet/latest/types/package.html) documentation.
+
+## Limitations
+
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-package/blob/master/metadata.json)
 
 ## Getting Help
 

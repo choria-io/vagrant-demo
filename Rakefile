@@ -10,9 +10,10 @@ task :update do
     "choria/mcollective_data_sysctl",
     "puppetlabs/apply",
     "puppetlabs/package",
-    "puppetlabs/inifile", 
+    "puppetlabs/inifile",
     "puppetlabs/puppet_authorization",
-    "camptocamp/puppetserver"
+    "herculesteam/augeasproviders_core",
+    "camptocamp/augeas",
   ]
 
   rm_rf "environments/production/modules"
@@ -21,4 +22,6 @@ task :update do
   modules.each do |mod|
     sh "puppet module install --modulepath `pwd`/environments/production/modules %s" % mod
   end
+
+  sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/puppetserver" --ignore-dependencies
 end

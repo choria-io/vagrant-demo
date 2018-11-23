@@ -1,3 +1,4 @@
+require 'rubygems/version'
 require 'spec_helper'
 describe 'puppet_authorization::rule', :type => :define do
   let :pre_condition do
@@ -310,6 +311,13 @@ describe 'puppet_authorization::rule', :type => :define do
 
   context 'class parameters' do
     context 'not required when ensure=>absent' do
+      # Puppet 6.0 and newer convert undef values in hashes to `nil`.
+      empty_value = if Gem::Requirement.new('>= 6.0').satisfied_by?(Gem::Version.new(Puppet.version))
+                      nil
+                    else
+                      'undef'
+                    end
+
       let(:params) {{ :ensure => 'absent', :path => '/tmp/foo' }}
 
       it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
@@ -317,8 +325,8 @@ describe 'puppet_authorization::rule', :type => :define do
         :path     => '/tmp/foo',
         :value    => {
           'match-request' => {
-            'path'         => 'undef',
-            'type'         => 'undef',
+            'path'         => empty_value,
+            'type'         => empty_value,
             'query-params' => {},
           },
           'allow-unauthenticated' => false,

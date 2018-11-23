@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
+## Unsupported Release 0.5.0
+### Summary
+This release increases the upper bounds of several dependencies and adds support for two new OS.
+
+### Changed
+- Moved upper bound of compatible puppet from >= 6.0.0 to >= 7.0.0.
+- Moved upper bound of compatible puppetlabs-stdlib from >= 5.0.0 to >= 6.0.0.
+- Moved upper bound of compatible puppetlabs-concat from >= 5.0.0 to >= 6.0.0.
+- Support added for Ubuntu 16.04 and 18.04.
+
 ## Unsupported Release 0.4.0
 ### Summary
 This release drops outdated stdlib validate functions.

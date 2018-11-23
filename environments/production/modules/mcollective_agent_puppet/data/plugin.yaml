@@ -14,8 +14,8 @@ mcollective_agent_puppet::common_files:
 - validator/puppet_resource_validator.rb
 - validator/puppet_server_address_validator.rb
 - validator/puppet_tags_validator.rb
-- validator/puppet_resource_validator.ddl
 - validator/puppet_variable_validator.rb
+- validator/puppet_resource_validator.ddl
 - validator/puppet_server_address_validator.ddl
 - validator/puppet_tags_validator.ddl
 - validator/puppet_variable_validator.ddl

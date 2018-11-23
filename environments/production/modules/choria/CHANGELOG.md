@@ -1,5 +1,10 @@
 |Date      |Issue|Description                                                                                              |
 |----------|-----|---------------------------------------------------------------------------------------------------------|
+|2018/10/13|     |Release 0.11.1                                                                                           |
+|2018/10/03|94   |Allow latest apt and stdlib modules to be used                                                           |
+|2018/09/20|     |Release 0.11.0                                                                                           |
+|2018/07/31|84   |Improve itterators in the plan DSL to return collected results instead of items                          |
+|2018/07/31|81   |Support for compound filters outside of mcollectived                                                     |
 |2018/07/20|     |Release 0.10.0                                                                                           |
 |2018/07/20|77   |Ensure removal of mcollective plugins by way of the directory purge feature restarts choria server       |
 |2018/07/11|75   |Support ubuntu 18.04, and remove old operating systems                                                   |

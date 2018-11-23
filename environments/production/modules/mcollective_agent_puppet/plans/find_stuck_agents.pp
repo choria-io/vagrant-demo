@@ -14,7 +14,7 @@ plan mcollective_agent_puppet::find_stuck_agents (
   Choria::Nodes $nodes = [],
   Integer $maxage = 7200,
 ) {
-  $_nodes = choria::run_playbook("mcollective_agent_puppet::discover", "nodes" => $nodes),
+  $_nodes = choria::run_playbook("mcollective_agent_puppet::discover", "nodes" => $nodes)
 
   $stuck = choria::task(
     "nodes"  => $_nodes,

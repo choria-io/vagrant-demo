@@ -40,6 +40,7 @@ describe 'apt::source' do
 
       it {
         is_expected.to contain_apt__setting('list-my_source').with(ensure: 'present').without_content(%r{# my_source\ndeb-src hello.there wheezy main\n})
+        is_expected.not_to contain_package('apt-transport-https')
       }
     end
   end
@@ -119,7 +120,9 @@ describe 'apt::source' do
           location: 'http://debian.mirror.iweb.ca/debian/',
           release: 'sid',
           repos: 'testing',
-          key: { 'id' => GPG_KEY_ID, 'server' => 'pgp.mit.edu',
+          key: { 'ensure' => 'refreshed',
+                 'id' => GPG_KEY_ID,
+                 'server' => 'pgp.mit.edu',
                  'content' => 'GPG key content',
                  'source'  => 'http://apt.puppetlabs.com/pubkey.gpg' },
           pin: '10',
@@ -140,42 +143,11 @@ describe 'apt::source' do
       }
 
       it {
-        is_expected.to contain_apt__key("Add key: #{GPG_KEY_ID} from Apt::Source my_source").that_comes_before('Apt::Setting[list-my_source]').with(ensure: 'present',
+        is_expected.to contain_apt__key("Add key: #{GPG_KEY_ID} from Apt::Source my_source").that_comes_before('Apt::Setting[list-my_source]').with(ensure: 'refreshed',
                                                                                                                                                     id: GPG_KEY_ID,
                                                                                                                                                     server: 'pgp.mit.edu',
                                                                                                                                                     content: 'GPG key content',
                                                                                                                                                     source: 'http://apt.puppetlabs.com/pubkey.gpg')
-      }
-    end
-
-    context 'with simple key' do
-      let :params do
-        {
-          comment: 'foo',
-          location: 'http://debian.mirror.iweb.ca/debian/',
-          release: 'sid',
-          repos: 'testing',
-          key: GPG_KEY_ID,
-          pin: '10',
-          architecture: 'x86_64',
-          allow_unsigned: true,
-        }
-      end
-
-      it {
-        is_expected.to contain_apt__setting('list-my_source').with(ensure: 'present').with_content(%r{# foo\ndeb \[arch=x86_64 trusted=yes\] http://debian.mirror.iweb.ca/debian/ sid testing\n})
-                                                             .without_content(%r{deb-src})
-      }
-
-      it {
-        is_expected.to contain_apt__pin('my_source').that_comes_before('Apt::Setting[list-my_source]').with(ensure: 'present',
-                                                                                                            priority: '10',
-                                                                                                            origin: 'debian.mirror.iweb.ca')
-      }
-
-      it {
-        is_expected.to contain_apt__key("Add key: #{GPG_KEY_ID} from Apt::Source my_source").that_comes_before('Apt::Setting[list-my_source]').with(ensure: 'present',
-                                                                                                                                                    id: GPG_KEY_ID)
       }
     end
   end
@@ -199,6 +171,50 @@ describe 'apt::source' do
 
     it {
       is_expected.to contain_apt__setting('list-my_source').with(ensure: 'present').with_content(%r{# my_source\ndeb \[trusted=yes\] hello.there jessie main\n})
+    }
+  end
+
+  context 'with a https location, install apt-transport-https' do
+    let :facts do
+      {
+        os: { family: 'Debian', name: 'Debian', release: { major: '8', full: '8.0' } },
+        lsbdistid: 'Debian',
+        lsbdistcodename: 'jessie',
+        osfamily: 'Debian',
+        puppetversion: Puppet.version,
+      }
+    end
+    let :params do
+      {
+        location: 'HTTPS://foo.bar',
+        allow_unsigned: false,
+      }
+    end
+
+    it {
+      is_expected.to contain_package('apt-transport-https')
+    }
+  end
+
+  context 'with a https location, do not install apt-transport-https on oses not in list eg buster' do
+    let :facts do
+      {
+        os: { family: 'Debian', name: 'Debian', release: { major: '10', full: '10.0' } },
+        lsbdistid: 'Debian',
+        lsbdistcodename: 'buster',
+        osfamily: 'Debian',
+        puppetversion: Puppet.version,
+      }
+    end
+    let :params do
+      {
+        location: 'https://foo.bar',
+        allow_unsigned: false,
+      }
+    end
+
+    it {
+      is_expected.not_to contain_package('apt-transport-https')
     }
   end
 

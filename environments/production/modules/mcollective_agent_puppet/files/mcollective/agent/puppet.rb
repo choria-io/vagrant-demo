@@ -136,8 +136,11 @@ module MCollective
           resource_types_whitelist = ""
         end
 
+        params = {}
+        request.data.each do |k, v|
+            params[k.intern] = v
+        end
 
-        params = request.data.clone
         params.delete(:process_results)
         type = params.delete(:type).downcase
         resource_name = "%s[%s]" % [type.to_s.capitalize, params[:name]]

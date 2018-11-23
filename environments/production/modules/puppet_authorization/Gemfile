@@ -7,5 +7,5 @@ gem 'facter', '>= 1.7.0'
 group :development, :unit_tests do
   gem 'puppetlabs_spec_helper', '>= 0.8.2'
   gem 'puppet-lint', '>= 1.0.0'
-  gem 'hocon', '~> 0.9.3', :require => false
+  gem 'hocon', '~> 1.0', :require => false
 end

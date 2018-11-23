@@ -50,23 +50,23 @@ authorization: {
   version: 1
   rules: [
       {
-          "allow" : "foo",
-          "match-request" : {
-              "path" : "/foo",
-              "type" : "path"
+          "allow": "foo",
+          "match-request": {
+              "path": "/foo",
+              "type": "path"
           },
-          "name" : "foo-rule",
-          "sort-order" : 666
+          "name": "foo-rule",
+          "sort-order": 666
       }
   ,
       {
-          "allow" : "bar",
-          "match-request" : {
-              "path" : "/bar",
-              "type" : "path"
+          "allow": "bar",
+          "match-request": {
+              "path": "/bar",
+              "type": "path"
           },
-          "name" : "bar-rule",
-          "sort-order" : 777
+          "name": "bar-rule",
+          "sort-order": 777
       }
   
   ]
@@ -113,16 +113,16 @@ EOS
       expect(provider.exists?).to be false
       provider.create
       expect(File.read(tmpfile)).to eq(<<-EOS)
-authorization : {
-  rules : [
+authorization: {
+  rules: [
       {
-          "allow" : "bar",
-          "match-request" : {
-              "path" : "/bar",
-              "type" : "path"
+          "allow": "bar",
+          "match-request": {
+              "path": "/bar",
+              "type": "path"
           },
-          "name" : "bar-rule",
-          "sort-order" : 777
+          "name": "bar-rule",
+          "sort-order": 777
       }
   
   ]
@@ -162,13 +162,13 @@ authorization: {
   version: 1
   rules: [
       {
-          "allow" : "bar",
-          "match-request" : {
-              "path" : "/bar",
-              "type" : "path"
+          "allow": "bar",
+          "match-request": {
+              "path": "/bar",
+              "type": "path"
           },
-          "name" : "bar-rule",
-          "sort-order" : 777
+          "name": "bar-rule",
+          "sort-order": 777
       }
   
   ]

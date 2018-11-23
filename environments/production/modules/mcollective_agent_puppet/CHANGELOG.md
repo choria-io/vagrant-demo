@@ -2,9 +2,22 @@
 
 Change history for `choria/mcollective_agent_puppet`
 
+## 2.3.1
+
+Released 2018-11-04
+
+ * Improve resource management feature under the Choria Server (#32)
+
+## 2.3.0
+
+Released 2018-10-13
+
+ * Add support for Puppet 6 (#29)
+ * Syntax fixes in `find_stuck_agents` plan (#27)
+
 ## 2.2.0
 
-Reeased 2018-07-20
+Released 2018-07-20
 
  * Improve bundled plans on the CLI by doing discovery when no nodes are given (#20)
  * Allow setting the active environment for `puppet resource` allowing remote file fetch from Puppet Server (#24)

@@ -212,7 +212,7 @@ Default value: `true`.
 
 Data type: Boolean.
 
-Specifies whether to set the show_diff parameter for the file resource. Useful for hiding secrets stored in hiera from insecure reporting methods. Valid options: `true`.
+Specifies whether to set the show_diff parameter for the file resource. Useful for hiding secrets stored in hiera from insecure reporting methods. Valid options: `true` and `false`.
 
 Default value: `true`.
 
@@ -474,6 +474,8 @@ Prior to concat version 2.0.0, if you set the `warn` parameter to a string value
 ## Limitations
 
 This module has been tested on [all PE-supported platforms](https://forge.puppetlabs.com/supported#compat-matrix), and no issues have been identified.
+
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-concat/blob/master/metadata.json)
 
 ## Development
 

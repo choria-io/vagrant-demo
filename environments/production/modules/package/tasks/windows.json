@@ -1,0 +1,18 @@
+{
+  "description": "Manage the state of packages (without a puppet agent)",
+  "input_method": "powershell",
+  "parameters": {
+    "action": {
+      "description": "The action to be applied to the package: install, uninstall, and upgrade.",
+      "type": "Enum[install, uninstall, upgrade]"
+    },
+    "name": {
+      "description": "The name of the package to manage.",
+      "type": "String[1]"
+    },
+    "version": {
+      "description": "The version, and if applicable, the release value of the package. A version number range or a semver pattern are not permitted. For example, to install the bash-4.1.2-29.el6.x86_64.rpm package, enter 4.1.2-29.el6.",
+      "type": "Optional[String[1]]"
+    }
+  }
+}
