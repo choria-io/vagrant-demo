@@ -1,5 +1,0 @@
----
-mcollective::libdir: "/etc/puppetlabs/mcollective/plugins"
-mcollective::rubypath: "/usr/bin/ruby"
-mcollective::package_name: "mcollective"
-mcollective::manage_package: true
