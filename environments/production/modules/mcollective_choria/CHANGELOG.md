@@ -1,6 +1,21 @@
 |Date      |Issue |Description                                                                                              |
 |----------|------|---------------------------------------------------------------------------------------------------------|
-|2018/09/19|      |Release 0.11.0                                                                                            |
+|2019/01/23|      |Release 0.13.1                                                                                           |
+|2019/01/23|568   |Include the signer files when installing the module                                                      |
+|2019/01/23|      |Release 0.13.0                                                                                           |
+|2019/01/03|563   |Support a remote signing service for centralised AAA                                                     |
+|2018/12/27|      |Release 0.12.1                                                                                           |
+|2018/12/26|560   |Increase `choria_util` timeout to allow for slow facter                                                  |
+|2018/12/19|557   |Export the PKI and TLS modes via `choria_util#info`                                                      |
+|2018/12/11|550   |Support intermediate certificate chains                                                                  |
+|2018/12/11|493   |Support identical settings to the go file security mode allowing non Puppet SSL file paths               |
+|2018/12/07|547   |Support disabling PKI and TLS seperately                                                                 |
+|2018/12/02|544   |Improve backward compatibility in JSON mode                                                              |
+|2018/12/01|      |Release 0.12.0                                                                                           |
+|2018/11/27|540   |On AIO Puppet 6 require the `choria-mcorpc-support` gem                                                  |
+|2018/11/27|538   |On AIO Puppet 6 always use the JSON serialiser where Choria Server is the default                        |
+|2018/11/22|533   |When SSL is disabled do not fail when certificates do not exist                                          |
+|2018/09/19|      |Release 0.11.0                                                                                           |
 |2018/08/20|528   |Allow custom task wrapper paths to be supplied and support tasks on FreeBSD                              |
 |2018/08/16|526   |Correctly report the status of a still-running task after the initial wait is over                       |
 |2018/07/26|523   |Avoid infinite reconnection attempts in clients                                                          |

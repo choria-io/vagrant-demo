@@ -1,7 +1,9 @@
 require 'digest/md5'
 
 Puppet::Type.newtype(:ini_subsetting) do
+  desc 'ini_subsettings is used to manage multiple values in a setting in an INI file'
   ensurable do
+    desc 'Ensurable method handles modeling creation. It creates an ensure property'
     defaultvalues
     defaultto :present
   end
@@ -15,17 +17,15 @@ Puppet::Type.newtype(:ini_subsetting) do
     when :md5, 'md5'
       :md5
     else
-      raise('expected a boolean value or :md5')
+      raise(_('expected a boolean value or :md5'))
     end
   end
-
   newparam(:name, namevar: true) do
     desc 'An arbitrary name used as the identity of the resource.'
   end
 
   newparam(:section) do
-    desc 'The name of the section in the ini file in which the setting should be defined.' \
-         'If not provided, defaults to global, top of file, sections.'
+    desc 'The name of the section in the ini file in which the setting should be defined.'
     defaultto('')
   end
 
@@ -38,7 +38,7 @@ Puppet::Type.newtype(:ini_subsetting) do
   end
 
   newparam(:subsetting_separator) do
-    desc 'The separator string between subsettings. Defaults to " "'
+    desc 'The separator string between subsettings. Defaults to the empty string.'
     defaultto(' ')
   end
 
@@ -51,11 +51,10 @@ Puppet::Type.newtype(:ini_subsetting) do
     desc 'The ini file Puppet will ensure contains the specified setting.'
     validate do |value|
       unless (Puppet.features.posix? && value =~ %r{^\/}) || (Puppet.features.microsoft_windows? && (value =~ %r{^.:\/} || value =~ %r{^\/\/[^\/]+\/[^\/]+}))
-        raise(Puppet::Error, "File paths must be fully qualified, not '#{value}'")
+        raise(Puppet::Error, _("File paths must be fully qualified, not '%{value}'") % { value: value })
       end
     end
   end
-
   newparam(:show_diff) do
     desc 'Whether to display differences when the setting changes.'
     defaultto :true
@@ -67,26 +66,24 @@ Puppet::Type.newtype(:ini_subsetting) do
   end
 
   newparam(:key_val_separator) do
-    desc 'The separator string to use between each setting name and value. ' \
-         'Defaults to " = ", but you could use this to override e.g. ": ", or' \
-         'whether or not the separator should include whitespace.'
+    desc 'The separator string to use between each setting name and value.'
     defaultto(' = ')
   end
 
   newparam(:quote_char) do
     desc 'The character used to quote the entire value of the setting. ' +
-         %q(Valid values are '', '"' and "'". Defaults to ''.)
+         %q(Valid values are '', '"' and "'")
     defaultto('')
 
     validate do |value|
       unless value =~ %r{^["']?$}
-        raise Puppet::Error, %q(:quote_char valid values are '', '"' and "'")
+        raise Puppet::Error, _(%q(:quote_char valid values are '', '"' and "'"))
       end
     end
   end
 
   newparam(:use_exact_match) do
-    desc 'Set to true if your subsettings don\'t have values and you want to use exact matches to determine if the subsetting exists. See MODULES-2212'
+    desc 'Set to true if your subsettings don\'t have values and you want to use exact matches to determine if the subsetting exists.'
     newvalues(:true, :false)
     defaultto(:false)
   end
@@ -111,7 +108,7 @@ Puppet::Type.newtype(:ini_subsetting) do
 
   newparam(:insert_type) do
     desc <<-eof
-      Where the new subsetting item should be inserted?
+      Where the new subsetting item should be inserted
 
       * :start  - insert at the beginning of the line.
       * :end    - insert at the end of the line (default).

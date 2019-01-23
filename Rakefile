@@ -23,5 +23,5 @@ task :update do
     sh "puppet module install --modulepath `pwd`/environments/production/modules %s" % mod
   end
 
-  sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/puppetserver" --ignore-dependencies
+  sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/puppetserver --ignore-dependencies"
 end

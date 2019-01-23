@@ -1,0 +1,121 @@
+{
+  "name": "choria-mcollective",
+  "version": "0.8.1",
+  "author": "R.I.Pienaar <rip@devco.net>",
+  "summary": "Configure MCollective as found in the Puppet Agent",
+  "license": "Apache-2.0",
+  "source": "https://github.com/choria-io/puppet-mcollective",
+  "project_page": "https://github.com/choria-io/puppet-mcollective",
+  "issues_url": "https://github.com/choria-io/puppet-mcollective/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.24.0 < 6.0.0"
+    }
+  ],
+  "data_provider": null,
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "10 SP4",
+        "11 SP1",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8",
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "12.04",
+        "14.04",
+        "18.04"
+      ]
+    },
+    {
+      "operatingsystem": "Solaris",
+      "operatingsystemrelease": [
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2003",
+        "Server 2003 R2",
+        "Server 2008",
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "AIX",
+      "operatingsystemrelease": [
+        "5.3",
+        "6.1",
+        "7.1"
+      ]
+    },
+    {
+      "operatingsystem": "Darwin",
+      "operatingsystemrelease": [
+        "10.11",
+        "10.12",
+        "10.13"
+      ]
+    },
+    {
+      "operatingsystem": "Archlinux"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.9.0 < 6.0.0"
+    }
+  ]
+}

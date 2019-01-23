@@ -3,11 +3,11 @@
   "input_method": "stdin",
   "parameters": {
     "action": {
-      "description": "The operation (install, status, uninstall and upgrade) to perform on the package",
+      "description": "The operation (install, status, uninstall and upgrade) to perform on the package.",
       "type": "Enum[install, status, uninstall, upgrade]"
     },
     "name": {
-      "description": "The name of the package to be manipulated",
+      "description": "The name of the package to be manipulated.",
       "type": "String[1]"
     },
     "version": {
@@ -15,8 +15,13 @@
       "type": "Optional[String[1]]"
     },
     "provider": {
-      "description": "The provider to use to manage or inspect the package, defaults to the system package manager",
+      "description": "The provider to use to manage or inspect the package, defaults to the system package manager. Only used when the 'puppet-agent' feature is available on the target so we can leverage Puppet.",
       "type": "Optional[String[1]]"
     }
-  }
+  },
+  "implementations": [
+    {"name": "init.rb", "requirements": ["puppet-agent"]},
+    {"name": "windows.ps1", "requirements": ["powershell"], "input_method": "powershell"},
+    {"name": "linux.sh", "requirements": ["shell"], "input_method": "environment"}
+  ]
 }

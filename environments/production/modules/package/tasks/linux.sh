@@ -28,16 +28,19 @@ do
       if [ "${version}" != "" ]; then
         name="$name-$version"
       fi
+      # upgrading to a specific version needs to use the install action
+      if [ "${version}" != "" ] && [ "${action}" = "upgrade" ]; then
+        action="install"
+      fi
     else
       $(export DEBIAN_FRONTEND=noninteractive)
       if [ "${version}" != "" ]; then
         name="$name=$version"
       fi
-    fi
-
-    # upgrading to a specific version needs to use the install action
-    if [ "${version}" != "" ] && [ "${action}" = "upgrade" ]; then
-      action="install"
+      # upgrading requires install to be used. --only-upgrade will not install new packages
+      if [ "${action}" = "upgrade" ]; then
+        action="install --only-upgrade"
+      fi
     fi
 
     command_line="$package_manager -y $action $name"

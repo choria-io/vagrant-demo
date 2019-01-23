@@ -2,9 +2,9 @@ metadata    :name        => "choria_util",
             :description => "Choria Utilities",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache-2.0",
-            :version     => "0.11.0",
+            :version     => "0.13.1",
             :url         => "https://choria.io",
-            :timeout     => 5
+            :timeout     => 20
 
 requires :mcollective => "2.9.0"
 
@@ -13,9 +13,17 @@ action "info", :description => "Choria related information from the running Daem
          :description => "Security Provider plugin",
          :display_as => "Security Provider"
 
+  output :secure_protocol,
+         :description => "If the protocol is running with PKI security enabled",
+         :display_as => "Protocol Secure"
+
   output :connector,
          :description => "Connector plugin",
          :display_as => "Connector"
+
+  output :connector_tls,
+         :description => "If the connector is running with TLS security enabled",
+         :display_as => "Connector TLS"
 
   output :path,
          :description => "Active OS PATH",
@@ -72,5 +80,7 @@ action "info", :description => "Choria related information from the running Daem
     aggregate summary(:connected_server)
     aggregate summary(:srv_domain)
     aggregate summary(:using_srv)
+    aggregate summary(:secure_protocol)
+    aggregate summary(:connector_tls)
   end
 end

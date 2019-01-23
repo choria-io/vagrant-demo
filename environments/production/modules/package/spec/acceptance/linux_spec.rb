@@ -1,31 +1,47 @@
 # run a test task
 require 'spec_helper_acceptance'
+require 'beaker-task_helper/inventory'
+require 'bolt_spec/run'
 
-describe 'linux package task', unless: fact_on(default, 'osfamily') == 'windows' do
-  package_to_use = 'rsyslog'
+describe 'linux package task', unless: fact('osfamily') == 'windows' do
+  include Beaker::TaskHelper::Inventory
+  include BoltSpec::Run
+
+  let(:module_path) { RSpec.configuration.module_path }
+  let(:config) { { 'modulepath' => module_path } }
+  let(:inventory) { hosts_to_inventory }
+
+  def run(params)
+    run_task('package::linux', 'default', params, config: config, inventory: inventory)
+  end
+
+  redhat_six = fact('os.name') == 'RedHat' && fact('os.release.major') == '6'
+  windows = fact('osfamily') == 'windows'
+
   describe 'install action' do
-    it "install #{package_to_use}" do
-      apply_manifest("package { \"#{package_to_use}\": ensure => absent, }")
-      result = run_task(task_name: 'package::linux', params: "action=install name=#{package_to_use}")
-      expect_multiple_regexes(result: result, regexes: [%r{install}, %r{(Job completed. 1/1 nodes succeeded|Ran on 1 node)}])
+    it 'install rsyslog', unless: redhat_six || windows do
+      apply_manifest_on(default, "package { 'rsyslog': ensure => absent, }")
+      result = run('action' => 'install', 'name' => 'rsyslog')
+      expect(result[0]['status']).to eq('success')
+      expect(result[0]['result']['status']).to match(%r{install})
     end
   end
-  describe 'uninstall action' do
-    it "uninstall #{package_to_use}" do
-      apply_manifest("package { \"#{package_to_use}\": ensure => present, }")
-      result = run_task(task_name: 'package::linux', params: "action=uninstall name=#{package_to_use}")
-      expect_multiple_regexes(result: result, regexes: [%r{install}, %r{(Job completed. 1/1 nodes succeeded|Ran on 1 node)}])
-    end
-  end
-  describe 'install specific', if: (fact('operatingsystem') == 'CentOS' && fact('operatingsystemmajrelease') == '7' && pe_install?) do
-    it 'upgrade httpd to a specific version' do
-      result = run_task(task_name: 'package', params: 'action=upgrade name=httpd version=2.4.6-45.el7.centos')
-      expect_multiple_regexes(result: result, regexes: [%r{Job completed. 1/1 nodes succeeded}])
-    end
 
+  describe 'uninstall action', unless: redhat_six || windows do
+    it 'uninstall rsyslog' do
+      apply_manifest_on(default, "package { 'rsyslog': ensure => present, }")
+      result = run('action' => 'uninstall', 'name' => 'rsyslog')
+      expect(result[0]['status']).to eq('success')
+      expect(result[0]['result']['status']).to match(%r{uninstall})
+    end
+  end
+
+  describe 'upgrade', if: (fact('operatingsystem') == 'CentOS' && fact('operatingsystemmajrelease') == '7') do
     it 'upgrade httpd' do
-      result = run_task(task_name: 'package', params: 'action=upgrade name=httpd')
-      expect_multiple_regexes(result: result, regexes: [%r{Job completed. 1/1 nodes succeeded}])
+      apply_manifest_on(default, 'package { "httpd": ensure => "present", }')
+      result = run('action' => 'upgrade', 'name' => 'httpd')
+      expect(result[0]['status']).to eq('success')
+      expect(result[0]['result']['status']).to match(%r{upgrade})
     end
   end
 end

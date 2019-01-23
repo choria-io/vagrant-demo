@@ -8,7 +8,16 @@ class choria::config {
     "collectives" => "mcollective"
   }
 
-  $config = $defaults + $choria::server_config + {
+  if $choria::statusfile {
+    $status = {
+      "plugin.choria.status_file_path"       => $choria::statusfile,
+      "plugin.choria.status_update_interval" => $choria::status_write_interval
+    }
+  } else {
+    $status = {}
+  }
+
+  $config = $defaults + $choria::server_config + $status + {
     "logfile"                    => $choria::logfile,
     "loglevel"                   => $choria::log_level,
     "identity"                   => $choria::identity,
@@ -28,7 +37,7 @@ class choria::config {
     owner   => "root",
     group   => $choria::root_group,
     mode    => "0640",
-    content => mcollective::hash2config($config),
+    content => choria::hash2config($config),
     notify  => Class["choria::service"],
     require => Class["choria::install"]
   }

@@ -58,10 +58,12 @@ mcollective::service_enable: true
 mcollective::plugin_owner: "root"
 mcollective::plugin_group: "root"
 mcollective::plugin_mode: "0644"
+mcollective::bindir: "/usr/bin"
 mcollective::libdir: "/opt/puppetlabs/mcollective/plugins"
 mcollective::configdir: "/etc/puppetlabs/mcollective"
 mcollective::rubypath: "/opt/puppetlabs/puppet/bin/ruby"
 mcollective::gem_provider: "puppet_gem"
+mcollective::manage_bin_symlinks: false
 mcollective::plugintypes:
   - "agent"
   - "aggregate"
@@ -75,6 +77,10 @@ mcollective::plugintypes:
   - "util"
   - "validator"
   - "pluginpackager"
+
+mcollective::required_directories:
+  - /etc/puppetlabs/mcollective
+  - /opt/puppetlabs/mcollective
 
 lookup_options:
   mcollective::collectives:

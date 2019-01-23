@@ -3,6 +3,7 @@ require "openssl"
 require "yaml"
 
 require_relative "../util/choria"
+require_relative "../util/indifferent_hash"
 
 module MCollective
   module Security
@@ -50,12 +51,30 @@ module MCollective
 
         serialized_request = serialize(request, default_serializer)
 
-        serialize(
+        secure_request = {
           "protocol" => "choria:secure:request:1",
           "message" => serialized_request,
-          "signature" => sign(serialized_request),
-          "pubcert" => File.read(client_public_cert).chomp
-        )
+          "signature" => "insecure",
+          "pubcert" => "insecure"
+        }
+
+        sign_secure_request!(secure_request)
+
+        serialize(secure_request)
+      end
+
+      # Signs a secure request
+      #
+      # @param secure_request the secure request to sign and embed certificates into
+      def sign_secure_request!(secure_request)
+        request_signer.sign_secure_request!(secure_request)
+      end
+
+      # The class the implements signing the requests
+      #
+      def request_signer
+        PluginManager.loadclass("MCollective::Signer::%s" % @config.pluginconf.fetch("choria.security.request_signer.plugin", "choria").capitalize)
+        PluginManager["choria_signer_plugin"]
       end
 
       # Encodes a reply to a earlier received message
@@ -351,8 +370,8 @@ module MCollective
       # @param callerid [String] callerid who sent this cert
       # @return [Boolean]
       def should_cache_certname?(pubcert, callerid)
-        certname = choria.valid_certificate?(pubcert)
         callerid_certname = certname_from_callerid(callerid)
+        certname = choria.valid_certificate?(pubcert, callerid_certname)
         valid_regex = certname_whitelist_regex
 
         unless certname
@@ -385,7 +404,7 @@ module MCollective
       # @param pubcert [String] PEM encoded X509 public certificate
       # @return [Hash]
       def client_pubcert_metadata(envelope, pubcert)
-        cert = choria.parse_pubcert(pubcert)
+        cert = choria.parse_pubcert(pubcert).first
 
         {
           "create_time" => current_timestamp,
@@ -496,7 +515,7 @@ module MCollective
         if format == :yaml
           YAML.load(string)
         else
-          JSON.parse(string)
+          JSON.parse(string, :object_class => Util::IndifferentHash)
         end
       end
 
@@ -546,9 +565,19 @@ module MCollective
         choria.client_public_cert
       end
 
+      # (see Util::Choria#has_client_public_cert?)
+      def has_client_public_cert?
+        choria.has_client_public_cert?
+      end
+
       # (see Util::Choria#client_private_key)
       def client_private_key
         choria.client_private_key
+      end
+
+      # (see Util::Choria#has_client_private_key?)
+      def has_client_private_key?
+        choria.has_client_private_key?
       end
 
       # The callerid based on the certificate name
@@ -569,7 +598,7 @@ module MCollective
       def sign(string, id=nil)
         key = client_private_key
 
-        if File.readable?(key)
+        if has_client_private_key?
           Log.debug("Signing request using client private key %s" % key)
         else
           raise("Cannot find private key %s, cannot sign message" % key)

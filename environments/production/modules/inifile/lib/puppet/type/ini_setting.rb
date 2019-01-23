@@ -2,8 +2,22 @@ require 'digest/md5'
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:ini_setting) do
+  desc 'ini_settings is used to manage a single setting in an INI file'
   ensurable do
-    defaultvalues
+    desc 'Ensurable method handles modeling creation. It creates an ensure property'
+    newvalue(:present) do
+      provider.create
+    end
+    newvalue(:absent) do
+      provider.destroy
+    end
+    def insync?(current)
+      if @resource[:refreshonly]
+        true
+      else
+        current == should
+      end
+    end
     defaultto :present
   end
 
@@ -16,17 +30,15 @@ Puppet::Type.newtype(:ini_setting) do
     when :md5, 'md5'
       :md5
     else
-      raise('expected a boolean value or :md5')
+      raise(_('expected a boolean value or :md5'))
     end
   end
-
   newparam(:name, namevar: true) do
     desc 'An arbitrary name used as the identity of the resource.'
   end
 
   newparam(:section) do
-    desc 'The name of the section in the ini file in which the setting should be defined.' \
-         'If not provided, defaults to global, top of file, sections.'
+    desc 'The name of the section in the ini file in which the setting should be defined.'
     defaultto('')
   end
 
@@ -49,7 +61,7 @@ Puppet::Type.newtype(:ini_setting) do
     desc 'The ini file Puppet will ensure contains the specified setting.'
     validate do |value|
       unless Puppet::Util.absolute_path?(value)
-        raise(Puppet::Error, "File paths must be fully qualified, not '#{value}'")
+        raise(Puppet::Error, _("File paths must be fully qualified, not '%{value}'") % { value: value })
       end
     end
   end
@@ -67,9 +79,7 @@ Puppet::Type.newtype(:ini_setting) do
   end
 
   newparam(:key_val_separator) do
-    desc 'The separator string to use between each setting name and value. ' \
-         'Defaults to " = ", but you could use this to override e.g. ": ", or' \
-         'whether or not the separator should include whitespace.'
+    desc 'The separator string to use between each setting name and value.'
     defaultto(' = ')
   end
 
@@ -77,7 +87,11 @@ Puppet::Type.newtype(:ini_setting) do
     desc 'The value of the setting to be defined.'
 
     munge do |value|
-      value.to_s
+      if ([true, false].include? value) || value.is_a?(Numeric)
+        value.to_s
+      else
+        value.strip.to_s
+      end
     end
 
     def should_to_s(newvalue)
@@ -104,36 +118,38 @@ Puppet::Type.newtype(:ini_setting) do
   end
 
   newparam(:section_prefix) do
-    desc 'The prefix to the section name\'s header.' \
-         'Defaults to \'[\'.'
+    desc 'The prefix to the section name\'s header.'
     defaultto('[')
   end
 
   newparam(:section_suffix) do
-    desc 'The suffix to the section name\'s header.' \
-         'Defaults to \']\'.'
+    desc 'The suffix to the section name\'s header.'
     defaultto(']')
   end
 
   newparam(:indent_char) do
-    desc 'The character to indent new settings with.' \
-         'Defaults to \' \'.'
+    desc 'The character to indent new settings with.'
     defaultto(' ')
   end
 
   newparam(:indent_width) do
-    desc 'The number of indent_chars to use to indent a new setting.' \
-         'Defaults to undef (autodetect).'
+    desc 'The number of indent_chars to use to indent a new setting.'
   end
 
   newparam(:refreshonly, boolean: true, parent: Puppet::Parameter::Boolean) do
-    desc 'A flag indicating whether or not the ini_setting should be updated ' \
-         'only when called as part of a refresh event'
+    desc 'A flag indicating whether or not the ini_setting should be updated only when called as part of a refresh event'
     defaultto false
   end
 
   def refresh
+    if self[:ensure] == :absent && self[:refreshonly]
+      return provider.destroy
+    end
     # update the value in the provider, which will save the value to the ini file
     provider.value = self[:value] if self[:refreshonly]
+  end
+
+  autorequire(:file) do
+    Pathname.new(self[:path]).parent.to_s
   end
 end
