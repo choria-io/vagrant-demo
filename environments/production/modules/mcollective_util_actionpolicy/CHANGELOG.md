@@ -2,6 +2,12 @@
 
 Change history for `choria/mcollective_util_actionpolicy`
 
+# 3.1.0
+
+Release 2019-03-04
+
+ * Disable 'allow_unconfigured' by default (#5)
+
 # 3.0.0
 
 Released 2018-02-27

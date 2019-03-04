@@ -1,6 +1,6 @@
 {
   "name": "choria-mcollective_util_actionpolicy",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "P.Loubser <pieter.loubser@puppetlabs.com>",
   "summary": "Choria Action Policy authorization plugin",
   "license": "Apache-2.0",
