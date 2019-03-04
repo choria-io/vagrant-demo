@@ -7,6 +7,8 @@
 
 # augeasproviders\_core: library for building alternative Augeas-based providers for Puppet
 
+## Module description
+
 This module provides a library for module authors to create new types and
 providers around config files, using the Augeas configuration library to read
 and modify them.

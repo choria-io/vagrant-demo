@@ -42,7 +42,6 @@ describe provider_class do
 
       it "should call #target if a resource path block is set" do
         resource = { :name => 'foo' }
-        subject.expects(:target).with(resource)
         subject.resource_path { '/files/test' }
         subject.resource_path(resource).should == '/files/test'
       end
@@ -503,7 +502,7 @@ describe provider_class do
     describe "#setvars" do
       it "should call Augeas#defnode to set $target, Augeas#defvar to set $resource and Augeas#set to set /augeas/context when resource is passed" do
         subject.augopen(resource) do |aug|
-          aug.expects(:set).with('/augeas/context', "/files#{thetarget}")
+          aug.expects(:context=).with("/files#{thetarget}")
           aug.expects(:defnode).with('target', "/files#{thetarget}", nil)
           subject.expects(:resource_path).with(resource).returns('/files/foo')
           aug.expects(:defvar).with('resource', '/files/foo')

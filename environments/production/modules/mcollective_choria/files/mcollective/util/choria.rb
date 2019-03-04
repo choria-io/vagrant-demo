@@ -8,7 +8,7 @@ module MCollective
       class Abort < StandardError; end
 
       unless defined?(Choria::VERSION) # rubocop:disable Style/IfUnlessModifier
-        VERSION = "0.13.1".freeze
+        VERSION = "0.14.1".freeze
       end
 
       attr_writer :ca
@@ -434,6 +434,8 @@ module MCollective
       # @return [Boolean]
       # @raise [StandardError] on failure
       def check_ssl_setup(log=true)
+        return true if $choria_unsafe_disable_protocol_security # rubocop:disable Style/GlobalVars
+
         if Process.uid == 0 && PluginManager["security_plugin"].initiated_by == :client
           raise(UserError, "The Choria client cannot be run as root")
         end

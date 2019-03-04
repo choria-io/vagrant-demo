@@ -1,10 +1,10 @@
 {
-  "CHANGELOG.md": "8367c463ec8d38c2ed49d91a5e6b475d",
+  "CHANGELOG.md": "7e6793764151a090b9805e987c3b9c56",
   "CONTRIBUTING.md": "11e7aa5b3f05c7b09d32a385578db71f",
   "Gemfile": "0c7927147f6e52b7e32c8fdebfd08d7b",
-  "Gemfile.lock": "fc8b5dd1b094c92a7da1eecc2ad804ba",
+  "Gemfile.lock": "86bea408e60926c25304032d66136b06",
   "LICENSE": "dd6462909b746fc9ec71656f9e9c71f9",
-  "README.md": "b377a0ca7da990919feb0257054ef6db",
+  "README.md": "9d40f02ca7c93b8198141cf98619ef41",
   "Rakefile": "9fa53df215e4b68e62591deac3aad5ba",
   "docs/Makefile": "d4613b09b1c5ce046969a6b731e02938",
   "docs/buttondown.css": "f15e6924612f4c5ae477030bf7bf665b",
@@ -34,9 +34,9 @@
   "docs/motw.md": "0227cd4d0aee940d1df0ebea7b5fcb06",
   "docs/specs.md": "9eb05fe66f1d4e3686515182bac19e38",
   "lib/puppet/feature/augeas.rb": "8d31d9948f734ec29836b0bf152acd62",
-  "lib/puppet/provider/augeasprovider/default.rb": "d4427aab85b25d576b05ba30ec6fb1b5",
+  "lib/puppet/provider/augeasprovider/default.rb": "2454892b2ae40666208dc4cb92213234",
   "lib/puppet/type/augeasprovider.rb": "4e5f09a523458cdf6c9c0974ed6b6fa0",
-  "metadata.json": "06c7615511ed36725be35017bc9595b1",
+  "metadata.json": "ec3ebd15240ab4efd388bbde6c6f58a0",
   "spec/fixtures/unit/puppet/provider/augeasprovider/default/broken": "7657a3a3c58088d06aa33ab174622ef4",
   "spec/fixtures/unit/puppet/provider/augeasprovider/default/full": "20380104252d133d336cec79930ac625",
   "spec/lib/augeas_spec/augparse.rb": "c2223a246982f53695cd60f05734084b",
@@ -45,5 +45,5 @@
   "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
   "spec/spec_helper.rb": "583a150ec65fb0bb7fcbbb612553c81d",
   "spec/spec_helper_acceptance.rb": "906c51f535be8591b383938c14e58c9f",
-  "spec/unit/puppet/provider/augeasprovider/default_spec.rb": "d83c89a57bf6182c2fcf120bd7d3481f"
+  "spec/unit/puppet/provider/augeasprovider/default_spec.rb": "99d09e46ce1df2637e3fb032589e84ab"
 }

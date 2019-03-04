@@ -1,6 +1,12 @@
 # Changelog
 
-## 2.2.0
+## 2.4.0
+
+- Revert broken exists? implementation
+- Remove support for Puppet 4
+- Update supported OSes in metadata.json
+
+## 2.3.0
 
 - Support Puppet 6 (GH #11)
 - Update metadata.json to reflect supported Ubuntu versions

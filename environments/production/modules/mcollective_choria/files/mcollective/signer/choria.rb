@@ -24,7 +24,13 @@ module MCollective
         file = @config.pluginconf["choria.security.request_signer.token_file"]
         env = @config.pluginconf["choria.security.request_signer.token_environment"]
 
-        return File.read(File.expand_path(file)).chomp if file
+        if file
+          unless File.exist?(file)
+            raise("No token found in %s, please authenticate using your configured authentication service" % file)
+          end
+
+          return File.read(File.expand_path(file)).chomp
+        end
 
         raise("could not find token in environment variable %s" % env) unless ENV[env]
 
@@ -72,6 +78,17 @@ module MCollective
 
         http = choria.https(:target => uri.host, :port => uri.port)
         http.use_ssl = false if uri.scheme == "http"
+
+        # While this might appear alarming it's expected that the clients
+        # in this situation will not have any Choria CA issued certificates
+        # and so wish to use a remote signer - the certificate management woes
+        # being one of the main reasons for centralised AAA.
+        #
+        # So there is no realistic way to verify these requests especially in the
+        # event that these signers run on private IPs and such as would be typical
+        # so while we do this big No No of disabling verify here it really is the
+        # only thing that make sense.
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
 
         resp = http.request(post)
 
