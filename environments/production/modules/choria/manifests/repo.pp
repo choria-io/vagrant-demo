@@ -12,7 +12,7 @@ class choria::repo (
       ensure          => $ensure,
       descr           => 'Choria Orchestrator Releases',
       baseurl         => "${choria::repo_baseurl}/release/el/\$releasever/\$basearch",
-      repo_gpgcheck   => true,
+      repo_gpgcheck   => false,
       gpgcheck        => false,
       enabled         => true,
       gpgkey          => "https://packagecloud.io/choria/release/gpgkey",
@@ -26,7 +26,7 @@ class choria::repo (
         ensure          => $ensure,
         descr           => 'Choria Orchestrator Nightly Builds',
         baseurl         => "${choria::repo_baseurl}/nightly/el/\$releasever/\$basearch",
-        repo_gpgcheck   => true,
+        repo_gpgcheck   => false,
         gpgcheck        => false,
         enabled         => true,
         gpgkey          => "https://packagecloud.io/choria/nightly/gpgkey",
@@ -53,7 +53,8 @@ class choria::repo (
       key           => {
         id     => "5921BC1D903D6E0353C985BB9F89253B1E83EA92",
         source => "https://packagecloud.io/choria/release/gpgkey"
-      }
+      },
+      before        => Package[$choria::package_name],
     }
   } elsif $facts["os"]["name"] == "Debian" {
     apt::source{"choria-release":
@@ -66,7 +67,8 @@ class choria::repo (
       key           => {
         id     => "5921BC1D903D6E0353C985BB9F89253B1E83EA92",
         source => "https://packagecloud.io/choria/release/gpgkey"
-      }
+      },
+      before        => Package[$choria::package_name],
     }
   } else {
     fail(sprintf("Choria Repositories are not supported on %s", $facts["os"]["family"]))

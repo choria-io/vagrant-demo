@@ -23,5 +23,11 @@
     {"name": "init.rb", "requirements": ["puppet-agent"]},
     {"name": "windows.ps1", "requirements": ["powershell"], "input_method": "powershell"},
     {"name": "linux.sh", "requirements": ["shell"], "input_method": "environment"}
-  ]
+  ],
+  "extensions": {
+    "discovery": {
+      "friendlyName": "Manage package",
+      "type": ["package"]
+    }
+  }
 }

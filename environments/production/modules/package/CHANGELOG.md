@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [0.4.1](https://github.com/puppetlabs/puppetlabs-package/tree/0.4.1) (2019-01-08)
+## [v0.5.0](https://github.com/puppetlabs/puppetlabs-package/tree/v0.5.0) (2019-04-10)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/0.4.1...v0.5.0)
+
+### Added
+
+- \(SEN-795\) Move extension metadata to init.json [\#119](https://github.com/puppetlabs/puppetlabs-package/pull/119) ([conormurraypuppet](https://github.com/conormurraypuppet))
+- \(SEN-795\) Add discovery extension metadata [\#118](https://github.com/puppetlabs/puppetlabs-package/pull/118) ([conormurraypuppet](https://github.com/conormurraypuppet))
+- \(BOLT-1104\) Unify task implementation output [\#117](https://github.com/puppetlabs/puppetlabs-package/pull/117) ([donoghuc](https://github.com/donoghuc))
+
+### Fixed
+
+- \(MODULES-8717\) Fix for boltspec run dependancy issue [\#113](https://github.com/puppetlabs/puppetlabs-package/pull/113) ([HelenCampbell](https://github.com/HelenCampbell))
+
+## [0.4.1](https://github.com/puppetlabs/puppetlabs-package/tree/0.4.1) (2019-01-09)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/0.4.0...0.4.1)
 
@@ -14,14 +28,14 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/0.3.0...0.4.0)
 
+### Added
+
+- \(MODULES-8390\) Enable implementations on the init task and hide others [\#96](https://github.com/puppetlabs/puppetlabs-package/pull/96) ([MikaelSmith](https://github.com/MikaelSmith))
+
 ### Fixed
 
 - pdksync - \(FM-7655\) Fix rubygems-update for ruby \< 2.3 [\#97](https://github.com/puppetlabs/puppetlabs-package/pull/97) ([tphoney](https://github.com/tphoney))
 - \(MODULES-8045\) Fix apt-get upgrading everything when no version passed and apt is package manager. [\#92](https://github.com/puppetlabs/puppetlabs-package/pull/92) ([eoinmcq](https://github.com/eoinmcq))
-
-### Added
-
-- \(MODULES-8390\) Enable implementations on the init task and hide others [\#96](https://github.com/puppetlabs/puppetlabs-package/pull/96) ([MikaelSmith](https://github.com/MikaelSmith))
 
 ## [0.3.0](https://github.com/puppetlabs/puppetlabs-package/tree/0.3.0) (2018-09-27)
 
