@@ -1,5 +1,5 @@
 {
-  "CHANGELOG.md": "b5e4e5bfdf806c5f35da5a33407f7757",
+  "CHANGELOG.md": "8f53b5d8e5aae44c90ad0727225ee0a6",
   "CODE_OF_CONDUCT.md": "06691004aa2ee22aa9744c92b386c8c5",
   "CONTRIBUTING.md": "30f8bb108429e93652e605b0135c055c",
   "LICENSE": "3b83ef96387f14655fc854ddc3c6bd57",
@@ -29,9 +29,9 @@
   "manifests/config.pp": "905748defec741ae98e7928148e84fcf",
   "manifests/init.pp": "b90372d3ef156b01df1418ad39a633c4",
   "manifests/install.pp": "fbd057e3a03a609835011947292e09db",
-  "manifests/repo.pp": "7d67e8372386ad03385f7865c4ddc64f",
+  "manifests/repo.pp": "e5cf584a97f4534b7c4b38e91a722192",
   "manifests/service.pp": "64d116ef61d3467c31d28d90a7f75fdf",
-  "metadata.json": "75b2b0998cc1eb4ecf9a0d5fc8b8105e",
+  "metadata.json": "397853482fbb2455736ee2e9b97990a4",
   "plans/tasks/download_files.pp": "be79bd025255e6d11778859ebb9c0632",
   "plans/tasks/run.pp": "91153b9f48c4b4a6a58291755a2550bf",
   "plans/tasks/status.pp": "df85228c0fbcce7491562e54becd40d3",

@@ -2,11 +2,77 @@ metadata    :name        => "choria_util",
             :description => "Choria Utilities",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache-2.0",
-            :version     => "0.14.1",
+            :version     => "0.15.0",
             :url         => "https://choria.io",
             :timeout     => 20
 
 requires :mcollective => "2.9.0"
+
+action "machine_transition", :description => "Attempts to force a transition in a hosted Choria Autonomous Agent" do
+  input :instance,
+        :prompt => "Instance ID",
+        :description => "Machine Instance ID",
+        :type => :string,
+        :validation => '^.+-.+-.+-.+-.+$',
+        :maxlength => 36,
+        :optional => true
+
+  input :version,
+        :prompt => "Version",
+        :description => "Machine Version",
+        :type => :string,
+        :validation => '^\d+\.\d+\.\d+$',
+        :maxlength => 20,
+        :optional => true
+
+  input :name,
+        :prompt => "Name",
+        :description => "Machine Name",
+        :type => :string,
+        :validation => '^[a-zA-Z][a-zA-Z0-9_-]+',
+        :maxlength => 128,
+        :optional => true
+
+  input :path,
+        :prompt => "Path",
+        :description => "Machine Path",
+        :type => :string,
+        :validation => '.+',
+        :maxlength => 512,
+        :optional => true
+
+  input :transition,
+        :prompt => "Transition Name",
+        :description => "The transition event to send to the machine",
+        :type => :string,
+        :validation => '^[a-zA-Z][a-zA-Z0-9_-]+$',
+        :maxlength => 128,
+        :optional => false
+
+  output :success,
+         :description => "Indicates if the transition was succesfully accepted",
+         :display_as => "Accepted"
+end
+
+action "machine_states", :description => "States of the hosted Choria Autonomous Agents" do
+  display :always
+
+  output :machine_names,
+         :description => "List of running machine names",
+         :display_as => "Machine Names"
+
+  output :machine_ids,
+         :description => "List of running machine IDs",
+         :display_as => "Machine IDs"
+
+  output :states,
+         :description => "Hash map of machine statusses indexed by machine ID",
+         :display_as => "Machine States"
+
+  summarize do
+    aggregate summary(:machine_names)
+  end
+end
 
 action "info", :description => "Choria related information from the running Daemon and Middleware" do
   output :security,

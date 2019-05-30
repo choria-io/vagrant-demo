@@ -5,8 +5,7 @@ param(
   [String]
   $Name,
 
-  [Parameter(Mandatory = $true)]
-  [ValidateSet('install', 'uninstall', 'upgrade')]
+  [Parameter(Mandatory = $false)]
   [String]
   $Action,
 
@@ -15,8 +14,33 @@ param(
   $Version
 )
 
+function ErrorMessage($Action, $Name, $Message)
+{
+  Write-Host @"
+{
+  "status"  : "failure",
+  "_error"  : {
+    "msg" : "Unable to perform '$Action' on '$Name': $Message",
+    "kind": "powershell_error",
+    "details" : {}
+  }
+}
+"@  
+}
+
+# Do this outside the initial script parameters in order to control the error message
+function ValidateParams
+{
+  param(
+    [ValidateSet('install', 'uninstall', 'upgrade')]
+    [String]
+    $Action
+  )
+}
+
 function Invoke-PackageAction($Package, $Action, $Version)
 {
+
   $commandLine = "choco $Action $Package -y"
   if (([string]::IsNullOrEmpty($Version) -eq $false) -and (($Action -eq "install") -or ($Action -eq "upgrade")))
   {
@@ -33,30 +57,46 @@ function Invoke-PackageAction($Package, $Action, $Version)
 
 try
 {
+  ValidateParams -Action $action
   $status = Invoke-PackageAction -Package $Name -Action $Action -Version $Version
 
-  # TODO: could use ConvertTo-Json, but that requires PS3
-  # if embedding in literal, should make sure Name / Status doesn't need escaping
-  Write-Host @"
+  switch ($Action)
   {
-    "status"      : "success",
-    "name"        : "$Name",
-    "action"      : "$Action"
-  }
+    'install'
+    {
+      Write-Host @"
+{
+  "status"  : "Installed $Name",
+  "version" : ""
+}
 "@
+    }
+    'uninstall'
+    {
+      Write-Host @"
+{
+  "status"  : "Uninstalled $Name"
+}
+"@
+    }
+    'upgrade'
+    {
+      Write-Host @"
+{
+  "status"      : "Upgraded $Name",
+  "old_version" : "",
+  "version"     : ""
+}
+"@
+    }
+  }
+}
+# parameter validation with controlled output
+catch [System.Management.Automation.ParameterBindingException]
+{
+  ErrorMessage -Action $Action -Name $Name -Message "'$Action' action not supported for windows.ps1"
 }
 catch
 {
-  Write-Host @"
-  {
-    "status"  : "failure",
-    "name"    : "$Name",
-    "action"  : "$Action",
-    "_error"  : {
-      "msg" : "Unable to perform '$Action' on '$Name': $($_.Exception.Message)",
-      "kind": "powershell_error",
-      "details" : {}
-    }
-  }
-"@
+  ErrorMessage -Action $Action -Name $Name -Message "$($_.Exception.Message)"
 }
