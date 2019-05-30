@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [5.3.0](https://github.com/puppetlabs/puppetlabs-concat/tree/5.3.0) (2019-02-20)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/5.2.0...5.3.0)
+
+### Added
+
+- \(MODULES-8138\) - Addition of support for SLES 15 [\#545](https://github.com/puppetlabs/puppetlabs-concat/pull/545) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- \(FM-7725\) - Remove OSX testing/support for concat [\#561](https://github.com/puppetlabs/puppetlabs-concat/pull/561) ([lionce](https://github.com/lionce))
+- pdksync - \(FM-7655\) Fix rubygems-update for ruby \< 2.3 [\#550](https://github.com/puppetlabs/puppetlabs-concat/pull/550) ([tphoney](https://github.com/tphoney))
+
+## [5.2.0](https://github.com/puppetlabs/puppetlabs-concat/tree/5.2.0) (2018-12-10)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/5.1.0...5.2.0)
+
+### Added
+
+- \(FM-7339\) - Add i18n implementation [\#537](https://github.com/puppetlabs/puppetlabs-concat/pull/537) ([eimlav](https://github.com/eimlav))
+- \(FM-7341\) - Added REFERENCE.md and updated documentation [\#536](https://github.com/puppetlabs/puppetlabs-concat/pull/536) ([eimlav](https://github.com/eimlav))
+- \(MODULES-5124\) Add support for JSON arrays [\#519](https://github.com/puppetlabs/puppetlabs-concat/pull/519) ([johanfleury](https://github.com/johanfleury))
+
+### Fixed
+
+- \(FM-7581\) - Fix CI failures for Windows 2016 and 10 Enterprise [\#540](https://github.com/puppetlabs/puppetlabs-concat/pull/540) ([eimlav](https://github.com/eimlav))
+- \(MODULES-8287\) - Fix fomat=\>'yaml' allowing only hashes [\#535](https://github.com/puppetlabs/puppetlabs-concat/pull/535) ([eimlav](https://github.com/eimlav))
+-  \(FM-7513\) - Removing Windows 2016-core from our support matrix  [\#534](https://github.com/puppetlabs/puppetlabs-concat/pull/534) ([pmcmaw](https://github.com/pmcmaw))
+- \(MODULES-8088\) - newline\_spec.rb test expectation update [\#531](https://github.com/puppetlabs/puppetlabs-concat/pull/531) ([lionce](https://github.com/lionce))
+- \(MODULES-7717\) ensure\_newline uses unix line ending on windows [\#517](https://github.com/puppetlabs/puppetlabs-concat/pull/517) ([tkishel](https://github.com/tkishel))
+
 ## [5.1.0](https://github.com/puppetlabs/puppetlabs-concat/tree/5.1.0) (2018-10-03)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/5.0.0...5.1.0)

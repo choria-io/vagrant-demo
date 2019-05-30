@@ -1,6 +1,6 @@
 {
   "name": "choria-mcollective_agent_package",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "author": "R.I.Pienaar <rip@devco.net>",
   "summary": "Manage Operating System Packages",
   "license": "Apache-2.0",

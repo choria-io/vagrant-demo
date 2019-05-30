@@ -4,7 +4,7 @@
 INSTANCES=2
 
 PROVISION_PUPPET = <<PUPPET
-/bin/rpm -ivh http://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
+/bin/rpm -ivh http://yum.puppetlabs.com/puppet6/puppet6-release-el-7.noarch.rpm
 /usr/bin/yum -y install puppet-agent
 echo '*' > /etc/puppetlabs/puppet/autosign.conf
 /opt/puppetlabs/bin/puppet resource host puppet.choria ensure=present ip=192.168.90.5 host_aliases=puppet
@@ -48,12 +48,12 @@ Vagrant.configure("2") do |config|
       vmconfig.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--memory", 1024]
       end
-  
+
       vmconfig.vm.provision :shell do |s|
         s.inline = PROVISION_PUPPET
         s.args = "managed"
       end
-  
+
       vmconfig.vm.provision "puppet_server" do |puppet|
         puppet.puppet_server = "puppet.choria"
         puppet.options = "--waitforcert 10 --test"

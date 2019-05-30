@@ -1,4 +1,11 @@
 class mcollective::config {
+  if $mcollective::manage_bin_symlinks {
+    file{"${mcollective::bindir}/mco":
+      ensure => link,
+      target => "/opt/puppetlabs/puppet/bin/mco",
+    }
+  }
+
   if $mcollective::main_collective {
     $main_collective = $mcollective::main_collective
   } else {
@@ -49,6 +56,16 @@ class mcollective::config {
   # - global config for things like libdir that are properties on the main class.  These should always take the main properties.
   $server_config = $mcollective::common_config + $server_collectives + $mcollective::server_config + $global_config
   $client_config = $mcollective::common_config + $client_collectives + $mcollective::client_config + $global_config
+
+
+  $mcollective::required_directories.each |$dir| {
+    file{$dir:
+      ensure => "directory",
+      owner  => $mcollective::plugin_owner,
+      group  => $mcollective::plugin_group,
+      mode   => "0775"
+    }
+  }
 
   mcollective::config_file{"${mcollective::configdir}/server.cfg":
     settings => $server_config,

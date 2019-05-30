@@ -11,6 +11,7 @@ choria::server_config:
 choria::rubypath: "/opt/puppetlabs/puppet/bin/ruby"
 choria::manage_package_repo: false
 choria::nightly_repo: false
+choria::repo_baseurl: "https://packagecloud.io/choria"
 choria::ensure: "present"
 choria::version: "present"
 choria::log_level: "warn"
@@ -18,6 +19,8 @@ choria::srvdomain: "%{facts.networking.domain}"
 choria::broker_config_file: "/etc/choria/broker.conf"
 choria::server_config_file: "/etc/choria/server.conf"
 choria::logfile: "/var/log/choria.log"
+choria::statusfile: "/var/log/choria-status.json"
+choria::status_write_interval: 30
 choria::package_name: "choria"
 choria::broker_service_name: "choria-broker"
 choria::server_service_name: "choria-server"

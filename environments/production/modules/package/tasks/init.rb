@@ -64,6 +64,9 @@ begin
   puts result.to_json
   exit 0
 rescue Puppet::Error => e
-  puts({ status: 'failure', error: e.message }.to_json)
+  puts({ status: 'failure',
+         _error: { msg: e.message,
+                   kind: 'puppet_error',
+                   details: {} } }.to_json)
   exit 1
 end

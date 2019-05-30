@@ -1,5 +1,6 @@
 {
   "description": "Manage the state of packages (without a puppet agent)",
+  "private": true,
   "input_method": "powershell",
   "parameters": {
     "action": {

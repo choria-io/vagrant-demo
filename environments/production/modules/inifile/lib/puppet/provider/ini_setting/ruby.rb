@@ -2,17 +2,12 @@ require File.expand_path('../../../util/ini_file', __FILE__)
 
 Puppet::Type.type(:ini_setting).provide(:ruby) do
   def self.instances
-    # this code is here to support purging and the query-all functionality of the
-    # 'puppet resource' command, on a per-file basis.  Users
-    # can create a type for a specific config file with a provider that uses
-    # this as its parent and implements the method
-    # 'self.file_path', and that will provide the value for the path to the
-    # ini file (rather than needing to specify it on each ini setting
-    # declaration).  This allows 'purging' to be used to clear out
-    # all settings from a particular ini file except those included in
-    # the catalog.
+    desc '
+    Creates new ini_setting file, a specific config file with a provider that uses
+    this as its parent and implements the method
+    self.file_path, and that will provide the value for the path to the
+    ini file.'
     raise(Puppet::Error, 'Ini_settings only support collecting instances when a file path is hard coded') unless respond_to?(:file_path)
-
     # figure out what to do about the seperator
     ini_file  = Puppet::Util::IniFile.new(file_path, '=')
     resources = []
@@ -31,10 +26,11 @@ Puppet::Type.type(:ini_setting).provide(:ruby) do
   end
 
   def self.namevar(section_name, setting)
-    "#{section_name}/#{setting}"
+    setting.nil? ? section_name : "#{section_name}/#{setting}"
   end
 
   def exists?
+    setting.nil? && ini_file.section_names.include?(section) || !ini_file.get_value(section, setting).nil?
     if ini_file.section?(section)
       !ini_file.get_value(section, setting).nil?
     elsif resource.parameters.keys.include?(:force_new_section_creation) && !resource[:force_new_section_creation]
@@ -54,7 +50,11 @@ Puppet::Type.type(:ini_setting).provide(:ruby) do
   end
 
   def create
-    ini_file.set_value(section, setting, separator, resource[:value])
+    if setting.nil? && resource[:value].nil?
+      ini_file.set_value(section)
+    else
+      ini_file.set_value(section, setting, separator, resource[:value])
+    end
     ini_file.save
     @ini_file = nil
   end
@@ -70,7 +70,11 @@ Puppet::Type.type(:ini_setting).provide(:ruby) do
   end
 
   def value=(_value)
-    ini_file.set_value(section, setting, separator, resource[:value])
+    if setting.nil? && resource[:value].nil?
+      ini_file.set_value(section)
+    else
+      ini_file.set_value(section, setting, separator, resource[:value])
+    end
     ini_file.save
   end
 

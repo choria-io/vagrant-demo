@@ -2,6 +2,12 @@
 
 Change history for `choria/mcollective_agent_package`
 
+## 5.1.0
+
+Release 2018-12-01
+
+ * Add support for checking updates via the `mco package` cli tool (#22)
+
 ## 5.0.1
 
 Released 2018-04-20

@@ -8,7 +8,7 @@ module MCollective
       class Abort < StandardError; end
 
       unless defined?(Choria::VERSION) # rubocop:disable Style/IfUnlessModifier
-        VERSION = "0.11.0".freeze
+        VERSION = "0.15.0".freeze
       end
 
       attr_writer :ca
@@ -259,6 +259,20 @@ module MCollective
         Net::HTTP::Get.new(path, headers)
       end
 
+      # Creates a Net::HTTP::Post instance for a path that defaults to accepting JSON
+      #
+      # @param path [String]
+      # @return [Net::HTTP::Post]
+      def http_post(path, headers=nil)
+        headers ||= {}
+        headers = {
+          "Accept" => "application/json",
+          "User-Agent" => "Choria version %s http://choria.io" % VERSION
+        }.merge(headers)
+
+        Net::HTTP::Post.new(path, headers)
+      end
+
       # Does a proxied discovery request
       #
       # @param query [Hash] Discovery query as per pdbproxy standard
@@ -329,18 +343,25 @@ module MCollective
       # Validates a certificate against the CA
       #
       # @param pubcert [String] PEM encoded X509 public certificate
+      # @param name [String] name that should be present in the certificate
       # @param log [Boolean] log warnings when true
       # @return [String,false] when succesful, the certname else false
       # @raise [StandardError] in case OpenSSL fails to open the various certificates
       # @raise [OpenSSL::X509::CertificateError] if the CA is invalid
-      def valid_certificate?(pubcert, log=true)
+      def valid_certificate?(pubcert, name, log=true)
+        return false unless name
+
         unless File.readable?(ca_path)
           raise("Cannot find or read the CA in %s, cannot verify public certificate" % ca_path)
         end
 
-        incoming = parse_pubcert(pubcert, log)
+        certs = parse_pubcert(pubcert, log)
 
-        return false unless incoming
+        return false if certs.empty?
+
+        incoming = certs.first
+
+        chain = certs[1..-1]
 
         begin
           ca = OpenSSL::X509::Store.new.add_file(ca_path)
@@ -349,27 +370,59 @@ module MCollective
           raise
         end
 
-        unless ca.verify(incoming)
-          Log.warn("Failed to verify certificate %s against CA %s in %s" % [incoming.subject.to_s, incoming.issuer.to_s, ca_path]) if log
+        unless ca.verify(incoming, chain)
+          if log
+            Log.warn("Failed to verify certificate %s against CA %s in %s" % [
+              incoming.subject.to_s,
+              incoming.issuer.to_s,
+              ca_path
+            ])
+          end
+
           return false
         end
 
         Log.debug("Verified certificate %s against CA %s" % [incoming.subject.to_s, incoming.issuer.to_s]) if log
 
-        cn_parts = incoming.subject.to_a.select {|c| c[0] == "CN"}.flatten
+        unless OpenSSL::SSL.verify_certificate_identity(incoming, name)
+          raise("Could not parse certificate with subject %s as it has no CN part, or name %s invalid" % [
+            incoming.subject.to_s,
+            name
+          ])
+        end
 
-        raise("Could not parse certificate with subject %s as it has no CN part" % [incoming.subject.to_s]) if cn_parts.empty?
+        name
+      end
 
-        cn_parts[1]
+      # Utility function to split a chained certificate String into an Array
+      #
+      # @param pemdata [String] PEM encoded certificate
+      # @return [Array<String,nil>]
+      def ssl_split_pem(pemdata)
+        # Chained certificates typically have the public certificate, along
+        # with every intermediate certificiate.
+        # OpenSSL will stop at the first certificate when using OpenSSL::X509::Certificate.new,
+        # so we need to separate them into a list
+        pemdata.scan(/-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----/m)
+      end
+
+      # Split a string containing chained certificates into an Array of OpenSSL::X509::Certificate.
+      #
+      # @param pemdata [String]
+      # @return [Array<OpenSSL::X509::Certificate,nil>]
+      def ssl_parse_chain(pemdata)
+        ssl_split_pem(pemdata).map do |cpem|
+          OpenSSL::X509::Certificate.new(cpem)
+        end
       end
 
       # Parses a public cert
       #
       # @param pubcert [String] PEM encoded public certificate
       # @param log [Boolean] log warnings when true
-      # @return [OpenSSL::X509::Certificate,nil]
+      # @return [Array<OpenSSL::X509::Certificate,nil>]
       def parse_pubcert(pubcert, log=true)
-        OpenSSL::X509::Certificate.new(pubcert)
+        ssl_parse_chain(pubcert)
       rescue OpenSSL::X509::CertificateError
         Log.warn("Received certificate is not a valid x509 certificate: %s: %s" % [$!.class, $!.to_s]) if log
         nil
@@ -381,6 +434,8 @@ module MCollective
       # @return [Boolean]
       # @raise [StandardError] on failure
       def check_ssl_setup(log=true)
+        return true if $choria_unsafe_disable_protocol_security # rubocop:disable Style/GlobalVars
+
         if Process.uid == 0 && PluginManager["security_plugin"].initiated_by == :client
           raise(UserError, "The Choria client cannot be run as root")
         end
@@ -390,7 +445,7 @@ module MCollective
         embedded_certname = nil
 
         begin
-          embedded_certname = valid_certificate?(File.read(client_public_cert))
+          embedded_certname = valid_certificate?(File.read(client_public_cert), certname)
         rescue
           raise(UserError, "The public certificate was not signed by the configured CA")
         end
@@ -640,8 +695,25 @@ module MCollective
       def ssl_context
         context = OpenSSL::SSL::SSLContext.new
         context.ca_file = ca_path
-        context.cert = OpenSSL::X509::Certificate.new(File.read(client_public_cert))
-        context.key = OpenSSL::PKey::RSA.new(File.read(client_private_key))
+
+        public_cert = File.read(client_public_cert)
+        private_key = File.read(client_private_key)
+
+        cert_chain = ssl_parse_chain(public_cert)
+
+        cert = cert_chain.first
+        key = OpenSSL::PKey::RSA.new(private_key)
+
+        extra_chain_cert = cert_chain[1..-1]
+
+        if OpenSSL::SSL::SSLContext.method_defined?(:add_certificate)
+          context.add_certificate(cert, key, extra_chain_cert)
+        else
+          context.cert = OpenSSL::X509::Certificate.new(File.read(client_public_cert))
+          context.key = OpenSSL::PKey::RSA.new(File.read(client_private_key))
+          context.extra_chain_cert = extra_chain_cert
+        end
+
         context.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
         context
@@ -667,11 +739,41 @@ module MCollective
                        end
       end
 
+      # Determines the security provider
+      def security_provider
+        get_option("security.provider", "puppet")
+      end
+
+      # Determines if the file security provider is enabled
+      def file_security?
+        security_provider == "file"
+      end
+
+      # Determines if the puppet security provider is enabled
+      def puppet_security?
+        security_provider == "puppet"
+      end
+
+      # Expands full paths with special handling for empty string
+      #
+      # File.expand_path will expand `""` to cwd, this is not good for
+      # what we need in many cases so this returns `""` in that case
+      #
+      # @param path [String] the unexpanded path
+      # @return [String] `""` when empty string was given
+      def expand_path(path)
+        return "" if path == ""
+
+        File.expand_path(path)
+      end
+
       # The path to a client public certificate
       #
       # @note paths determined by Puppet AIO packages
       # @return [String]
       def client_public_cert
+        return expand_path(get_option("security.file.certificate", "")) if file_security?
+
         File.join(ssl_dir, "certs", "%s.pem" % certname)
       end
 
@@ -687,6 +789,8 @@ module MCollective
       # @note paths determined by Puppet AIO packages
       # @return [String]
       def client_private_key
+        return expand_path(get_option("security.file.key", "")) if file_security?
+
         File.join(ssl_dir, "private_keys", "%s.pem" % certname)
       end
 
@@ -701,6 +805,8 @@ module MCollective
       #
       # @return [String]
       def ca_path
+        return expand_path(get_option("security.file.ca", "")) if file_security?
+
         File.join(ssl_dir, "certs", "ca.pem")
       end
 
@@ -715,6 +821,8 @@ module MCollective
       #
       # @return [String]
       def csr_path
+        return "" if file_security?
+
         File.join(ssl_dir, "certificate_requests", "%s.pem" % certname)
       end
 
@@ -762,6 +870,8 @@ module MCollective
       #
       # @return [void]
       def make_ssl_dirs
+        return if file_security?
+
         FileUtils.mkdir_p(ssl_dir, :mode => 0o0771)
 
         ["certificate_requests", "certs", "public_keys"].each do |dir|

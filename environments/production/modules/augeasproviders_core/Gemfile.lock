@@ -1,0 +1,141 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
+    coveralls (0.7.2)
+      multi_json (~> 1.3)
+      rest-client (= 1.6.7)
+      simplecov (>= 0.7)
+      term-ansicolor (= 1.2.2)
+      thor (= 0.18.1)
+    diff-lcs (1.3)
+    facter (2.5.1)
+    facterdb (0.6.0)
+      facter
+      jgrep
+    fast_gettext (1.1.2)
+    hiera (3.5.0)
+    jgrep (1.5.0)
+    json (2.2.0)
+    json-schema (2.8.1)
+      addressable (>= 2.4)
+    locale (2.1.2)
+    mcollective-client (2.12.4)
+      json
+      stomp
+      systemu
+    metaclass (0.0.4)
+    metadata-json-lint (2.2.0)
+      json-schema (~> 2.8)
+      spdx-licenses (~> 1.0)
+    mime-types (3.2.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2018.0812)
+    mocha (1.8.0)
+      metaclass (~> 0.0.1)
+    multi_json (1.13.1)
+    pathspec (0.2.1)
+    public_suffix (3.0.3)
+    puppet (5.5.10)
+      facter (> 2.0.1, < 4)
+      fast_gettext (~> 1.1.2)
+      hiera (>= 3.2.1, < 4)
+      locale (~> 2.1)
+      multi_json (~> 1.10)
+    puppet-lint (2.3.6)
+    puppet-lint-absolute_classname-check (1.0.0)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-empty_string-check (0.2.2)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-file_ensure-check (0.3.1)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-leading_zero-check (0.1.1)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-spaceship_operator_without_tag-check (0.1.1)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-trailing_comma-check (0.4.2)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-undef_in_function-check (0.2.1)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-unquoted_string-check (0.3.0)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-variable_contains_upcase (1.2.0)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-lint-version_comparison-check (0.2.1)
+      puppet-lint (>= 1.0, < 3.0)
+    puppet-syntax (2.4.3)
+      rake
+    puppetlabs_spec_helper (2.13.1)
+      mocha (~> 1.0)
+      pathspec (~> 0.2.1)
+      puppet-lint (~> 2.0)
+      puppet-syntax (~> 2.0)
+      rspec-puppet (~> 2.0)
+    rake (12.3.2)
+    redcarpet (2.3.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-puppet (2.7.3)
+      rspec
+    rspec-puppet-facts (1.9.2)
+      facter
+      facterdb (>= 0.5.0)
+      json
+      mcollective-client
+      puppet
+    rspec-support (3.8.0)
+    ruby-augeas (0.5.0)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
+    spdx-licenses (1.2.0)
+    stomp (1.4.8)
+    systemu (2.6.5)
+    term-ansicolor (1.2.2)
+      tins (~> 0.8)
+    thor (0.18.1)
+    tins (0.13.2)
+    yard (0.9.18)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  coveralls
+  metadata-json-lint
+  puppet (~> 5.0)
+  puppet-lint
+  puppet-lint-absolute_classname-check
+  puppet-lint-empty_string-check
+  puppet-lint-file_ensure-check
+  puppet-lint-leading_zero-check
+  puppet-lint-spaceship_operator_without_tag-check
+  puppet-lint-trailing_comma-check
+  puppet-lint-undef_in_function-check
+  puppet-lint-unquoted_string-check
+  puppet-lint-variable_contains_upcase
+  puppet-lint-version_comparison-check
+  puppetlabs_spec_helper
+  redcarpet (~> 2.0)
+  rspec-puppet
+  rspec-puppet-facts
+  ruby-augeas (~> 0.5)
+  simplecov (~> 0.7.0)
+  yard
+
+BUNDLED WITH
+   2.0.1

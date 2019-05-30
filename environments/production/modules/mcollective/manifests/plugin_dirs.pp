@@ -8,8 +8,7 @@ class mcollective::plugin_dirs {
     "${mcollective::configdir}/policies",
     $mcollective::libdir,
     "${mcollective::libdir}/mcollective",
-    $libdirs
-  ]
+  ] + $libdirs
 
   if $mcollective::purge {
     $purge_options = {

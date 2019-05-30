@@ -3,10 +3,13 @@
 # @param manage_package_repo Installs the package repositories
 # @param nightly_repo Install the nightly package repo as well as the release one
 # @param ensure Add or remove the software
+# @param repo_baseurl Used to override default packagecloud package source
 # @param version The version of Choria to install
 # @param broker_config_file The configuration file for the broker
 # @param server_config_file The configuration file for the server
 # @param logfile The file to log to
+# @param statusfile The file to write server status to
+# @param status_write_interval How often the status file should be written in seconds
 # @param log_level The logging level to use
 # @param rubypath Path to the Ruby installation used for the MCollective compatibility shims
 # @param srvdomain The domain name to use when doing SRV lookups
@@ -20,12 +23,15 @@ class choria (
   Boolean $manage_package_repo ,
   Boolean $nightly_repo,
   Enum["present", "absent"] $ensure,
+  String $repo_baseurl,
   String $version,
   Enum[debug, info, warn, error, fatal] $log_level,
   Optional[String] $srvdomain,
   Stdlib::Compat::Absolute_path $broker_config_file,
   Stdlib::Compat::Absolute_path $server_config_file,
   Stdlib::Compat::Absolute_path $logfile,
+  Optional[Stdlib::Compat::Absolute_path] $statusfile,
+  Integer $status_write_interval,
   Stdlib::Compat::Absolute_path $rubypath,
   String $package_name,
   String $broker_service_name,

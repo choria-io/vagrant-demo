@@ -1,6 +1,32 @@
 |Date      |Issue |Description                                                                                              |
 |----------|------|---------------------------------------------------------------------------------------------------------|
-|2018/09/19|      |Release 0.11.0                                                                                            |
+|2019/05/27|      |Release 0.15.0                                                                                           |
+|2019/05/27|      |Release 0.15.0                                                                                           |
+|2019/05/02|585   |Add support for Choria Autonomous Agents                                                                 |
+|2019/03/19|583   |Fix path expansion for token locations with `~` in them                                                  |
+|2019/03/04|      |Release 0.14.1                                                                                           |
+|2019/03/04|      |Require the latest choria-mcorpc-support gem                                                             |
+|2019/03/04|      |Release 0.14.0                                                                                           |
+|2019/04/02|578   |Add `-T` to the `federation trace` command                                                               |
+|2019/02/12|574   |Improve error messages when a token file cannot be found                                                 |
+|2019/01/29|572   |Disable TLS verify when speaking to signers as we are not guaranteed to have client certs                |
+|2019/01/24|      |Ensure policy defaults are honored correctly                                                             |
+|2019/01/23|      |Release 0.13.1                                                                                           |
+|2019/01/23|568   |Include the signer files when installing the module                                                      |
+|2019/01/23|      |Release 0.13.0                                                                                           |
+|2019/01/03|563   |Support a remote signing service for centralised AAA                                                     |
+|2018/12/27|      |Release 0.12.1                                                                                           |
+|2018/12/26|560   |Increase `choria_util` timeout to allow for slow facter                                                  |
+|2018/12/19|557   |Export the PKI and TLS modes via `choria_util#info`                                                      |
+|2018/12/11|550   |Support intermediate certificate chains                                                                  |
+|2018/12/11|493   |Support identical settings to the go file security mode allowing non Puppet SSL file paths               |
+|2018/12/07|547   |Support disabling PKI and TLS seperately                                                                 |
+|2018/12/02|544   |Improve backward compatibility in JSON mode                                                              |
+|2018/12/01|      |Release 0.12.0                                                                                           |
+|2018/11/27|540   |On AIO Puppet 6 require the `choria-mcorpc-support` gem                                                  |
+|2018/11/27|538   |On AIO Puppet 6 always use the JSON serialiser where Choria Server is the default                        |
+|2018/11/22|533   |When SSL is disabled do not fail when certificates do not exist                                          |
+|2018/09/19|      |Release 0.11.0                                                                                           |
 |2018/08/20|528   |Allow custom task wrapper paths to be supplied and support tasks on FreeBSD                              |
 |2018/08/16|526   |Correctly report the status of a still-running task after the initial wait is over                       |
 |2018/07/26|523   |Avoid infinite reconnection attempts in clients                                                          |

@@ -71,15 +71,14 @@ module MCollective
           :max_reconnect_attempts => -1,
           :reconnect_time_wait => 1,
           :dont_randomize_servers => !choria.randomize_middleware_servers?,
-          :name => @config.identity,
-          :tls => {
-            :context => choria.ssl_context
-          }
+          :name => @config.identity
         }
 
         if $choria_unsafe_disable_nats_tls # rubocop:disable Style/GlobalVars
           Log.warn("Disabling TLS in NATS connector, this is not a production supported setup")
-          parameters.delete(:tls)
+        else
+          parameters[:tls] = {:context => choria.ssl_context}
+          choria.check_ssl_setup
         end
 
         servers = server_list
@@ -88,8 +87,6 @@ module MCollective
           Log.debug("Connecting to servers: %s" % servers.join(", "))
           parameters[:servers] = servers
         end
-
-        choria.check_ssl_setup
 
         connection.start(parameters)
 

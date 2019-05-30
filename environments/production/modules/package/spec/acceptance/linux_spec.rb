@@ -1,31 +1,71 @@
 # run a test task
 require 'spec_helper_acceptance'
 
-describe 'linux package task', unless: fact_on(default, 'osfamily') == 'windows' do
-  package_to_use = 'rsyslog'
+# Red-Hat 6 is the only platform we cannot reliably perform package actions on
+redhat_six = os[:family] == 'redhat' && os[:release].to_i == 6
+windows = os[:family] == 'windows'
+
+describe 'linux package task', unless: redhat_six || windows do
+  include Beaker::TaskHelper::Inventory
+  include BoltSpec::Run
+
+  def bolt_config
+    { 'modulepath' => RSpec.configuration.module_path }
+  end
+
+  let(:bolt_inventory) { hosts_to_inventory.merge('features' => ['puppet-agent']) }
+
   describe 'install action' do
-    it "install #{package_to_use}" do
-      apply_manifest("package { \"#{package_to_use}\": ensure => absent, }")
-      result = run_task(task_name: 'package::linux', params: "action=install name=#{package_to_use}")
-      expect_multiple_regexes(result: result, regexes: [%r{install}, %r{(Job completed. 1/1 nodes succeeded|Ran on 1 node)}])
-    end
-  end
-  describe 'uninstall action' do
-    it "uninstall #{package_to_use}" do
-      apply_manifest("package { \"#{package_to_use}\": ensure => present, }")
-      result = run_task(task_name: 'package::linux', params: "action=uninstall name=#{package_to_use}")
-      expect_multiple_regexes(result: result, regexes: [%r{install}, %r{(Job completed. 1/1 nodes succeeded|Ran on 1 node)}])
-    end
-  end
-  describe 'install specific', if: (fact('operatingsystem') == 'CentOS' && fact('operatingsystemmajrelease') == '7' && pe_install?) do
-    it 'upgrade httpd to a specific version' do
-      result = run_task(task_name: 'package', params: 'action=upgrade name=httpd version=2.4.6-45.el7.centos')
-      expect_multiple_regexes(result: result, regexes: [%r{Job completed. 1/1 nodes succeeded}])
+    it 'installs rsyslog' do
+      apply_manifest_on(default, "package { 'rsyslog': ensure => absent, }")
+      result = run_task('package::linux', 'default', 'action' => 'install', 'name' => 'rsyslog')
+      expect(result[0]).to include('status' => 'success')
+      expect(result[0]['result']).to include('status' => %r{install})
+      expect(result[0]['result']).to include('version')
     end
 
-    it 'upgrade httpd' do
-      result = run_task(task_name: 'package', params: 'action=upgrade name=httpd')
-      expect_multiple_regexes(result: result, regexes: [%r{Job completed. 1/1 nodes succeeded}])
+    it 'errors gracefully when bogus package requested' do
+      result = run_task('package::linux', 'default', 'action' => 'install', 'name' => 'foo')
+      # older EL platforms may report that the bogus package is uninstalled,
+      if result[0]['status'] == 'failure'
+        expect(result[0]['result']).to include('status' => 'failure')
+        expect(result[0]['result']['_error']).to include('msg')
+        expect(result[0]['result']['_error']).to include('kind' => 'bash-error')
+        expect(result[0]['result']['_error']).to include('details')
+      elsif result[0]['status'] == 'success'
+        expect(result[0]['result']).to include('status' => 'uninstalled')
+      else
+        raise "Unexpected result: #{result}"
+      end
+    end
+  end
+
+  describe 'status action' do
+    it 'status rsyslog' do
+      apply_manifest_on(default, "package { 'rsyslog': ensure => present, }")
+      result = run_task('package::linux', 'default', 'action' => 'status', 'name' => 'rsyslog')
+      expect(result[0]).to include('status' => 'success')
+      expect(result[0]['result']).to include('status' => %r{install})
+      expect(result[0]['result']).to include('version')
+    end
+  end
+
+  describe 'uninstall action' do
+    it 'uninstall rsyslog' do
+      apply_manifest_on(default, "package { 'rsyslog': ensure => present, }")
+      result = run_task('package::linux', 'default', 'action' => 'uninstall', 'name' => 'rsyslog')
+      expect(result[0]).to include('status' => 'success')
+      expect(result[0]['result']).to include('status' => %r{not install|deinstall})
+    end
+  end
+
+  describe 'upgrade' do
+    it 'upgrade rsyslog' do
+      apply_manifest_on(default, "package { 'rsyslog': ensure => present, }")
+      result = run_task('package::linux', 'default', 'action' => 'upgrade', 'name' => 'rsyslog')
+      expect(result[0]).to include('status' => 'success')
+      expect(result[0]['result']).to include('old_version')
+      expect(result[0]['result']).to include('version')
     end
   end
 end

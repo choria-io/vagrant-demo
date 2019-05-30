@@ -38,8 +38,7 @@ describe 'apt' do
       os: { family: 'Debian', name: 'Debian', release: { major: '8', full: '8.0' } },
       lsbdistid: 'Debian',
       osfamily: 'Debian',
-      lsbdistcodename: 'wheezy',
-      puppetversion: Puppet.version,
+      lsbdistcodename: 'jessie',
     }
   end
 
@@ -189,59 +188,143 @@ describe 'apt' do
   end
 
   context 'with entries for /etc/apt/auth.conf' do
-    let(:params) do
-      {
-        auth_conf_entries: [
-          { machine: 'deb.example.net',
-            login: 'foologin',
-            password: 'secret' },
-          { machine: 'apt.example.com',
-            login: 'aptlogin',
-            password: 'supersecret' },
-        ],
-      }
-    end
-
-    auth_conf_content = "// This file is managed by Puppet. DO NOT EDIT.
-machine deb.example.net login foologin password secret
-machine apt.example.com login aptlogin password supersecret
-"
-
-    it {
-      is_expected.to contain_file('/etc/apt/auth.conf').with(ensure: 'present',
-                                                             owner: 'root',
-                                                             group: 'root',
-                                                             mode: '0600',
-                                                             notify: 'Class[Apt::Update]',
-                                                             content: auth_conf_content)
-    }
-  end
-
-  context 'with improperly specified entries for /etc/apt/auth.conf' do
-    let(:params) do
-      {
-        auth_conf_entries: [
-          { machinn: 'deb.example.net',
-            username: 'foologin',
-            password: 'secret' },
-          { machine: 'apt.example.com',
-            login: 'aptlogin',
-            password: 'supersecret' },
-        ],
-      }
-    end
-
-    it { is_expected.to raise_error(Puppet::Error) }
-  end
-
-  context 'with sources defined on valid osfamily' do
-    let :facts do
-      { os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
+    facts_hash = {
+      'Ubuntu 14.04' => {
+        os: { family: 'Debian', name: 'Ubuntu', release: { major: '14', full: '14.04' } },
+        osfamily: 'Debian',
+        lsbdistcodename: 'trusty',
+        lsbdistid: 'Ubuntu',
+        lsbdistrelease: '14.04',
+      },
+      'Ubuntu 16.04' => {
+        os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
         osfamily: 'Debian',
         lsbdistcodename: 'xenial',
         lsbdistid: 'Ubuntu',
         lsbdistrelease: '16.04',
-        puppetversion: Puppet.version }
+      },
+      'Ubuntu 18.04' => {
+        os: { family: 'Debian', name: 'Ubuntu', release: { major: '18', full: '18.04' } },
+        osfamily: 'Debian',
+        lsbdistcodename: 'bionic',
+        lsbdistid: 'Ubuntu',
+        lsbdistrelease: '18.04',
+      },
+      'Debian 7.0' => {
+        os: { family: 'Debian', name: 'Debian', release: { major: '7', full: '7.0' } },
+        lsbdistid: 'Debian',
+        osfamily: 'Debian',
+        lsbdistcodename: 'wheezy',
+      },
+      'Debian 8.0' => {
+        os: { family: 'Debian', name: 'Debian', release: { major: '8', full: '8.0' } },
+        lsbdistid: 'Debian',
+        osfamily: 'Debian',
+        lsbdistcodename: 'jessie',
+      },
+      'Debian 9.0' => {
+        os: { family: 'Debian', name: 'Debian', release: { major: '9', full: '9.0' } },
+        lsbdistid: 'Debian',
+        osfamily: 'Debian',
+        lsbdistcodename: 'stretch',
+      },
+    }
+
+    facts_hash.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) do
+          facts
+        end
+        let(:params) do
+          {
+            auth_conf_entries: [
+              {
+                machine: 'deb.example.net',
+                login: 'foologin',
+                password: 'secret',
+              },
+              {
+                machine: 'apt.example.com',
+                login: 'aptlogin',
+                password: 'supersecret',
+              },
+            ],
+          }
+        end
+
+        context 'with manage_auth_conf => true' do
+          let(:params) do
+            super().merge(manage_auth_conf: true)
+          end
+
+          # Going forward starting with Ubuntu 16.04 and Debian 9.0
+          # /etc/apt/auth.conf is owned by _apt. In previous versions it is
+          # root.
+          auth_conf_owner = case os
+                            when 'Ubuntu 14.04', 'Debian 7.0', 'Debian 8.0'
+                              'root'
+                            else
+                              '_apt'
+                            end
+
+          auth_conf_content = "// This file is managed by Puppet. DO NOT EDIT.
+machine deb.example.net login foologin password secret
+machine apt.example.com login aptlogin password supersecret
+"
+
+          it {
+            is_expected.to contain_file('/etc/apt/auth.conf').with(ensure: 'present',
+                                                                   owner: auth_conf_owner,
+                                                                   group: 'root',
+                                                                   mode: '0600',
+                                                                   notify: 'Class[Apt::Update]',
+                                                                   content: auth_conf_content)
+          }
+        end
+
+        context 'with manage_auth_conf => false' do
+          let(:params) do
+            super().merge(manage_auth_conf: false)
+          end
+
+          it {
+            is_expected.not_to contain_file('/etc/apt/auth.conf')
+          }
+        end
+      end
+
+      context 'with improperly specified entries for /etc/apt/auth.conf' do
+        let(:params) do
+          {
+            auth_conf_entries: [
+              {
+                machinn: 'deb.example.net',
+                username: 'foologin',
+                password: 'secret',
+              },
+              {
+                machine: 'apt.example.com',
+                login: 'aptlogin',
+                password: 'supersecret',
+              },
+            ],
+          }
+        end
+
+        it { is_expected.to raise_error(Puppet::Error) }
+      end
+    end
+  end
+
+  context 'with sources defined on valid osfamily' do
+    let :facts do
+      {
+        os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
+        osfamily: 'Debian',
+        lsbdistcodename: 'xenial',
+        lsbdistid: 'Ubuntu',
+        lsbdistrelease: '16.04',
+      }
     end
     let(:params) do
       { sources: {
@@ -281,8 +364,7 @@ machine apt.example.com login aptlogin password supersecret
         os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
         osfamily: 'Debian',
         lsbdistcodename: 'xenial',
-        lsbdistid: 'Debian',
-        puppetversion: Puppet.version,
+        lsbdistid: 'Ubuntu',
       }
     end
     let(:params) do
@@ -311,8 +393,7 @@ machine apt.example.com login aptlogin password supersecret
         os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
         osfamily: 'Debian',
         lsbdistcodename: 'xenial',
-        lsbdistid: 'Debian',
-        puppetversion: Puppet.version,
+        lsbdistid: 'Ubuntu',
       }
     end
     let(:params) do
@@ -341,9 +422,8 @@ machine apt.example.com login aptlogin password supersecret
         os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
         osfamily: 'Debian',
         lsbdistcodename: 'xenial',
-        lsbdistid: 'ubuntu',
+        lsbdistid: 'Ubuntu',
         lsbdistrelease: '16.04',
-        puppetversion: Puppet.version,
       }
     end
     let(:params) do
@@ -363,8 +443,7 @@ machine apt.example.com login aptlogin password supersecret
         os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
         osfamily: 'Debian',
         lsbdistcodename: 'xenial',
-        lsbdistid: 'Debian',
-        puppetversion: Puppet.version,
+        lsbdistid: 'Ubuntu',
       }
     end
     let(:params) do
@@ -384,8 +463,7 @@ machine apt.example.com login aptlogin password supersecret
         os: { family: 'Debian', name: 'Ubuntu', release: { major: '16', full: '16.04' } },
         osfamily: 'Debian',
         lsbdistcodename: 'xenial',
-        lsbdistid: 'Debian',
-        puppetversion: Puppet.version,
+        lsbdistid: 'Ubuntu',
       }
     end
     let(:params) do

@@ -2,7 +2,7 @@ metadata :name        => "package",
          :description => "Checks the status of a package",
          :author      => "R.I.Pienaar <rip@devco.net>",
          :license     => "Apache-2.0",
-         :version     => "5.0.1",
+         :version     => "5.1.0",
          :url         => "https://github.com/choria-plugins/package-agent",
          :timeout     => 3
 

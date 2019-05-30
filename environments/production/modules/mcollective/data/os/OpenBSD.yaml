@@ -2,10 +2,13 @@
 mcollective::plugin_group: wheel
 mcollective::service_name: mcollectived
 mcollective::configdir: "/etc/mcollective"
+mcollective::bindir: "/usr/local/bin"
 mcollective::libdir: "/usr/local/libexec/mcollective"
 mcollective::rubypath: "/usr/local/bin/ruby24"
 mcollective::gem_provider: "gem"
 mcollective::manage_package: true
+mcollective::required_directories: []
+mcollective::manage_bin_symlinks: false
 
 mcollective::server_config:
   classesfile: "/var/puppetlabs/puppet/cache/state/classes.txt"

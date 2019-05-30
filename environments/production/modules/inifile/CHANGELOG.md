@@ -2,9 +2,33 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [2.4.0](https://github.com/puppetlabs/puppetlabs-inifile/tree/2.4.0) (2018-09-27)
+## [v3.0.0](https://github.com/puppetlabs/puppetlabs-inifile/tree/v3.0.0) (2019-04-19)
 
-[Full Changelog](https://github.com/puppetlabs/puppetlabs-inifile/compare/2.3.0...2.4.0)
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-inifile/compare/2.5.0...v3.0.0)
+
+### Changed
+
+- pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#335](https://github.com/puppetlabs/puppetlabs-inifile/pull/335) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- FM-7779 - Cleanup Inifile [\#328](https://github.com/puppetlabs/puppetlabs-inifile/pull/328) ([lionce](https://github.com/lionce))
+
+## [2.5.0](https://github.com/puppetlabs/puppetlabs-inifile/tree/2.5.0) (2018-12-28)
+
+### Added
+
+- \(MODULES-8142\) - Addition of support for SLES 15 [\#315](https://github.com/puppetlabs/puppetlabs-inifile/pull/315) ([david22swan](https://github.com/david22swan))
+- \(MODULES-7560\) - removed spaces from the beginning or from the end of the value [\#311](https://github.com/puppetlabs/puppetlabs-inifile/pull/311) ([lionce](https://github.com/lionce))
+
+### Fixed
+
+- pdksync - \(FM-7655\) Fix rubygems-update for ruby \< 2.3 [\#320](https://github.com/puppetlabs/puppetlabs-inifile/pull/320) ([tphoney](https://github.com/tphoney))
+- \(MODULES-6714\) - inifile: ensure absent not working with refreshonly = true [\#313](https://github.com/puppetlabs/puppetlabs-inifile/pull/313) ([Lavinia-Dan](https://github.com/Lavinia-Dan))
+- \(FM-7483\) - update module to the latest version [\#310](https://github.com/puppetlabs/puppetlabs-inifile/pull/310) ([lionce](https://github.com/lionce))
+- \(FM-7331\)-Fix japanese test [\#308](https://github.com/puppetlabs/puppetlabs-inifile/pull/308) ([lionce](https://github.com/lionce))
+
+## [2.4.0](https://github.com/puppetlabs/puppetlabs-inifile/tree/2.4.0) (2018-09-27)
 
 ### Added
 

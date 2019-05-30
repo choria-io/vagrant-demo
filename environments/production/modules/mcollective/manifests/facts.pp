@@ -14,7 +14,7 @@ class mcollective::facts (
   file{$scriptpath:
     owner   => $owner,
     group   => $group,
-    mode    => "0755",
+    mode    => "0775",
     content => template("mcollective/refresh_facts.erb"),
   }
 
@@ -55,7 +55,7 @@ class mcollective::facts (
   } else {
     cron{"mcollective_facts_yaml_refresh":
       ensure  => $cron_ensure,
-      command => "'${rubypath}' '${scriptpath}' -o '${factspath}' ${factspid}",
+      command => "'${rubypath}' '${scriptpath}' -o '${factspath}' ${factspid} &> /dev/null",
       minute  => $cron_minutes
     }
   }
