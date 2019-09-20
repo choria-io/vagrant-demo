@@ -2,6 +2,12 @@
 
 Change history for `choria/mcollective_agent_shell`
 
+# 1.0.4
+
+Released 2019-09-20
+
+ * Improve compatibility with the pure JSON Choria Server
+
 # 1.0.3
 
 Released 2018-04-20

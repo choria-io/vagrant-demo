@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.6.0](https://github.com/puppetlabs/puppetlabs-package/tree/v0.6.0) (2019-06-12)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v0.5.0...v0.6.0)
+
+### Changed
+
+- pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#123](https://github.com/puppetlabs/puppetlabs-package/pull/123) ([david22swan](https://github.com/david22swan))
+
+### Added
+
+- \(FM-8156\) Add Windows Server 2019 support [\#129](https://github.com/puppetlabs/puppetlabs-package/pull/129) ([eimlav](https://github.com/eimlav))
+- \(FM-8044\) Add Redhat8 support [\#128](https://github.com/puppetlabs/puppetlabs-package/pull/128) ([sheenaajay](https://github.com/sheenaajay))
+- \(Bolt-1104\) - Add linux package task uninstall [\#126](https://github.com/puppetlabs/puppetlabs-package/pull/126) ([m0dular](https://github.com/m0dular))
+
+### Fixed
+
+- FM-7946 stringify package [\#127](https://github.com/puppetlabs/puppetlabs-package/pull/127) ([lionce](https://github.com/lionce))
+
 ## [v0.5.0](https://github.com/puppetlabs/puppetlabs-package/tree/v0.5.0) (2019-04-10)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/0.4.1...v0.5.0)

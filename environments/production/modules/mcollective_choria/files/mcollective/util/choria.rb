@@ -8,7 +8,7 @@ module MCollective
       class Abort < StandardError; end
 
       unless defined?(Choria::VERSION) # rubocop:disable Style/IfUnlessModifier
-        VERSION = "0.15.0".freeze
+        VERSION = "0.16.0".freeze
       end
 
       attr_writer :ca
@@ -611,10 +611,12 @@ module MCollective
         d_host = get_option("choria.puppetdb_host", "puppet")
         d_port = get_option("choria.puppetdb_port", "8081")
 
-        answer = try_srv(["_x-puppet-db._tcp", "_x-puppet._tcp"], d_host, d_port)
+        answer = try_srv(["_x-puppet-db._tcp"], nil, nil)
+        return answer if answer[:target]
 
         # In the case where we take _x-puppet._tcp SRV records we unfortunately have
         # to force the port else it uses the one from Puppet which will 404
+        answer = try_srv(["_x-puppet._tcp"], d_host, d_port)
         answer[:port] = d_port
 
         answer

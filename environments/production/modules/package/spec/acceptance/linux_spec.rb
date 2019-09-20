@@ -55,7 +55,7 @@ describe 'linux package task', unless: redhat_six || windows do
       apply_manifest_on(default, "package { 'rsyslog': ensure => present, }")
       result = run_task('package::linux', 'default', 'action' => 'uninstall', 'name' => 'rsyslog')
       expect(result[0]).to include('status' => 'success')
-      expect(result[0]['result']).to include('status' => %r{not install|deinstall})
+      expect(result[0]['result']).to include('status' => %r{not install|deinstall|uninstall})
     end
   end
 

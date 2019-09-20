@@ -258,7 +258,7 @@ mco shell [OPTIONS] [FILTERS] <ACTION> [ARGS]
 
               process.status(response)
 
-              if response[:data][:status] == :stopped
+              if [:stopped, "stopped"].include?(response[:data][:status])
                 process.flush
                 processes.delete(process)
               end

@@ -144,7 +144,7 @@ module MCollective
         end
 
         def cleanup_state
-          FileUtils.remove_entry_secure state_directory
+          FileUtils.remove_entry_secure(state_directory, :force => true)
         end
 
         private

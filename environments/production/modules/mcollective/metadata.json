@@ -1,19 +1,15 @@
 {
   "name": "choria-mcollective",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "author": "R.I.Pienaar <rip@devco.net>",
-  "summary": "Configure MCollective as found in the Puppet Agent",
   "license": "Apache-2.0",
+  "summary": "Configure MCollective as found in the Puppet Agent",
   "source": "https://github.com/choria-io/puppet-mcollective",
   "project_page": "https://github.com/choria-io/puppet-mcollective",
   "issues_url": "https://github.com/choria-io/puppet-mcollective/issues",
   "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.24.0 < 6.0.0"
-    }
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.24.0 < 6.0.0" }
   ],
-  "data_provider": null,
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -115,7 +111,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.9.0 < 6.0.0"
+      "version_requirement": ">= 6.0.0"
     }
   ]
 }

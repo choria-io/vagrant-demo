@@ -1,23 +1,19 @@
 {
   "name": "choria-mcollective_agent_shell",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Puppet Labs",
-  "summary": "Run commands with the local shell",
   "license": "Apache-2.0",
+  "summary": "Run commands with the local shell",
   "source": "https://github.com/choria-plugins/shell-agent",
   "project_page": "https://github.com/choria-plugins/shell-agent",
-  "issues_url": "https://github.com/choria-plugins/shell-agent/issues",
   "dependencies": [
-    {
-      "name": "choria/mcollective",
-      "version_requirement": ">= 0.4.0 < 2.0.0"
-    }
+  {"name": "choria/mcollective", "version_requirement": ">= 0.9.3 < 2.0.0"}
   ],
-  "data_provider": null,
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.9.0"
+      "version_requirement": ">= 6.0.0"
     }
   ]
 }
+

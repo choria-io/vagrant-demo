@@ -2,7 +2,31 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [6.3.0](https://github.com/puppetlabs/puppetlabs-apt/tree/6.3.0) (2019-01-18)
+## [v7.1.0](https://github.com/puppetlabs/puppetlabs-apt/tree/v7.1.0) (2019-07-29)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-apt/compare/v7.0.1...v7.1.0)
+
+### Added
+
+- \(FM-8215\) Convert to using litmus [\#864](https://github.com/puppetlabs/puppetlabs-apt/pull/864) ([florindragos](https://github.com/florindragos))
+
+## [v7.0.1](https://github.com/puppetlabs/puppetlabs-apt/tree/v7.0.1) (2019-05-13)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-apt/compare/7.0.0...v7.0.1)
+
+## [7.0.0](https://github.com/puppetlabs/puppetlabs-apt/tree/7.0.0) (2019-04-24)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-apt/compare/6.3.0...7.0.0)
+
+### Changed
+
+- pdksync - \(MODULES-8444\) - Raise lower Puppet bound [\#853](https://github.com/puppetlabs/puppetlabs-apt/pull/853) ([david22swan](https://github.com/david22swan))
+
+### Added
+
+- Allow weak SSL verification for apt\_key [\#849](https://github.com/puppetlabs/puppetlabs-apt/pull/849) ([tuxmea](https://github.com/tuxmea))
+
+## [6.3.0](https://github.com/puppetlabs/puppetlabs-apt/tree/6.3.0) (2019-01-21)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-apt/compare/6.2.1...6.3.0)
 
