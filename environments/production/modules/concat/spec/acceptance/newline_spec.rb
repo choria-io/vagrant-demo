@@ -1,54 +1,67 @@
 require 'spec_helper_acceptance'
 
 describe 'concat ensure_newline parameter' do
-  before(:all) do
-    @basedir = setup_test_directory
-  end
-  describe 'when false' do
-    let(:pp) do
-      <<-MANIFEST
-      concat { '#{@basedir}/file':
+  basedir = default.tmpdir('concat')
+  context 'when false' do
+    before(:all) do
+      pp = <<-MANIFEST
+        file { '#{basedir}':
+          ensure => directory
+        }
+      MANIFEST
+
+      apply_manifest(pp)
+    end
+    pp = <<-MANIFEST
+      concat { '#{basedir}/file':
         ensure_newline => false,
       }
       concat::fragment { '1':
-        target  => '#{@basedir}/file',
+        target  => '#{basedir}/file',
         content => '1',
       }
       concat::fragment { '2':
-        target  => '#{@basedir}/file',
+        target  => '#{basedir}/file',
         content => '2',
       }
     MANIFEST
-    end
 
     it 'applies the manifest twice with no stderr' do
-      idempotent_apply(default, pp)
-      expect(file("#{@basedir}/file")).to be_file
-      expect(file("#{@basedir}/file").content).to match '12'
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe file("#{basedir}/file") do
+      it { is_expected.to be_file }
+      its(:content) { is_expected.to match '12' }
     end
   end
 
-  describe 'when true' do
-    let(:pp) do
-      <<-MANIFEST
-      concat { '#{@basedir}/file':
+  context 'when true' do
+    pp = <<-MANIFEST
+      concat { '#{basedir}/file':
         ensure_newline => true,
       }
       concat::fragment { '1':
-        target  => '#{@basedir}/file',
+        target  => '#{basedir}/file',
         content => '1',
       }
       concat::fragment { '2':
-        target  => '#{@basedir}/file',
+        target  => '#{basedir}/file',
         content => '2',
       }
     MANIFEST
-    end
 
     it 'applies the manifest twice with no stderr' do
-      idempotent_apply(default, pp)
-      expect(file("#{@basedir}/file")).to be_file
-      expect(file("#{@basedir}/file").content).to match %r{1\r?\n2\r?\n}
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe file("#{basedir}/file") do
+      it { is_expected.to be_file }
+      its(:content) do
+        is_expected.to match %r{1\n2\n}
+      end
     end
   end
 end

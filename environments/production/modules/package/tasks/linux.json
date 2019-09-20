@@ -19,5 +19,9 @@
       "description": "The provider to use to manage or inspect the package, defaults to the system package manager. Only used when the 'puppet-agent' feature is available on the target so we can leverage Puppet.",
       "type": "Optional[String[1]]"
     }
-  }
+  },
+  "implementations": [
+    {"name": "linux.sh", "requirements": ["shell"], "files": ["package/files/common.sh"], "input_method": "environment"}
+  ]
+
 }

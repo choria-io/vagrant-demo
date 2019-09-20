@@ -1,23 +1,21 @@
 require 'spec_helper_acceptance'
 
-command = case os[:family]
-          when 'windows'
+command = case fact('osfamily')
+          when 'Windows'
             'cmd.exe /c echo triggered'
           else
             'echo triggered'
           end
 
 describe 'with metaparameters' do
-  before(:each) do
-    @basedir = setup_test_directory
-  end
-
   describe 'with subscribed resources' do
-    let(:pp) do
-      <<-MANIFEST
+    basedir = default.tmpdir('concat')
+
+    context 'when run should trigger refresh' do
+      pp = <<-MANIFEST
         concat { "foobar":
           ensure => 'present',
-          path   => '#{@basedir}/foobar',
+          path   => '#{basedir}/foobar',
         }
 
         concat::fragment { 'foo':
@@ -32,17 +30,20 @@ describe 'with metaparameters' do
           refreshonly => true,
         }
       MANIFEST
-    end
 
-    it 'applies the manifest twice with no changes second apply' do
-      expect(apply_manifest(pp, catch_failures: true).stdout).to match(%r{Triggered 'refresh'})
-      expect(apply_manifest(pp, catch_changes: true).stdout).not_to match(%r{Triggered 'refresh'})
+      it 'applies the manifest twice with stdout regex first' do
+        expect(apply_manifest(pp, catch_failures: true).stdout).to match(%r{Triggered 'refresh'})
+      end
+      it 'applies the manifest twice with stdout regex second' do
+        expect(apply_manifest(pp, catch_changes: true).stdout).not_to match(%r{Triggered 'refresh'})
+      end
     end
   end
 
   describe 'with resources to notify' do
-    let(:pp) do
-      <<-MANIFEST
+    basedir = default.tmpdir('concat')
+    context 'when run should notify' do
+      pp = <<-MANIFEST
         exec { 'trigger':
           path        => $::path,
           command     => "#{command}",
@@ -51,7 +52,7 @@ describe 'with metaparameters' do
 
         concat { "foobar":
           ensure => 'present',
-          path   => '#{@basedir}/foobar',
+          path   => '#{basedir}/foobar',
           notify => Exec['trigger'],
         }
 
@@ -60,11 +61,13 @@ describe 'with metaparameters' do
           content => 'foo',
         }
       MANIFEST
-    end
 
-    it 'applies the manifest twice with no changes second apply' do
-      expect(apply_manifest(pp, catch_failures: true).stdout).to match(%r{Triggered 'refresh'})
-      expect(apply_manifest(pp, catch_changes: true).stdout).not_to match(%r{Triggered 'refresh'})
+      it 'applies the manifest twice with stdout regex first' do
+        expect(apply_manifest(pp, catch_failures: true).stdout).to match(%r{Triggered 'refresh'})
+      end
+      it 'applies the manifest twice with stdout regex second' do
+        expect(apply_manifest(pp, catch_changes: true).stdout).not_to match(%r{Triggered 'refresh'})
+      end
     end
   end
 end

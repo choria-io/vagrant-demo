@@ -3,18 +3,27 @@
 
 #### Table of Contents
 
-1. [Description](#description)
-2. [Requirements](#requirements)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Getting help - Some Helpful commands](#getting-help)
+1. [Overview](#overview)
+2. [Module Description](#module-description)
+3. [Setup](#setup)
+     * [Requirements](#requirements)
+4. [Usage](#usage)
+5. [Reference](#reference)
+6. [Limitations](#limitations)
+7. [Development](#development)
+
+## Overview
+
+This module provides the package task.
 
 ## Description
 
-This module provides the package task. This task allows you to install, uninstall, update, and check the status of packages.
+This task allows you to install, uninstall, update, and check the status of packages.
 
-## Requirements
+## Setup
+
+### Requirements
+
 This module is compatible with Puppet Enterprise and Puppet Bolt.
 
 * To run tasks with Puppet Enterprise, PE 2018.1 or later must be installed on the machine from which you are running task commands. Machines receiving task requests must be Puppet agents.
@@ -23,7 +32,11 @@ This module is compatible with Puppet Enterprise and Puppet Bolt.
 
 ## Usage
 
+To view the available actions and parameters, on the command line, run `puppet task show package` or see the package module page on the [Forge](https://forge.puppet.com/puppetlabs/package/tasks).
+For a complete list of optional package providers that are supported, see the [Puppet Types](https://docs.puppet.com/puppet/latest/types/package.html) documentation.
+
 To run a package task, use the task command, specifying the action and the name of the package.
+To show help for the task CLI, run `puppet task run --help` or `bolt task run --help`
 
 * With PE on the command line, run `puppet task run package action=<ACTION> name=<PACKAGE_NAME>`.
 * With Bolt on the command line, run `bolt task run package action=<ACTION> name=<PACKAGE_NAME>`.
@@ -37,9 +50,7 @@ You can also run tasks in the PE console. See PE task documentation for complete
 
 ## Reference
 
-To view the available actions and parameters, on the command line, run `puppet task show package` or see the package module page on the [Forge](https://forge.puppet.com/puppetlabs/package/tasks).
-
-For a complete list of optional package providers that are supported, see the [Puppet Types](https://docs.puppet.com/puppet/latest/types/package.html) documentation.
+For information on the classes and types, see the [REFERENCE.md](https://github.com/puppetlabs/puppetlabs-package/blob/master/REFERENCE.md).
 
 ## Limitations
 
@@ -47,9 +58,7 @@ To run acceptance tests against Windows machines, ensure that the `BEAKER_passwo
 
 For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-package/blob/master/metadata.json)
 
-## Getting Help
+## Development
 
-To display help for the package task, run `puppet task show package`
-
-To show help for the task CLI, run `puppet task run --help` or `bolt task run --help`
+Puppet modules on the Puppet Forge are open projects, and community contributions are essential for keeping them great. To contribute to Puppet projects, see our [module contribution guide.](https://github.com/puppetlabs/puppetlabs-package/blob/master/CONTRIBUTING.md)
 

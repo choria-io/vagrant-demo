@@ -28,6 +28,13 @@ mcollective::client_config:
   loglevel: "warn"
   connection_timeout: "3"
 
+mcollective::choria_util_policies:
+  - action: "allow"
+    actions: "info"
+    callers: "*"
+    facts: "*"
+    classes: "*"
+
 mcollective::rpcutil_policies:
   - action: "allow"
     actions: "ping"
@@ -36,7 +43,6 @@ mcollective::rpcutil_policies:
     classes: "*"
 
 mcollective::plugin_classes:
-  - "mcollective::packager"
   - "mcollective_choria"
   - "mcollective_agent_puppet"
   - "mcollective_agent_service"

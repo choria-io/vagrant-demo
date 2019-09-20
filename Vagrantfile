@@ -15,6 +15,7 @@ PUPPET
 Vagrant.configure("2") do |config|
   config.vm.define :puppet do |vmconfig|
     vmconfig.vm.box = "centos/7"
+    vmconfig.vm.box_version = "1804.02"
     vmconfig.vm.hostname = "puppet.choria"
     vmconfig.vm.network :private_network, ip: "192.168.90.5"
     vmconfig.vm.provider :virtualbox do |vb|
@@ -43,6 +44,7 @@ Vagrant.configure("2") do |config|
   INSTANCES.times do |i|
     config.vm.define "instance#{i}" do |vmconfig|
       vmconfig.vm.box = "centos/7"
+    vmconfig.vm.box_version = "1804.02"
       vmconfig.vm.hostname = "choria%s.choria" % i
       vmconfig.vm.network :private_network, ip: "192.168.90.%d" % (9+i)
       vmconfig.vm.provider :virtualbox do |vb|

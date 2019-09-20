@@ -1,0 +1,14 @@
+*.swp
+.yardoc
+doc
+pkg
+module/*/CHANGELOG.md
+module/*/LICENSE.txt
+module/*/NOTICE
+module/*/.gitignore
+module/*/files/mcollective
+tmp
+coverage
+website/public
+*.bak
+test.rb

@@ -1,35 +1,36 @@
 require 'spec_helper_acceptance'
 
 describe 'with file recursive purge' do
-  before(:all) do
-    @basedir = setup_test_directory
-  end
+  basedir = default.tmpdir('concat')
+  context 'when run should still create concat file' do
+    pp = <<-MANIFEST
+      file { '#{basedir}/bar':
+        ensure => directory,
+        purge  => true,
+        recurse => true,
+      }
 
-  describe 'when run should still create concat file' do
-    let(:pp) do
-      <<-MANIFEST
-        file { '#{@basedir}/bar':
-          ensure => directory,
-          purge  => true,
-          recurse => true,
-        }
+      concat { "foobar":
+        ensure => 'present',
+        path   => '#{basedir}/bar/foobar',
+      }
 
-        concat { "foobar":
-          ensure => 'present',
-          path   => '#{@basedir}/bar/foobar',
-        }
-
-        concat::fragment { 'foo':
-          target => 'foobar',
-          content => 'foo',
-        }
-      MANIFEST
-    end
+      concat::fragment { 'foo':
+        target => 'foobar',
+        content => 'foo',
+      }
+    MANIFEST
 
     it 'applies the manifest twice with no stderr' do
-      idempotent_apply(default, pp)
-      expect(file("#{@basedir}/bar/foobar")).to be_file
-      expect(file("#{@basedir}/bar/foobar").content).to match 'foo'
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe file("#{basedir}/bar/foobar") do
+      it { is_expected.to be_file }
+      its(:content) do
+        is_expected.to match 'foo'
+      end
     end
   end
 end
