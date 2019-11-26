@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-package",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "puppetlabs",
   "summary": "Tasks that manipulate a package",
   "license": "Apache-2.0",
@@ -70,7 +70,7 @@
     }
   ],
   "description": "Tasks that manipulate a package",
-  "pdk-version": "1.10.0",
+  "pdk-version": "1.12.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "heads/master-0-g7827fc2"
+  "template-ref": "1.12.0-0-g55d9ae2"
 }

@@ -1,9 +1,10 @@
+require 'puppet_litmus/rake_tasks' if Bundler.rubygems.find_name('puppet_litmus').any?
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks' if Bundler.rubygems.find_name('puppet-blacksmith').any?
 require 'github_changelog_generator/task' if Bundler.rubygems.find_name('github_changelog_generator').any?
 require 'puppet-strings/tasks' if Bundler.rubygems.find_name('puppet-strings').any?
-require 'puppet-lint/tasks/puppet-lint'
+require 'puppet_pot_generator/rake_tasks'
 
 def changelog_user
   return unless Rake.application.top_level_tasks.include? "changelog"
@@ -73,14 +74,5 @@ Gemfile:
         condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')"
 EOM
   end
-end
-
-# The beaker task requires the test fixtures created by the spec_prep task
-beaker_task_exists = Rake::Task.task_defined?('beaker')
-spec_prep_task_exists = Rake::Task.task_defined?('spec_prep')
-if beaker_task_exists && spec_prep_task_exists
-  beaker_task = Rake::Task['beaker']
-  spec_prep =  Rake::Task['spec_prep']
-  beaker_task.enhance(beaker_task.prerequisite_tasks << spec_prep)
 end
 

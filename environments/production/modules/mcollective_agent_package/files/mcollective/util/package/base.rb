@@ -125,7 +125,7 @@ module MCollective
         # Providers extending the Base class should implement the status
         # method which is expected to return the status of a pacakge as
         # a hash containing the outputs described in the Status action of
-        # the packa DDL.
+        # the package DDL.
         #
         # Example:
         #   return {:arch => 'x86',
@@ -136,6 +136,28 @@ module MCollective
         #           :release => '1'}
         def status
           raise "error. %s does not implement #status" % self.class
+        end
+
+        # Providers extending the Base class should implement the search
+        # method which is expected to return either the status of a package
+        # being available for install/update to the system, or that the package
+        # is not available at all, as a hash containing the outputs described in
+        # the Search action of the package DDL.
+        #
+        # Example:
+        #    return [{
+        #     :name => 'kittens'
+        #     :arch => 'x86',
+        #     :ensure => 'xx-xx-xx',
+        #     :epoch => '123456',
+        #     :version => 'xx-xx-xx',
+        #     :provider => 'yum',
+        #     :release => '1'
+        #    },
+        #    ...
+        # ]
+        def search
+          raise "error. %s does not implement #search" % self.class
         end
       end
     end

@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-inifile",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "author": "puppetlabs",
   "summary": "Resource types for managing settings in INI files",
   "license": "Apache-2.0",
@@ -59,13 +59,13 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "8",
-        "9"
+        "9",
+        "10"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "14.04",
         "16.04",
         "18.04"
       ]
@@ -103,6 +103,6 @@
     }
   ],
   "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "heads/master-0-gb096033",
-  "pdk-version": "1.11.1"
+  "template-ref": "heads/master-0-g0b5b39b",
+  "pdk-version": "1.14.0"
 }

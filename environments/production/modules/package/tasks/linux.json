@@ -20,8 +20,5 @@
       "type": "Optional[String[1]]"
     }
   },
-  "implementations": [
-    {"name": "linux.sh", "requirements": ["shell"], "files": ["package/files/common.sh"], "input_method": "environment"}
-  ]
-
+  "files": ["package/files/common.sh", "package/files/apt.sh", "package/files/yum.sh", "package/files/zypper.sh"]
 }

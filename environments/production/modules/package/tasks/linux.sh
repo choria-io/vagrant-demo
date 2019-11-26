@@ -2,61 +2,12 @@
 
 # example: bolt task run package::linux action=install name=rsyslog
 
-# $1 = string literal to feed to dpkg-query. include json formatting
-# No error check here because querying the status of uninstalled packages will return non-zero
-# Use --showformat to make a json object with status and version
-# ${name%%=*} removes the version in case we installed a specific one
-# This will print nothing to stdout if the package is not installed
-apt_status() {
-  dpkg-query --show --showformat="$1" "${name%%=*}"
-}
-
-# Determine if newer package is available to mirror the ruby/puppet implementation
-apt_check_latest() {
-  installed="$(apt_status '${Version}')"
-  [[ $installed ]] || success '{ "status": "uninstalled", "version": ""}'
-
-  candidate="$(apt-cache policy "$name" | grep 'Candidate:')"
-  candidate="${candidate#*: }"
-
-  if [[ $installed != $candidate ]]; then
-    cmd_status="$(apt_status "{ \"status\":\"\${Status}\", \"version\":\"${installed}\", \"latest\":\"${candidate}\" }")"
-  else
-    cmd_status="$(apt_status '{ "status":"${Status}", "version":"${Version}" }')"
-  fi
-
-  success "$cmd_status"
-}
-
-# $1 = string literal to feed to rpm -q. include json formatting
-# Use --queryformat to make a json object with status and version
-# yum returns non-zero if the package isn't installed
-yum_status() {
-  rpm -q --queryformat "$1" "$provided_package"
-}
-
-# Determine if newer package is available to mirror the ruby/puppet implementation
-yum_check_latest() {
-  installed="$(yum_status "%{VERSION}-%{RELEASE}" "$provided_package")" || success '{ "status": "uninstalled", "version": "" }'
-  candidate=($(yum check-update --quiet "${name}"))
-
-  # format of check-update is <package_name> <release>
-  # i.e rpm.x86_64 4.11.3-35.el7
-  if [[ $candidate && $installed != ${candidate[1]} ]]; then
-    cmd_status="$(yum_status \
-      "{ \"status\": \"installed\", \"version\": \"$installed\", \"latest\": \"${candidate[1]}\" \}")"
-  else
-      cmd_status="$(yum_status '\{ "status": "installed", "version": "%{VERSION}-%{RELEASE}" \}')" || {
-      cmd_status='{ "status": "uninstalled", "version": "" }'
-    }
-  fi
-  success "$cmd_status"
-}
-
 declare PT__installdir
-source "$PT__installdir/package/files/common.sh"
+for f in "$PT__installdir"/package/files/*sh; do
+  source "$f"
+done
 
-package_managers=("apt-get" "yum")
+package_managers=("apt-get" "yum" "zypper")
 options=()
 
 for p in "${package_managers[@]}"; do
@@ -67,7 +18,7 @@ for p in "${package_managers[@]}"; do
 done
 
 [[ $available_manager ]] || {
-  validation_error "No package managers found: Must be one of: [apt, yum]"
+  validation_error "No package managers found: Must be one of: [apt, yum, zypper]"
 }
 
 # For any package manager, check if the action is "status". If so, only run a status command
@@ -110,6 +61,7 @@ case "$available_manager" in
         success "$cmd_status"
     esac
     ;;
+
   "yum")
     # assume yes
     options+=("-y")
@@ -161,4 +113,41 @@ case "$available_manager" in
         cmd_status="$(yum_status "\{ \"old_version\": ${old_version}, \"version\": \"%{VERSION}-%{RELEASE}\" \}")"
         success "$cmd_status"
     esac
+    ;;
+
+  "zypper")
+    # Non-interactive and no color
+    options+=("-n")
+
+    # <package>-<version> is the syntax for installing a specific version in zypper
+    [[ $version ]] && name="${name}-${version}"
+
+    case "$action" in
+      "install")
+        zyp_cmd="in"
+        ;;
+
+      "uninstall")
+        zyp_cmd="rm"
+        ;;
+
+      # zypper won't upgrade a package if the newer version comes from a different vendor
+      # So we'll use zypper in with the latest version
+      "upgrade")
+        # Call this to get the candidate and installed version
+        zypper_status "${name%%=*}" >/dev/null
+        old_version="$installed_version"
+
+        [[ $candidate ]] && name="${name}-${candidate}"
+        zyp_cmd="in"
+    esac
+
+    if [[ $zyp_cmd ]]; then
+      zypper "${options[@]}" "$zyp_cmd" "$name" >/dev/null 2>"$_tmp" || fail
+    fi
+
+    # Installing and removing a specific version is ok, but not for `if`
+    # So strip the version from this command
+    cmd_status="$(zypper_status "${name%%-*}")"
+    success "$cmd_status"
 esac

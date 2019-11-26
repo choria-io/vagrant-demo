@@ -5,7 +5,7 @@
     "description": "Manage Operating System Packages",
     "author": "R.I.Pienaar <rip@devco.net>",
     "license": "Apache-2.0",
-    "version": "5.1.0",
+    "version": "5.2.0",
     "url": "https://github.com/choria-plugins/package-agent",
     "timeout": 180
   },
@@ -42,6 +42,11 @@
         "output": {
           "description": "Output from apt-get",
           "display_as": "Output",
+          "default": null
+        },
+        "outdated_packages": {
+          "description": "Outdated packages",
+          "display_as": "Outdated Packages",
           "default": null
         },
         "exitcode": {
@@ -297,6 +302,48 @@
           "function": "summary",
           "args": [
             "ensure"
+          ]
+        }
+      ]
+    },
+    {
+      "action": "search",
+      "input": {
+        "package": {
+          "prompt": "Package Name",
+          "description": "Package to search for, either name, glob, or package spec",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": "shellsafe",
+          "maxlength": 90
+        }
+      },
+      "output": {
+        "package_count": {
+          "description": "Number of packages available",
+          "display_as": "Number of Packages Available",
+          "default": null
+        },
+        "available_packages": {
+          "description": "Available packages",
+          "display_as": "Available Packages",
+          "default": null
+        }
+      },
+      "display": "always",
+      "description": "Search package manager for package availability",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "package_count"
+          ]
+        },
+        {
+          "function": "summary",
+          "args": [
+            "package_count"
           ]
         }
       ]

@@ -16,7 +16,9 @@ class apt::params {
   $conf_d         = "${root}/apt.conf.d"
   $preferences    = "${root}/preferences"
   $preferences_d  = "${root}/preferences.d"
+  $apt_conf_d     = "${root}/apt.conf.d"
   $keyserver      = 'keyserver.ubuntu.com'
+  $key_options    = undef
   $confs          = {}
   $update         = {}
   $purge          = {}
@@ -64,6 +66,7 @@ class apt::params {
     'sources.list.d' => false,
     'preferences'    => false,
     'preferences.d'  => false,
+    'apt.conf.d'     => false,
   }
 
   $source_key_defaults = {

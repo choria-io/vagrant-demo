@@ -2,6 +2,13 @@
 
 Change history for `choria/mcollective_agent_package`
 
+## 5.2.0
+
+Release 2019-11-26
+
+ * Fix return value for apt_update (#11)
+ * Add the ability to search for available packages (#15)
+
 ## 5.1.0
 
 Release 2018-12-01

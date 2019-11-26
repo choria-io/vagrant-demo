@@ -1,29 +1,33 @@
 module MCollective
   module Util
     module Package
-      class YumPackage<Base
+      class YumPackage < Base
         def install
-          return call_action(:install)
+          call_action(:install)
         end
 
         def update
-          return call_action(:update)
+          call_action(:update)
         end
 
         def uninstall
-          return call_action(:remove)
+          call_action(:remove)
         end
 
         # Status returns a hash of package properties
         def status
-          return call_action(:status)
+          call_action(:status)
+        end
+
+        def search
+          call_action(:search)
         end
 
         # Calls and cleans up the yum provider
         def call_action(action)
-          require 'json'
+          require "json"
           yumhelper = File::join(File::dirname(__FILE__), "yumHelper.py")
-          raise 'Cannot find yumHelper.py' unless File.exists?(yumhelper)
+          raise "Cannot find yumHelper.py" unless File.exists?(yumhelper)
           result = {:exitcode => nil,
                     :output => ""}
 
@@ -39,7 +43,7 @@ module MCollective
           if r[:status].is_a?(Hash)
             r[:status] = Hash[r[:status].map{|(k,v)| [k.to_sym,v]}]
           end
-          return r
+          r
         end
       end
     end

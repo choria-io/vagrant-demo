@@ -11,7 +11,6 @@ task :update do
     "puppetlabs/apply",
     "puppetlabs/package",
     "puppetlabs/inifile",
-    "puppetlabs/puppet_authorization",
     "herculesteam/augeasproviders_core",
     "camptocamp/augeas",
   ]
@@ -23,5 +22,6 @@ task :update do
     sh "puppet module install --modulepath `pwd`/environments/production/modules %s" % mod
   end
 
+  sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/puppet_authorization --ignore-dependencies"
   sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/puppetserver --ignore-dependencies"
 end

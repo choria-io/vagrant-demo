@@ -9,6 +9,9 @@
 #   Specifies a keyserver to provide the GPG key. Valid options: a string containing a domain name or a full URL (http://, https://, or
 #   hkp://).
 #
+# @param key_options
+#   Specifies the default options for apt::key resources.
+#
 # @param ppa_options
 #   Supplies options to be passed to the `add-apt-repository` command.
 #
@@ -122,6 +125,7 @@ class apt (
   Hash $include_defaults        = $apt::params::include_defaults,
   String $provider              = $apt::params::provider,
   String $keyserver             = $apt::params::keyserver,
+  Optional[String] $key_options = $apt::params::key_options,
   Optional[String] $ppa_options = $apt::params::ppa_options,
   Optional[String] $ppa_package = $apt::params::ppa_package,
   Optional[Hash] $backports     = $apt::params::backports,
@@ -144,6 +148,7 @@ class apt (
   String $conf_d                = $apt::params::conf_d,
   String $preferences           = $apt::params::preferences,
   String $preferences_d         = $apt::params::preferences_d,
+  String $apt_conf_d            = $apt::params::apt_conf_d,
   Hash $config_files            = $apt::params::config_files,
   Hash $source_key_defaults     = $apt::params::source_key_defaults,
 ) inherits apt::params {
@@ -179,6 +184,9 @@ class apt (
   }
   if $purge['preferences.d'] {
     assert_type(Boolean, $purge['preferences.d'])
+  }
+  if $purge['apt.conf.d'] {
+    assert_type(Boolean, $purge['apt.conf.d'])
   }
 
   $_purge = merge($::apt::purge_defaults, $purge)
@@ -258,6 +266,17 @@ class apt (
     notify  => Class['apt::update'],
   }
 
+  file { 'apt.conf.d':
+    ensure  => directory,
+    path    => $::apt::apt_conf_d,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    purge   => $_purge['apt.conf.d'],
+    recurse => $_purge['apt.conf.d'],
+    notify  => Class['apt::update'],
+  }
+
   if $confs {
     create_resources('apt::conf', $confs)
   }
@@ -302,5 +321,5 @@ class apt (
   }
 
   # required for adding GPG keys on Debian 9 (and derivatives)
-  ensure_packages(['dirmngr'])
+  ensure_packages(['gnupg'])
 }

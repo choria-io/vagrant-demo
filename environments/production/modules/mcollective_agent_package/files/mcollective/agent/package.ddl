@@ -2,7 +2,7 @@ metadata    :name        => "package",
             :description => "Manage Operating System Packages",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache-2.0",
-            :version     => "5.1.0",
+            :version     => "5.2.0",
             :url         => "https://github.com/choria-plugins/package-agent",
             :timeout     => 180
 
@@ -64,6 +64,31 @@ requires :mcollective => "2.2.1"
           aggregate summary(:ensure)
         end
     end
+end
+
+action "search", :description => "Search package manager for package availability" do
+    display :always
+
+    input :package,
+          :prompt      => "Package Name",
+          :description => "Package to search for, either name, glob, or package spec",
+          :type        => :string,
+          :validation  => :shellsafe,
+          :optional    => false,
+          :maxlength   => 90
+
+    output :package_count,
+           :description => "Number of packages available",
+           :display_as  => "Number of Packages Available"
+
+    output :available_packages,
+           :description => "Available packages",
+           :display_as  => "Available Packages"
+
+    summarize do
+       aggregate summary(:package_count)
+    end
+
 end
 
 action "status", :description => "Get the status of a package" do
@@ -162,6 +187,10 @@ action "apt_update", :description => "Update the apt cache" do
     output :output,
            :description => "Output from apt-get",
            :display_as  => "Output"
+
+    output :outdated_packages,
+           :description => "Outdated packages",
+           :display_as  => "Outdated Packages"
 
     output :exitcode,
            :description => "The exitcode from the apt-get command",

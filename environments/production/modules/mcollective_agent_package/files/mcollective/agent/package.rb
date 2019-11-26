@@ -1,68 +1,73 @@
 module MCollective
   module Agent
-    class Package<RPC::Agent
+    class Package < RPC::Agent
 
-      action 'install' do
+      action "install" do
         Package.do_pkg_action(request[:package], :install, reply, request[:version])
       end
 
-      action 'update' do
+      action "update" do
         Package.do_pkg_action(request[:package], :update, reply)
       end
 
-      action 'uninstall' do
+      action "uninstall" do
         Package.do_pkg_action(request[:package], :uninstall, reply)
       end
 
-      action 'purge' do
+      action "purge" do
         Package.do_pkg_action(request[:package], :purge, reply)
       end
 
-      action 'status' do
+      action "status" do
         Package.do_pkg_action(request[:package], :status, reply)
       end
 
-      action 'count' do
+      action "search" do
+        Package.do_pkg_action(request[:package], :search, reply)
+      end
+
+      action "count" do
         result = package_helper.count
         reply[:exitcode] = result[:exitcode]
         reply[:output] = result[:output]
       end
 
-     action 'md5' do
+      action "md5" do
         result = package_helper.md5
         reply[:exitcode] = result[:exitcode]
         reply[:output] = result[:output]
       end
 
-      action 'yum_clean' do
-        clean_mode = request[:mode] || @config.pluginconf.fetch('package.yum_clean_mode', 'all')
+      action "yum_clean" do
+        clean_mode = request[:mode] || @config.pluginconf.fetch("package.yum_clean_mode", "all")
         result = package_helper.yum_clean(clean_mode)
         reply[:exitcode] = result[:exitcode]
         reply[:output] = result[:output]
       end
 
-      action 'apt_update' do
+      action "apt_update" do
         result = package_helper.apt_update
         reply[:exitcode] = result[:exitcode]
         reply[:output] = result[:output]
+        reply[:outdated_packages] = result[:outdated_packages]
       end
 
-      action 'checkupdates' do
-        do_checkupdates_action('checkupdates')
+      action "checkupdates" do
+        do_checkupdates_action("checkupdates")
       end
 
-      action 'yum_checkupdates' do
-        do_checkupdates_action('yum_checkupdates')
+      action "yum_checkupdates" do
+        do_checkupdates_action("yum_checkupdates")
       end
 
-      action 'apt_checkupdates' do
-        do_checkupdates_action('apt_checkupdates')
+      action "apt_checkupdates" do
+        do_checkupdates_action("apt_checkupdates")
       end
 
       # Identifies the configured package provider
       # Defaults to puppet
       def self.package_provider
-        return Config.instance.pluginconf.fetch('package.provider', 'puppet')
+        Config.instance.pluginconf.fetch("package.provider", "puppet")
       end
 
       # Loads both the base class that all providers should inherit from,
@@ -73,7 +78,7 @@ module MCollective
         Log.debug("Loading %s package provider" % provider)
 
         begin
-          PluginManager.loadclass('MCollective::Util::Package::Base')
+          PluginManager.loadclass("MCollective::Util::Package::Base")
           PluginManager.loadclass("MCollective::Util::Package::#{provider}")
           Util::Package.const_get(provider)
         rescue => e
@@ -90,14 +95,14 @@ module MCollective
       #
       # which will then be returned as
       #
-      #   {:x => 'y'}
+      #   {:x => "y"}
       #
       def self.provider_options(provider, version = nil)
         provider_options = {}
 
         Config.instance.pluginconf.each do |k, v|
           if k =~ /package\.#{provider}/
-            provider_options[k.split('.').last.to_sym] = v
+            provider_options[k.split(".").last.to_sym] = v
           end
         end
 
@@ -116,13 +121,14 @@ module MCollective
         provider = Package.load_provider_class(Package.package_provider).new(package, Package.provider_options(Package.package_provider, version))
         result = provider.send(action)
 
+        # somewhere around here this is converting the hash to a string :\
         if action == :status
           result.each do |k,v|
-            reply[k] = v.to_s
+            reply[k] = v.is_a?(Array) || v.is_a?(Hash) ? v : v.to_s
           end
         else
           result[:status].each do |k,v|
-            reply[k] = v.to_s
+            reply[k] = v.is_a?(Array) || v.is_a?(Hash) ? v : v.to_s
           end
         end
 
@@ -132,6 +138,7 @@ module MCollective
       end
 
       private
+
       # Calls the correct helper method corresponding to the supplied
       # action and updates the agents reply values.
       def do_checkupdates_action(action)
@@ -144,8 +151,8 @@ module MCollective
 
       # Loads and returns the package_helper class
       def package_helper
-        PluginManager.loadclass('MCollective::Util::Package::PackageHelpers')
-        Util::Package.const_get('PackageHelpers')
+        PluginManager.loadclass("MCollective::Util::Package::PackageHelpers")
+        Util::Package.const_get("PackageHelpers")
       end
     end
   end
