@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v1.0.0](https://github.com/puppetlabs/puppetlabs-package/tree/v1.0.0) (2019-12-02)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v0.7.0...v1.0.0)
+
+### Changed
+
+- pdksync - FM-8499 remove ubuntu 14 support [\#164](https://github.com/puppetlabs/puppetlabs-package/pull/164) ([lionce](https://github.com/lionce))
+
+### Added
+
+- \(FM-8692\) - Addition of Support for CentOS 8 [\#161](https://github.com/puppetlabs/puppetlabs-package/pull/161) ([david22swan](https://github.com/david22swan))
+
 ## [v0.7.0](https://github.com/puppetlabs/puppetlabs-package/tree/v0.7.0) (2019-10-28)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v0.6.0...v0.7.0)

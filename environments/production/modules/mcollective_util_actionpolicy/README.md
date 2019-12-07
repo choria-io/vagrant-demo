@@ -78,7 +78,7 @@ Policy files must have the following format:
 * A single `policy default deny` or `policy default allow` line is permitted; it can go anywhere in the file. This default policy will apply to any commands that don't match a specific rule. If you don't specify a default policy, the value of the `plugin.actionpolicy.allow_unconfigured` setting will be used as the default.
 * Any number of _policy lines_ are permitted. These must be **tab delimited** lines with either four or five fields (the final field is optional) in the following order:
     1. `allow` or `deny`
-    2. Caller ID --- must be either `*` (always matches) or a space-separated list of caller ID strings (see below)
+    2. Caller ID --- must be either `*` (always matches), a space-separated list of caller ID strings (see below) or a regular expression (see below)
     3. Actions --- must be either `*` (always matches) or a space-separated list of actions
     4. Facts --- may be either `*` (always matches), a space-separated list of `fact=value` pairs (matches if _every_ listed fact matches), or any valid [compound filter string][compound]
     5. Classes --- may be completely absent (always matches), `*` (always matches), a space-separated list of class names (matches if _every_ listed class is present), or any valid [compound filter string][compound]
@@ -94,7 +94,7 @@ Policy files must have the following format:
 
 ### Caller ID
 
-In the case of a single user the Caller ID strings are always of the form `<kind>=<value>`, but both the kind and the value of the ID will depend on your security plugin. See your security plugin's documentation or code for details. Multiple Caller IDs separated by spaces are supported to allow grouping similar callers together.
+In the case of a single user the Caller ID strings are always of the form `<kind>=<value>`, but both the kind and the value of the ID will depend on your security plugin. See your security plugin's documentation or code for details. Multiple Caller IDs separated by spaces are supported to allow grouping similar callers together. You can also mix and match in regular expressions, thus `cert=bob /cert=.+_admin$/` would be a valid match for `cert=bob` and `cert=db_admin`.
 
 You can also define named groups of callers like `sysadmin`, see the Groups section below.
 

@@ -2,6 +2,12 @@
 
 Change history for `choria/mcollective_util_actionpolicy`
 
+# 3.2.0
+
+Release 2019-12-03
+
+ * Support regular expressions in callerid matches (#7)
+
 # 3.1.0
 
 Release 2019-03-04

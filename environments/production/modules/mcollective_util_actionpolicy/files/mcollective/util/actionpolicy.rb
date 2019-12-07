@@ -130,7 +130,12 @@ module MCollective
       def caller_in_callerids?(caller_ids)
         return false unless caller_ids
 
-        caller_ids.to_s.include?(caller_id)
+        caller_ids.split(" ").each do |cid|
+          return true if cid == caller_id
+          return true if cid =~ /^\/(.+)\/$/ && caller_id.match?(Regexp.new($1))
+        end
+
+        false
       end
 
       def action_in_actions?(actions)

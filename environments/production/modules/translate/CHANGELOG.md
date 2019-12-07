@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.1.0](https://github.com/puppetlabs/puppetlabs-translate/tree/v2.1.0) (2019-11-29)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-translate/compare/v2.0.0...v2.1.0)
+
+### Added
+
+- \(FM-8682\) - Addition of Support for CentOS 8 [\#59](https://github.com/puppetlabs/puppetlabs-translate/pull/59) ([david22swan](https://github.com/david22swan))
+- FM-8414  - Add support on Debian 10 [\#52](https://github.com/puppetlabs/puppetlabs-translate/pull/52) ([lionce](https://github.com/lionce))
+
 ## [v2.0.0](https://github.com/puppetlabs/puppetlabs-translate/tree/v2.0.0) (2019-06-13)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-translate/compare/1.2.0...v2.0.0)
