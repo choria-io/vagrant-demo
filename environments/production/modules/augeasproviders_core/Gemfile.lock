@@ -72,7 +72,7 @@ GEM
       puppet-lint (~> 2.0)
       puppet-syntax (~> 2.0)
       rspec-puppet (~> 2.0)
-    rake (12.3.2)
+    rake (13.0.1)
     redcarpet (2.3.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -117,7 +117,7 @@ PLATFORMS
 DEPENDENCIES
   coveralls
   metadata-json-lint
-  puppet (~> 5.0)
+  puppet (>= 2.7)
   puppet-lint
   puppet-lint-absolute_classname-check
   puppet-lint-empty_string-check
@@ -133,7 +133,7 @@ DEPENDENCIES
   redcarpet (~> 2.0)
   rspec-puppet
   rspec-puppet-facts
-  ruby-augeas (~> 0.5)
+  ruby-augeas (~> 0.3)
   simplecov (~> 0.7.0)
   yard
 
