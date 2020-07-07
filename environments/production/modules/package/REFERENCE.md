@@ -85,9 +85,9 @@ Manage the state of packages (without a puppet agent)
 
 ##### `action`
 
-Data type: `Enum[install, uninstall, upgrade]`
+Data type: `Enum[install, uninstall, upgrade, status]`
 
-The action to be applied to the package: install, uninstall, and upgrade.
+The action to be applied to the package: install, uninstall, upgrade, and status.
 
 ##### `name`
 

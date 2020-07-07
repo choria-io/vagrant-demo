@@ -18,6 +18,7 @@ The ACTION can be one of the following:
     count            - determine number of packages installed
     md5              - determine md5 of package list
     search           - Determine if package is available to the system
+    refresh          - refresh the list of available packages
     yum_clean        - clean the yum cache
     yum_checkupdates - display available updates from yum
     apt_update       - update all available packages
@@ -55,6 +56,7 @@ USAGE
           apt_update
           checkupdates
           apt_checkupdates
+          refresh
         ]
         if (ARGV.size < 2) && !valid_global_actions.include?(ARGV[0])
           handle_message(:raise, 1)
@@ -94,6 +96,11 @@ USAGE
         end
       end
 
+      def format_output(pattern, sender_width, result)
+        output = result[:data][:output].gsub("\n", "\n" + " " * (sender_width + 2))
+        pattern % [result[:sender], output]
+      end
+
       def main
         pkg = rpcclient("package")
         if configuration[:version].nil?
@@ -128,17 +135,21 @@ USAGE
                     "%s-%s" % [package[:package], package[:version]]
                   end.join(" ")
                   puts(pattern % [result[:sender], status])
-                elsif 'search'.include?(configuration[:action])
+                elsif %w[refresh].include?(configuration[:action])
+                  puts(format_output(pattern, sender_width, result))
+                elsif %w[search].include?(configuration[:action])
                   puts(pattern % [result[:sender], result[:data][:package_count]])
                 else
                   puts(pattern % [result[:sender], result[:data][:ensure]])
                 end
               else
                 if configuration[:action] == "status"
-                  if result[:data][:ensure] == "absent"
-                    status = "absent"
+                  case result[:data][:ensure]
+                  when "absent", "purged"
+                    status = result[:data][:ensure]
                   else
-                    status = '%s-%s.%s' % [result[:data][:name], result[:data][:ensure], result[:data][:arch]]
+                    status = '%s-%s' % [result[:data][:name], result[:data][:ensure]]
+                    status += ".#{result[:data][:arch]}" if result[:data][:arch]
                   end
                   puts(pattern % [result[:sender], status])
                 else

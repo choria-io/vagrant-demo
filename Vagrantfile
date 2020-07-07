@@ -4,7 +4,7 @@
 INSTANCES=2
 
 PROVISION_PUPPET = <<PUPPET
-/bin/rpm -ivh http://yum.puppetlabs.com/puppet6/puppet6-release-el-7.noarch.rpm
+/bin/rpm -ivh http://yum.puppetlabs.com/puppet6/puppet6-release-el-8.noarch.rpm
 /usr/bin/yum -y install puppet-agent
 echo '*' > /etc/puppetlabs/puppet/autosign.conf
 /opt/puppetlabs/bin/puppet resource host puppet.choria ensure=present ip=192.168.90.5 host_aliases=puppet
@@ -14,13 +14,14 @@ PUPPET
 
 Vagrant.configure("2") do |config|
   config.vm.define :puppet do |vmconfig|
-    vmconfig.vm.box = "centos/7"
-    vmconfig.vm.box_version = "1804.02"
+    vmconfig.vm.box = "centos/8"
     vmconfig.vm.hostname = "puppet.choria"
     vmconfig.vm.network :private_network, ip: "192.168.90.5"
     vmconfig.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", 3072]
     end
+
+    vmconfig.vbguest.installer_options = { allow_kernel_upgrade: true }
 
     vmconfig.vm.provision :shell do |s|
       s.inline = PROVISION_PUPPET
@@ -43,14 +44,15 @@ Vagrant.configure("2") do |config|
 
   INSTANCES.times do |i|
     config.vm.define "instance#{i}" do |vmconfig|
-      vmconfig.vm.box = "centos/7"
-    vmconfig.vm.box_version = "1804.02"
+      vmconfig.vm.box = "centos/8"
       vmconfig.vm.hostname = "choria%s.choria" % i
       vmconfig.vm.network :private_network, ip: "192.168.90.%d" % (9+i)
       vmconfig.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--memory", 1024]
       end
   
+      vmconfig.vbguest.installer_options = { allow_kernel_upgrade: true }
+
       vmconfig.vm.provision :shell do |s|
         s.inline = PROVISION_PUPPET
         s.args = "managed"

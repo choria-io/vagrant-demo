@@ -25,14 +25,14 @@ function ErrorMessage($Action, $Name, $Message)
     "details" : {}
   }
 }
-"@  
+"@
 }
 
 # Do this outside the initial script parameters in order to control the error message
 function ValidateParams
 {
   param(
-    [ValidateSet('install', 'uninstall', 'upgrade')]
+    [ValidateSet('install', 'uninstall', 'upgrade', 'status')]
     [String]
     $Action
   )
@@ -41,15 +41,27 @@ function ValidateParams
 function Invoke-PackageAction($Package, $Action, $Version)
 {
 
-  $commandLine = "choco $Action $Package -y"
-  if (([string]::IsNullOrEmpty($Version) -eq $false) -and (($Action -eq "install") -or ($Action -eq "upgrade")))
+  $commandLine = "choco"
+
+  if ($Action -eq "status")
   {
-      $commandLine += " --version $Version"
+    $commandLine += " search $Package -y --exact --lo --limit-output"
+  } else {
+    $commandLine += " $Action $Package -y"
+
+    if (([string]::IsNullOrEmpty($Version) -eq $false) -and (($Action -eq "install") -or ($Action -eq "upgrade")))
+    {
+       $commandLine += " --version $Version"
+    }
   }
 
   $cmdOutput = cmd /c "$commandLine 2>&1"
   if ($LastExitCode -eq 0) {
-    return
+    if ($Action -eq "status")
+    {
+      $cmdOutput = if ($cmdOutput) {$cmdOutput} else {"Uninstalled"}
+    }
+    return $cmdOutput
   }
 
   throw "$cmdOutput"
@@ -59,6 +71,16 @@ try
 {
   ValidateParams -Action $action
   $status = Invoke-PackageAction -Package $Name -Action $Action -Version $Version
+
+  if ($Action -eq "status")
+  {
+    if ($status -ne "Uninstalled")
+	{
+	  $info = $status.split("|")
+	  $status = "Installed"
+	  $version = $info[1]
+	}
+  }
 
   switch ($Action)
   {
@@ -86,6 +108,16 @@ try
   "status"      : "Upgraded $Name",
   "old_version" : "",
   "version"     : ""
+}
+"@
+    }
+    'status'
+    {
+      Write-Host @"
+{
+  "status"      : "$status",
+  "old_version" : "",
+  "version"     : "$version"
 }
 "@
     }

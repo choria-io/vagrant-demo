@@ -10,7 +10,8 @@
 
 **Functions**
 
-* [`create_ini_settings`](#create_ini_settings): create_resources is used to create a set of ini_setting resources from a hash
+* [`create_ini_settings`](#create_ini_settings): DEPRECATED.  Use the namespaced function [`inifile::create_ini_settings`](#inifilecreate_ini_settings) instead.
+* [`inifile::create_ini_settings`](#inifilecreate_ini_settings): This function is used to create a set of ini_setting resources from a hash
 
 ## Resource types
 
@@ -220,13 +221,43 @@ The value for the insert types which require one.
 
 ### create_ini_settings
 
-Type: Ruby 3.x API
+Type: Ruby 4.x API
 
-create_resources is used to create a set of ini_setting resources from a hash
+DEPRECATED.  Use the namespaced function [`inifile::create_ini_settings`](#inifilecreate_ini_settings) instead.
 
-#### `create_ini_settings()`
+#### `create_ini_settings(Any *$args)`
 
-create_resources is used to create a set of ini_setting resources from a hash
+The create_ini_settings function.
 
-Returns: `String` Returns a string.
+Returns: `Any`
+
+##### `*args`
+
+Data type: `Any`
+
+
+
+### inifile::create_ini_settings
+
+Type: Ruby 4.x API
+
+This function is used to create a set of ini_setting resources from a hash
+
+#### `inifile::create_ini_settings(Hash $settings, Optional[Hash] $defaults)`
+
+The inifile::create_ini_settings function.
+
+Returns: `Any`
+
+##### `settings`
+
+Data type: `Hash`
+
+A hash of settings you want to create ini_setting resources from
+
+##### `defaults`
+
+Data type: `Optional[Hash]`
+
+A hash of defaults you would like to use in the ini_setting resources
 

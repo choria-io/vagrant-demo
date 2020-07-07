@@ -1,0 +1,4 @@
+---
+mcollective_agent_nettest::manage_gem_dependencies: false
+mcollective_agent_nettest::package_dependencies:
+  ruby-net-ping: "present"

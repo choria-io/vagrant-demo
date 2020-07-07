@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-translate",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "puppetlabs",
   "summary": "Puppet module that provides the translate() function for internationalization.",
   "license": "Apache-2.0",
@@ -32,6 +32,9 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
+        "5",
+        "6",
+        "7",
         "8"
       ]
     },
@@ -39,7 +42,8 @@
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "14.04",
-        "16.04"
+        "16.04",
+        "18.04"
       ]
     },
     {
@@ -58,7 +62,7 @@
       "version_requirement": ">= 5.5.10 < 7.0.0"
     }
   ],
-  "pdk-version": "1.14.1",
+  "pdk-version": "1.17.0",
   "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "tags/1.14.1-0-g0b5b39b"
+  "template-ref": "1.17.0-0-gd3a4319"
 }

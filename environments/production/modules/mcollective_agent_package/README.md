@@ -17,6 +17,7 @@ This agent provides the following actions, for details about each please run `mc
  * **install** - Install a package
  * **md5** - Get md5 digest of list of packages installed
  * **purge** - Purge a package
+ * **refresh** - Update the available packages cache
  * **search** - Search package manager for package availability
  * **status** - Get the status of a package
  * **uninstall** - Uninstall a package

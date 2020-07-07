@@ -216,6 +216,22 @@ If you need the sub-node to be removed rather than cleared when the value is set
     )
 
 
+##### Array value as string
+
+When you wish to expose your attribute as an array and Augeas stores it as
+a string, you can use the `:array` type combined with the `:split_by`
+parameter:
+
+    attr_aug_access(:foo,
+      :type     => :array,
+      :split_by => ','
+    )
+
+will get the value of the `foo` subnode in the Augeas tree and split it on
+commas to return an array of values. Commas will again be used to join values
+when writing them to the tree.
+
+
 ##### Array value
 
 Augeas has two ways of representing array values in its trees, using either fix labels or sequential entries (see [this page](http://www.redhat.com/archives/augeas-devel/2011-February/msg00053.html) for an explanation of why both of them exist).

@@ -2,7 +2,7 @@ metadata    :name        => "nettest",
             :description => "Perform network tests from a mcollective host",
             :author      => "Dean Smith <dean@zelotus.com>",
             :license     => "BSD",
-            :version     => "4.0.2",
+            :version     => "4.0.3",
             :url         => "https://github.com/choria-plugins/nettest-agent",
             :timeout     => 60
 

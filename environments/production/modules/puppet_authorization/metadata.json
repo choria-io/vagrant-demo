@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-puppet_authorization",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": "puppetlabs",
   "summary": "Module to manage auth.conf.",
   "license": "Apache-2.0",
@@ -8,31 +8,42 @@
   "project_page": "https://github.com/puppetlabs/puppetlabs-puppet_authorization",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 4.6.0 < 6.0.0"},
-    {"name":"puppetlabs-concat","version_requirement":">= 1.1.1 < 6.0.0"},
-    {"name":"puppetlabs-hocon","version_requirement":">= 0.9.3 < 2.0.0"}
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.6.0 < 7.0.0"
+    },
+    {
+      "name": "puppetlabs-concat",
+      "version_requirement": ">= 1.1.1 < 7.0.0"
+    },
+    {
+      "name": "puppetlabs-hocon",
+      "version_requirement": ">= 0.9.3 < 2.0.0"
+    }
   ],
-  "data_provider": null,
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
@@ -64,5 +75,8 @@
       "name": "puppet",
       "version_requirement": ">= 4.7.0 < 7.0.0"
     }
-  ]
+  ],
+  "pdk-version": "1.15.0",
+  "template-url": "pdk-default#1.15.0",
+  "template-ref": "tags/1.15.0-0-g0bc522e"
 }

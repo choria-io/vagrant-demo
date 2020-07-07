@@ -45,6 +45,12 @@ module MCollective
         reply[:output] = result[:output]
       end
 
+      action "refresh" do
+        result = package_helper.refresh
+        reply[:exitcode] = result[:exitcode]
+        reply[:output] = result[:output]
+      end
+
       action "apt_update" do
         result = package_helper.apt_update
         reply[:exitcode] = result[:exitcode]

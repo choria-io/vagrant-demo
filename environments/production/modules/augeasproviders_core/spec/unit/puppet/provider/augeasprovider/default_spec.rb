@@ -530,6 +530,16 @@ describe provider_class do
         end
       end
 
+      it "should create a class method using :array with :split_by" do
+        subject.attr_aug_reader(:foo, { :type => :array, :split_by => ',' })
+        subject.method_defined?('attr_aug_reader_foo').should be true
+
+        subject.augopen(resource) do |aug|
+          aug.expects(:get).with('$resource/foo').returns('baz,bazz')
+          subject.attr_aug_reader_foo(aug).should == ['baz', 'bazz']
+        end
+      end
+
       it "should create a class method using :array and no sublabel" do
         subject.attr_aug_reader(:foo, { :type => :array })
         subject.method_defined?('attr_aug_reader_foo').should be true
@@ -623,6 +633,25 @@ describe provider_class do
         subject.augopen(resource) do |aug|
           aug.expects(:set).with('$resource/foo', 'bar')
           subject.attr_aug_writer_foo(aug, 'bar')
+          aug.expects(:rm).with('$resource/foo')
+          subject.attr_aug_writer_foo(aug)
+        end
+      end
+
+      it "should create a class method using :array with :split_by" do
+        subject.attr_aug_writer(:foo, { :type => :array, :split_by => ',' })
+        subject.method_defined?('attr_aug_writer_foo').should be true
+
+        subject.augopen(resource) do |aug|
+          # one value
+          aug.expects(:set).with('$resource/foo', 'bar')
+          subject.attr_aug_writer_foo(aug, ['bar'])
+          # multiple values
+          aug.expects(:set).with('$resource/foo', 'bar,baz')
+          subject.attr_aug_writer_foo(aug, ['bar', 'baz'])
+          # purge values
+          aug.expects(:rm).with('$resource/foo')
+          subject.attr_aug_writer_foo(aug, [])
           aug.expects(:rm).with('$resource/foo')
           subject.attr_aug_writer_foo(aug)
         end

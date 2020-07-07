@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.2.0](https://github.com/puppetlabs/puppetlabs-translate/tree/v2.2.0) (2020-03-23)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-translate/compare/v2.1.0...v2.2.0)
+
+### Added
+
+- Add CentOS 5-7 and Ubuntu 18.04 [\#70](https://github.com/puppetlabs/puppetlabs-translate/pull/70) ([ekohl](https://github.com/ekohl))
+- \[FM-7939\] Puppet Strings [\#41](https://github.com/puppetlabs/puppetlabs-translate/pull/41) ([carabasdaniel](https://github.com/carabasdaniel))
+
 ## [v2.1.0](https://github.com/puppetlabs/puppetlabs-translate/tree/v2.1.0) (2019-11-29)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-translate/compare/v2.0.0...v2.1.0)
@@ -23,7 +32,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - \(FM-8034\) Add RedHat 8 support [\#42](https://github.com/puppetlabs/puppetlabs-translate/pull/42) ([eimlav](https://github.com/eimlav))
-- \[FM-7939\] Puppet Strings [\#41](https://github.com/puppetlabs/puppetlabs-translate/pull/41) ([carabasdaniel](https://github.com/carabasdaniel))
 - \(FM-7720/FM-7722/FM-7723\) - Update to windows support [\#33](https://github.com/puppetlabs/puppetlabs-translate/pull/33) ([david22swan](https://github.com/david22swan))
 
 ### Fixed

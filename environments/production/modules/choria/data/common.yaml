@@ -7,8 +7,12 @@ choria::server_config:
   plugin.choria.agent_provider.mcorpc.agent_shim: "/usr/bin/choria_mcollective_agent_compat.rb"
   plugin.choria.agent_provider.mcorpc.config: "/etc/puppetlabs/mcollective/choria-shim.cfg"
   plugin.choria.agent_provider.mcorpc.libdir: "/opt/puppetlabs/mcollective/plugins"
+  plugin.choria.machine.store: "/etc/choria/machine"
+  plugin.scout.overrides: "/etc/choria/overrides.json"
 
 choria::rubypath: "/opt/puppetlabs/puppet/bin/ruby"
+choria::manage_package: true
+choria::manage_service: true
 choria::manage_package_repo: false
 choria::nightly_repo: false
 choria::repo_baseurl: "https://packagecloud.io/choria"
@@ -19,6 +23,9 @@ choria::srvdomain: "%{facts.networking.domain}"
 choria::mcollective_config_dir: "/etc/puppetlabs/mcollective"
 choria::broker_config_file: "/etc/choria/broker.conf"
 choria::server_config_file: "/etc/choria/server.conf"
+choria::manage_server_config: true
+choria::server_provisioning_token_file: "/etc/choria/provisioning.jwt"
+choria::server_provisioning_token: ~
 choria::logfile: "/var/log/choria.log"
 choria::statusfile: "/var/log/choria-status.json"
 choria::status_write_interval: 30
@@ -27,7 +34,9 @@ choria::broker_service_name: "choria-broker"
 choria::server_service_name: "choria-server"
 choria::identity: "%{trusted.certname}"
 choria::server: false
-choria::root_group: "root"
+choria::repo_gpgcheck: false
+choria::config_user: "root"
+choria::config_group: "root"
 
 choria::broker::network_broker: true
 choria::broker::federation_broker: false
@@ -47,6 +56,9 @@ choria::broker::identity: "%{trusted.certname}"
 lookup_options:
   choria::collectives:
     merge: "unique"
+  choria::scout_overrides:
+    merge:
+      strategy: "deep"
   choria::server_config:
     merge:
       strategy: "deep"

@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.6.0
+
+- Add array split_by option (GH #20)
+- Switch to xenial for Travis CI tests (GH #22)
+- Add Debian 10 and Red Hat 8 to the supported OS list (GH #21)
+
+## 2.5.0
+
+- Support puppetlabs/stdlib 6 in metadata.json
+
 ## 2.4.0
 
 - Revert broken exists? implementation

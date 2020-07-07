@@ -5,9 +5,9 @@ mcollective_agent_package::common_files:
 - data/package_data.ddl
 - util/package/puppetpackage.rb
 - util/package/base.rb
-- util/package/packagehelpers.rb
 - util/package/yumHelper.py
 - util/package/yumpackage.rb
+- util/package/packagehelpers.rb
 - validator/package_name.rb
 - validator/package_name.ddl
 - agent/package.ddl

@@ -66,7 +66,7 @@ do wish to allow any resources to be managed set this to true:
 
 ```yaml
 mcollective_agent_puppet::config:
-  resource_allow_managed_resources = true
+  resource_allow_managed_resources: true
 ```
 
 The resource action can manage any resource type Puppet can, by default we blacklist
@@ -76,8 +76,8 @@ agent will be able to manage - you cannot specify both a blacklist and a whiteli
 
 ```yaml
 mcollective_agent_puppet::config:
-  resource_type_whitelist = host,alias
-  resource_type_blacklist = exec
+  resource_type_whitelist: host,alias
+  resource_type_blacklist: exec
 ```
 If you supply the value *none* to *type_whitelist* it will have the effect of denying
 all resource management - this is the default.
@@ -89,7 +89,7 @@ explicitly specified:
 
 ```yaml
 mcollective_agent_puppet::config:
-  windows_service = puppet
+  windows_service: puppet
 ```
 
 The agent will by default invoke `command` to initiate a
@@ -104,7 +104,7 @@ disable this like so:
 
 ```yaml
 mcollective_agent_puppet::config:
-  signal_daemon = false
+  signal_daemon: false
 ```
 
 The agent will not by default accept the server option. If passed then
@@ -113,7 +113,7 @@ configuration file like so:
 
 ```yaml
 mcollective_agent_puppet::config:
-  allow_server_override = true
+  allow_server_override: true
 ```
 
 ## Authorization
@@ -450,8 +450,8 @@ to the following configuration:
 
 ```yaml
 mcollective_agent_puppet::config:
-  resource_allow_managed_resources = true
-  resource_type_whitelist = none
+  resource_allow_managed_resources: true
+  resource_type_whitelist: none
 ```
 
 You can allow all types except the exec, service and package types using the
@@ -459,7 +459,7 @@ following config line:
 
 ```yaml
 mcollective_agent_puppet::config:
-  resource_type_blacklist = exec,service,package
+  resource_type_blacklist: exec,service,package
 ```
 
 You can say which resource names are allowed or denied. You define whitelist or blacklist
@@ -468,7 +468,7 @@ for resource type by adding resource type after `resource_name_whitelist` or
 
 ```yaml
 mcollective_agent_puppet::config:
-  resource_name_blacklist.package = ssh
+  resource_name_blacklist.package: ssh
 ```
 
 If you not defined list for resource type, all names are allowed.

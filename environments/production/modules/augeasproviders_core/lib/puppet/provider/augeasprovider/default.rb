@@ -222,6 +222,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     default = opts[:default] || nil
     type = opts[:type] || :string
     sublabel = opts[:sublabel] || nil
+    split_by = opts[:split_by] || nil
 
     rpath = label == :resource ? '$resource' : "$resource/#{label}"
 
@@ -241,18 +242,22 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
       when :string
         aug.get(rpath)
       when :array
-        aug.match(rpath).map do |p|
-          if sublabel.nil?
-            aug.get(p)
-          else
-            if sublabel == :seq
-              sp = "#{p}/*[label()=~regexp('[0-9]+')]"
+        if split_by
+          (aug.get(rpath) || "").split(split_by)
+        else
+          aug.match(rpath).map do |p|
+            if sublabel.nil?
+              aug.get(p)
             else
-              sp = "#{p}/#{sublabel}"
+              if sublabel == :seq
+                sp = "#{p}/*[label()=~regexp('[0-9]+')]"
+              else
+                sp = "#{p}/#{sublabel}"
+              end
+              aug.match(sp).map { |spp| aug.get(spp) }
             end
-            aug.match(sp).map { |spp| aug.get(spp) }
-          end
-        end.flatten
+          end.flatten
+        end
       when :hash
         values = {}
         aug.match(rpath).each do |p|
@@ -294,6 +299,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     sublabel = opts[:sublabel] || nil
     purge_ident = opts[:purge_ident] || false
     rm_node = opts[:rm_node] || false
+    split_by = opts[:split_by] || nil
 
     rpath = label == :resource ? '$resource' : "$resource/#{label}"
 
@@ -320,10 +326,12 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
           aug.clear(rpath)
         end
       when :array
-        if args[0].nil?
+        if args[0].nil? || args[0].empty?
           aug.rm(rpath)
         else
-          if sublabel.nil?
+          if split_by
+            aug.set(rpath, args[0].join(split_by))
+          elsif sublabel.nil?
             aug.rm(rpath)
             count = 0
             args[0].each do |v|

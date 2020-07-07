@@ -2,6 +2,18 @@
 
 Change history for `choria/mcollective_agent_puppet`
 
+## 2.3.3
+
+Release 2020-06-23
+
+ * Support runall on Choria Server (#43)
+
+## 2.3.2
+
+Release 2019-12-17
+
+ * Add type hints to output fields of the DDL (#40)
+
 ## 2.3.1
 
 Released 2018-11-04

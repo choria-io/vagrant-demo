@@ -138,27 +138,11 @@ module MCollective
       end
 
       def find_enabled_nodes
-        unless @client.filter["compound"].empty?
-          # munge the filter to and it with checking for enabled nodes
-          log("Modifying user-specified filter: and'ing with 'puppet().enabled=true'")
-          filter = @client.filter["compound"].clone
-          filter[0].unshift("(" => "(")
-          filter[0].unshift("and" => "and")
-          filter[0].unshift({"fstatement" => {
-                               "operator" => "==",
-                               "params" => nil,
-                               "r_compare" => "true",
-                               "name" => "puppet",
-                               "value" => "enabled"}
-                            })
-          filter[0].push({")" => ")"})
-          @client.filter["compound"].clear
-          @client.filter["compound"] = filter
-        else
-          @client.filter["compound"].clear
-          @client.compound_filter("puppet().enabled=true")
-        end
-        @client.discover.clone
+        Log.debug("finding enabled nodes")
+
+        @client.status.map do |result|
+          result[:sender] if result[:data][:enabled]
+        end.compact.sort
       end
 
       # Get a list of nodes that are possibly applying

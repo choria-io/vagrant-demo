@@ -16,6 +16,7 @@ This setup builds a 3 node cluster, 1 Puppet Server + Choria Broker and 2 other 
  * [Net Test Agent](https://forge.puppet.com/choria/mcollective_agent_nettest)
  * [Process Agent](https://forge.puppet.com/choria/mcollective_agent_process)
  * Standard Choria features like Authentication, Authorization and Auditing
+ * Various Choria Scout checks configured
 
 ## Requirements
 
@@ -517,6 +518,53 @@ $ cat /var/log/puppetlabs/mcollective-audit.log
 {"timestamp":"2018-05-02T11:18:10.078825+0000","request_id":"39e34c6aa4865188af215eed992c5488","request_time":1525259890,"caller":"choria=vagrant.mcollective","sender":"puppet.choria","agent":"process","action":"list","data":{"pattern":"ruby","just_zombies":false,"process_results":true}}
 {"timestamp":"2018-05-02T11:19:34.906233+0000","request_id":"fbf2288187605ed9b4d01ed632dd3b47","request_time":1525259974,"caller":"choria=vagrant.mcollective","sender":"puppet.choria","agent":"process","action":"list","data":{"pattern":"ruby","process_results":true}}
 ```
+
+### Choria Scout
+
+A number of Scout Checks are configured:
+
+```
+$ ls /etc/choria/machine/
+heartbeat  ntp_peer  swap  zombieprocs
+```
+
+You can watch the real time event stream these checks produce:
+
+```
+$ choria machine watch
+puppet.choria heartbeat#check OK: 1594120227
+choria0.choria heartbeat#check OK: 1594120228
+```
+
+In another terminal we can force an immediate check of all `swap` checks:
+
+```
+$ mco rpc choria_util machine_transition name=swap transition=FORCE_CHECK
+```
+
+The first running `choria machine watch` should see:
+
+```
+puppet.choria swap transitioned via event FORCE_CHECK: OK => FORCE_CHECK
+puppet.choria swap transitioned via event OK: FORCE_CHECK => OK
+choria1.choria swap#check OK: SWAP OK - 100% free (2045 MB out of 2047 MB) |swap=2045MB;614;409;0;2047
+choria0.choria swap#check OK: SWAP OK - 100% free (2045 MB out of 2047 MB) |swap=2045MB;614;409;0;2047
+choria1.choria swap transitioned via event FORCE_CHECK: UNKNOWN => FORCE_CHECK
+choria1.choria swap transitioned via event OK: FORCE_CHECK => OK
+choria0.choria swap transitioned via event FORCE_CHECK: UNKNOWN => FORCE_CHECK
+choria0.choria swap transitioned via event OK: FORCE_CHECK => OK
+```
+
+These events are JSON documents in the CloudEvents v1 format published on the network to `choria.machine.watcher.*.state`:
+
+```
+$ choria tool sub 'choria.machine.watcher.*.state'
+Waiting for messages from topic choria.machine.watcher.*.state on nats://puppet:4222
+---- 11:14:13 on topic choria.machine.watcher.nagios.state
+{"data":{"protocol":"io.choria.machine.watcher.nagios.v1.state","identity":"choria1.choria","id":"13808047-7298-4a7e-9f6d-5337887ca305","version":"1.0.0","timestamp":1594120453,"type":"nagios","machine":"heartbeat","name":"check","plugin":"","status":"OK","status_code":0,"output":"1594120453","check_time":1594120453,"perfdata":null,"runtime":0.000002961},"id":"b1716b62-db73-448a-834d-6b8cd722d987","source":"io.choria.machine","specversion":"1.0","subject":"choria1.choria","time":"2020-07-07T11:14:13Z","type":"io.choria.machine.watcher.nagios.v1.state"}
+```
+
+Scout is a new feature, further demo features will be added in future.
 
 ## Further Reading
 

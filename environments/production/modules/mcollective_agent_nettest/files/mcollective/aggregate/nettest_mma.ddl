@@ -2,7 +2,7 @@ metadata :name => "nettest_mma",
          :description => "Max, min, average aggregate function.",
          :author => "P. Loubser <pieter.loubser@puppetlabs.com>",
          :license => "BSD",
-         :version => "4.0.2",
+         :version => "4.0.3",
          :url => "https://github.com/choria-plugins/nettest-agent",
          :timeout => 1
 

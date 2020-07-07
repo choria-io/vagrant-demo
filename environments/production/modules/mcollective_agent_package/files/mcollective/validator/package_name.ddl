@@ -2,7 +2,7 @@ metadata :name        => "package_name",
          :description => "Validates that a string is a package name",
          :author      => "R.I.Pienaar <rip@devco.net>",
          :license     => "Apache-2.0",
-         :version     => "5.2.0",
+         :version     => "5.3.0",
          :url         => "https://github.com/choria-plugins/package-agent",
          :timeout     => 1
 

@@ -9,8 +9,8 @@ mcollective_agent_puppet::common_files:
 - util/puppet_agent_mgr/mgr_v3.rb
 - util/puppet_agent_mgr/mgr_windows.rb
 - util/puppet_server_address_validation.rb
-- util/puppetrunner.rb
 - util/puppet_agent_mgr.rb
+- util/puppetrunner.rb
 - validator/puppet_resource_validator.rb
 - validator/puppet_server_address_validator.rb
 - validator/puppet_tags_validator.rb
@@ -21,6 +21,7 @@ mcollective_agent_puppet::common_files:
 - validator/puppet_variable_validator.ddl
 - agent/puppet.ddl
 - agent/puppet.json
+mcollective_agent_puppet::executable_files: []
 mcollective_agent_puppet::common_directories:
 - util/puppet_agent_mgr
 mcollective_agent_puppet::server_files:

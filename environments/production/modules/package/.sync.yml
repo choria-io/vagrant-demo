@@ -2,92 +2,33 @@
 ".gitlab-ci.yml":
   delete: true
 ".travis.yml":
+  global_env: 
+    - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
   dist: trusty
+  deploy_to_forge:
+    enabled: false
   branches:
   - release
   user: puppet
   secure: ''
-  includes:
-  - bundler_args: 
-    dist: trusty
-    env: PLATFORMS=debian_puppet5
-    rvm: 2.5.3
-    before_script:
-    - bundle exec rake 'litmus:provision_list[waffle_deb]'
-    - bundle exec rake 'litmus:install_agent[puppet5]'
-    - bundle exec rake litmus:install_module
-    script:
-    - bundle exec rake litmus:acceptance:parallel
-    services: docker
-    sudo: required
-    stage: acceptance
-  - bundler_args: 
-    dist: trusty
-    env: PLATFORMS=debian_puppet6
-    rvm: 2.5.3
-    before_script:
-    - bundle exec rake 'litmus:provision_list[waffle_deb]'
-    - bundle exec rake 'litmus:install_agent[puppet6]'
-    - bundle exec rake litmus:install_module
-    script:
-    - bundle exec rake litmus:acceptance:parallel
-    services: docker
-    sudo: required
-    stage: acceptance
-  - bundler_args: 
-    dist: trusty
-    env: PLATFORMS=el6_puppet5
-    rvm: 2.5.3
-    before_script:
-    - bundle exec rake 'litmus:provision_list[waffle_el6]'
-    - bundle exec rake 'litmus:install_agent[puppet5]'
-    - bundle exec rake litmus:install_module
-    script:
-    - bundle exec rake litmus:acceptance:parallel
-    services: docker
-    sudo: required
-    stage: acceptance
-  - bundler_args: 
-    dist: trusty
-    env: PLATFORMS=el6_puppet6
-    rvm: 2.5.3
-    before_script:
-    - bundle exec rake 'litmus:provision_list[waffle_el6]'
-    - bundle exec rake 'litmus:install_agent[puppet6]'
-    - bundle exec rake litmus:install_module
-    script:
-    - bundle exec rake litmus:acceptance:parallel
-    services: docker
-    sudo: required
-    stage: acceptance
-  - bundler_args: 
-    dist: trusty
-    env: PLATFORMS=el7_puppet5
-    rvm: 2.5.3
-    before_script:
-    - bundle exec rake 'litmus:provision_list[waffle_el7]'
-    - bundle exec rake 'litmus:install_agent[puppet5]'
-    - bundle exec rake litmus:install_module
-    script:
-    - bundle exec rake litmus:acceptance:parallel
-    services: docker
-    sudo: required
-    stage: acceptance
-  - bundler_args: 
-    dist: trusty
-    env: PLATFORMS=el7_puppet6
-    rvm: 2.5.3
-    before_script:
-    - bundle exec rake 'litmus:provision_list[waffle_el7]'
-    - bundle exec rake 'litmus:install_agent[puppet6]'
-    - bundle exec rake litmus:install_module
-    script:
-    - bundle exec rake litmus:acceptance:parallel
-    services: docker
-    sudo: required
-    stage: acceptance
+  use_litmus: true
+  litmus:
+    provision_list:
+      - travis_deb
+      - travis_ub
+      - travis_el6
+      - travis_el7
+      - travis_el8
+      - ---travis_el
   simplecov: true
+  notifications:
+    slack:
+      secure: >-
+        Bi6bwC7CEQ+XcmpUfv68i0bQ5l8PBCGRs3DDvspbC9wF/gZnY1xQJj/w4wKx0CrGyYcOJ6rrJUOwn1ES628FwMRhccNs9JVJaxujEucl7IrQ8Xzn0567/p8vE7YkjRnjUFkuZ5CgUMPBdU+NczyP+CNYNBkGyj/tvDyLX6UZOXKstf5PoFwR0xZdCE0CHm9sQ+eh4Ui+9SV0V0nDY8CpSA4injmVWR1Kk2Rw+RkQCUruR8VDpEPsiVocaDK+4SPub6RBQdL6PkIGiV2/2Ya0mXPGoL4LKgdrBJM+IscFbSakEAQOvQSMBgMteS0PYo09vNzojjAxQgxWDvaPjAw+3hZT4nCi444EKCU5bV8JcCxHDm0cF9lhCzy1YShGqmIGPX2j8suYYg9/vjo5sHaF5i+FaVtF2wE6t7atGJ99xYHd1Zpww0LgYUCeif5vDITJ49K6wivsLtPIZ/Jl++nBVduKZ1YPwsceDZU4xwJ3+YZ9SnhQZFFbI6lER+Gc5g7DnGPruMecY5kofkCTom9XcM4/AHTZOK0EadX1U88lGwNI8j5ak7TsIQTplQmGeJuVQ2qgoefiqUgmPRgj0YlJ+eWVEKrXZ7htVmgXJ9KOdswnSKNElbbhU4u52BEkG0coAaOhSW/EiVpmMGaOCkpDXWKy14pZMPVmTK3swOYCqG4=
 appveyor.yml:
+  environment:
+    HONEYCOMB_WRITEKEY: 7f3c63a70eecc61d635917de46bea4e6
+    HONEYCOMB_DATASET: litmus tests
   use_litmus: true
   matrix_extras:
   - RUBY_VERSION: 25-x64

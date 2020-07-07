@@ -2,6 +2,15 @@
 
 Change history for `choria/mcollective_agent_package`
 
+## 5.3.0
+
+Release 2020-07-07
+
+ * Improve handling of operating systems that does not report architecture in packages
+ * Improve handling absent and purged packages
+ * Add a refresh action to update available package list (#23)
+ * Add FreeBSD pkg support (#21)
+
 ## 5.2.0
 
 Release 2019-11-26

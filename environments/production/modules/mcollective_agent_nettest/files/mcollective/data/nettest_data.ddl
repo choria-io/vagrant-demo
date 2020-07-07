@@ -2,7 +2,7 @@ metadata :name => "nettest",
          :description => "Checks if connecting to a host on a specified port is possible",
          :author => "Pieter Loubser <pieter.loubser@puppetlabs.com>",
          :license => "BSD",
-         :version => "4.0.2",
+         :version => "4.0.3",
          :url => "https://github.com/choria-plugins/nettest-agent",
          :timeout => 1
 

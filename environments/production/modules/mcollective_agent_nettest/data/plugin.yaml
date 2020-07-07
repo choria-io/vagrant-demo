@@ -10,6 +10,7 @@ mcollective_agent_nettest::common_files:
 - validator/nettest_server_address.ddl
 - agent/nettest.ddl
 - agent/nettest.json
+mcollective_agent_nettest::executable_files: []
 mcollective_agent_nettest::common_directories: []
 mcollective_agent_nettest::server_files:
 - agent/nettest.rb
@@ -19,4 +20,6 @@ mcollective_agent_nettest::client_files:
 - aggregate/nettest_mma.rb
 - aggregate/nettest_mma.ddl
 mcollective_agent_nettest::client_directories: []
+mcollective_agent_nettest::gem_dependencies:
+  net-ping: 2.0.6
 

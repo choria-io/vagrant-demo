@@ -418,6 +418,14 @@ type, or a hash of `parameter => value` pairs to be passed to `apt::pin`'s corre
 
 Default value: 200
 
+##### `include`
+
+Data type: `Optional[Variant[Hash]]`
+
+Specifies whether to include 'deb' or 'src', or both.
+
+Default value: {}
+
 ## Defined types
 
 ### apt::conf
@@ -520,7 +528,7 @@ Default value: `undef`
 
 ##### `server`
 
-Data type: `Pattern[/\A((hkp|hkps|http|https):\/\/)?([a-z\d])([a-z\d-]{0,61}\.)+[a-z\d]+(:\d{2,5})?$/]`
+Data type: `Pattern[/\A((hkp|hkps|http|https):\/\/)?([a-z\d])([a-z\d-]{0,61}\.)+[a-z\d]+(:\d{2,5})?(\/[a-zA-Z\d\-_.]+)*\/?$/]`
 
 Specifies a keyserver to provide the GPG key. Valid options: a string containing a domain name or a full URL (http://, https://,
 hkp:// or hkps://). The hkps:// protocol is currently only supported on Ubuntu 18.04.
@@ -716,6 +724,15 @@ Optional if lsb-release is installed (unless you're using a different release th
 Specifies the operating system of your node. Valid options: a string containing a valid LSB distribution codename.
 
 Default value: $facts['lsbdistcodename']
+
+##### `dist`
+
+Data type: `Optional[String]`
+
+Optional if lsb-release is installed (unless you're using a different release than indicated by lsb-release, e.g., Linux Mint).
+Specifies the distribution of your node. Valid options: a string containing a valid distribution codename.
+
+Default value: $facts['lsbdistid']
 
 ##### `package_name`
 

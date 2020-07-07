@@ -1,14 +1,13 @@
 {
-  "CHANGELOG.md": "7e6793764151a090b9805e987c3b9c56",
+  "CHANGELOG.md": "b50b62a3d656b75438011fa168b9d2cd",
   "CONTRIBUTING.md": "11e7aa5b3f05c7b09d32a385578db71f",
   "Gemfile": "0c7927147f6e52b7e32c8fdebfd08d7b",
-  "Gemfile.lock": "93f6fa94cc47acb51329210f0ab92b83",
   "LICENSE": "dd6462909b746fc9ec71656f9e9c71f9",
   "README.md": "b2261d4b64133a2005bed16f67299406",
   "Rakefile": "9fa53df215e4b68e62591deac3aad5ba",
   "docs/Makefile": "d4613b09b1c5ce046969a6b731e02938",
   "docs/buttondown.css": "f15e6924612f4c5ae477030bf7bf665b",
-  "docs/development.md": "bca2aff243b7563963c8e0665bfbd3da",
+  "docs/development.md": "f597d5841a0a71b90851448b28434c98",
   "docs/examples/apache_directive.md": "282295d28da084891cba9a5750253df4",
   "docs/examples/apache_setenv.md": "62cf9cadbf3f207734ee5c6d3c84143e",
   "docs/examples/host.md": "ccc23a5bc50a746c90a6890012d64ce7",
@@ -34,9 +33,9 @@
   "docs/motw.md": "0227cd4d0aee940d1df0ebea7b5fcb06",
   "docs/specs.md": "9eb05fe66f1d4e3686515182bac19e38",
   "lib/puppet/feature/augeas.rb": "8d31d9948f734ec29836b0bf152acd62",
-  "lib/puppet/provider/augeasprovider/default.rb": "2454892b2ae40666208dc4cb92213234",
+  "lib/puppet/provider/augeasprovider/default.rb": "584f5ebbda459b4a972ffc60c5e63b04",
   "lib/puppet/type/augeasprovider.rb": "4e5f09a523458cdf6c9c0974ed6b6fa0",
-  "metadata.json": "4682987d6f40cdec556cf55ac65ff23d",
+  "metadata.json": "35c2c2fad41a17750c91f01249af942b",
   "spec/fixtures/unit/puppet/provider/augeasprovider/default/broken": "7657a3a3c58088d06aa33ab174622ef4",
   "spec/fixtures/unit/puppet/provider/augeasprovider/default/full": "20380104252d133d336cec79930ac625",
   "spec/lib/augeas_spec/augparse.rb": "c2223a246982f53695cd60f05734084b",
@@ -45,5 +44,5 @@
   "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
   "spec/spec_helper.rb": "583a150ec65fb0bb7fcbbb612553c81d",
   "spec/spec_helper_acceptance.rb": "906c51f535be8591b383938c14e58c9f",
-  "spec/unit/puppet/provider/augeasprovider/default_spec.rb": "99d09e46ce1df2637e3fb032589e84ab"
+  "spec/unit/puppet/provider/augeasprovider/default_spec.rb": "bdb2671201884a87a8ffd77fd066ff9f"
 }

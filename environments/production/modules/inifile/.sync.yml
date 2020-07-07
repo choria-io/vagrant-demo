@@ -1,0 +1,59 @@
+---
+".gitlab-ci.yml":
+  delete: true
+".rubocop.yml":
+  require:
+  - rubocop-i18n
+  - rubocop-rspec
+".travis.yml":
+  global_env: 
+    - HONEYCOMB_WRITEKEY="7f3c63a70eecc61d635917de46bea4e6",HONEYCOMB_DATASET="litmus tests"
+  dist: trusty
+  deploy_to_forge:
+    enabled: false
+  user: puppet
+  secure: ''
+  branches:
+  - release
+  use_litmus: true
+  litmus:
+    provision_list:
+      - travis_deb
+      - travis_ub
+      - travis_el6
+      - travis_el7
+      - ---travis_el
+  simplecov: true
+  notifications:
+    slack:
+      secure: f7XbE9eVRGVVLoq1BYsib9T+elBhFoAs/Vojg1OaxFAixZSMAbHq+6egsAZuToSXwwo2XIYeBYbnyomvoKDrMw1UDQ93vc85AwZBvk4pKsPpF+jfgX+az56pu7LeZmEcDk+eWvvH2PPhOJmJpYcWR/gRKQciGSGHBiMgD8UmenU=
+appveyor.yml:
+  environment:
+    HONEYCOMB_WRITEKEY: 7f3c63a70eecc61d635917de46bea4e6
+    HONEYCOMB_DATASET: litmus tests
+  use_litmus: true
+  matrix_extras:
+  - RUBY_VERSION: 25-x64
+    ACCEPTANCE: 'yes'
+    TARGET_HOST: localhost
+  - RUBY_VERSION: 25-x64
+    ACCEPTANCE: 'yes'
+    TARGET_HOST: localhost
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  simplecov: true
+Gemfile:
+  optional:
+    ":development":
+    - gem: github_changelog_generator
+      git: https://github.com/skywinder/github-changelog-generator
+      ref: 20ee04ba1234e9e83eb2ffb5056e23d641c7a018
+      condition: Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
+  required:
+    ":development":
+    - gem: puppet-lint-i18n
+Rakefile:
+  requires:
+  - puppet_pot_generator/rake_tasks
+spec/spec_helper.rb:
+  mock_with: ":rspec"
+  coverage_report: true

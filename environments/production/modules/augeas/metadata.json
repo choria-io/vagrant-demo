@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-augeas",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "author": "camptocamp",
   "summary": "Camptocamp Augeas module",
   "license": "Apache-2.0",
@@ -8,16 +8,12 @@
   "project_page": "https://github.com/camptocamp/puppet-augeas",
   "issues_url": "https://github.com/camptocamp/puppet-augeas/issues",
   "dependencies": [
-  
-  ],
-  "data_provider": null,
-  "description": "Augeas Module for Puppet",
-  "requirements": [
     {
-      "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 7.0.0"
+      "name": "puppetlabs/augeas_core",
+      "version_requirement": ">=1.0.0 <2.0.0"
     }
   ],
+  "data_provider": null,
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
@@ -47,6 +43,19 @@
         "2014.09",
         "2015.03"
       ]
+    },
+    {
+      "operatingsystem": "Archlinux"
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "description": "Augeas Module for Puppet",
+  "pdk-version": "1.15.0",
+  "template-url": "pdk-default#1.15.0",
+  "template-ref": "tags/1.15.0-0-g0bc522e"
 }

@@ -2,7 +2,7 @@ metadata    :name        => "package",
             :description => "Manage Operating System Packages",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache-2.0",
-            :version     => "5.2.0",
+            :version     => "5.3.0",
             :url         => "https://github.com/choria-plugins/package-agent",
             :timeout     => 180
 
@@ -246,5 +246,15 @@ action "checkupdates", :description => "Check for updates" do
 
     output :exitcode,
            :description => "The exitcode from the package manager command",
+           :display_as => "Exit Code"
+end
+
+action "refresh", :description => "Update the available packages cache" do
+    output :output,
+           :description => "Output from the package manager",
+           :display_as  => "Output"
+
+    output :exitcode,
+           :description => "The exitcode from the package manager",
            :display_as => "Exit Code"
 end

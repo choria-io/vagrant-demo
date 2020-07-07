@@ -2,6 +2,12 @@
 
 Change history for choria/mcollective_agent_nettest
 
+## 4.0.3
+
+Released 2020-07-07
+
+ * Improve dependencies on the net-ping gem
+
 ## 4.0.2
 
 Released 2018-04-20

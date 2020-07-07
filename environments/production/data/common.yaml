@@ -1,5 +1,8 @@
 choria::manage_package_repo: true
 
+choria::server_config:
+  plugin.choria.machine.store: /etc/choria/machine
+
 mcollective_agent_nettest::gem_dependencies:
   "net-ping": "2.0.2"
 
@@ -24,4 +27,28 @@ mcollective::plugin_classes:
   - mcollective_agent_nettest
   - mcollective_agent_bolt_tasks
 
-extra_packages: []
+extra_packages: 
+  - epel-release
+  - nagios-plugins-ntp
+  - nagios-plugins-http
+  - nagios-plugins-load
+  - nagios-plugins-swap
+  - nagios-plugins-procs
+
+checks:
+  heartbeat:
+    builtin: heartbeat
+    check_interval: 1m
+
+  ntp_peer:
+    plugin: /usr/lib64/nagios/plugins/check_ntp_peer
+    arguments: -w 10 -c 30 -H localhost
+
+  swap:
+    plugin: /usr/lib64/nagios/plugins/check_swap
+    arguments: -w 30% -c 20%
+
+  zombieprocs:
+    plugin: /usr/lib64/nagios/plugins/check_procs
+    arguments: -w 5 -c 10 -s Z
+

@@ -6,31 +6,8 @@ I often find myself logging onto boxes to ping different sites to diagnose local
 
 ## Installation
 
-Install the `Net::Ping` RubyGem on all your agent nodes:
-
-**NOTE:** To install this gem you need to have a c++ compiler on your system
-
-```yaml
-mcollective_agent_nettest::gem_dependencies:
-  "net-ping": "2.0.2"
-```
-
-Add the agent and client:
-
-```yaml
-mcollective::plugin_classes:
-  - mcollective_agent_nettest
-```
-
-### Archlinux
-
-On Archlinux machines the following Hiera data will install the dependencies using native packages and you do not need compilers:
-
-```yaml
-mcollective_agent_nettest::manage_gem_dependencies: false
-mcollective_agent_nettest::package_dependencies:
-  ruby-net-ping: present
-```
+This module depends on the `Net::Ping` Ruby gem which requires a C++ compiler
+to build.
 
 ## Usage
 

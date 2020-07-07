@@ -4,8 +4,8 @@
   "input_method": "powershell",
   "parameters": {
     "action": {
-      "description": "The action to be applied to the package: install, uninstall, and upgrade.",
-      "type": "Enum[install, uninstall, upgrade]"
+      "description": "The action to be applied to the package: install, uninstall, upgrade, and status.",
+      "type": "Enum[install, uninstall, upgrade, status]"
     },
     "name": {
       "description": "The name of the package to manage.",

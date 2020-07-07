@@ -1,6 +1,10 @@
 # Installs, configures and manages the Choria Orchestrator
 #
+# @param manage_package Manage the choria package
+# @param manage_service Manage the choria-server package
 # @param manage_package_repo Installs the package repositories
+# @param purge_machines Deletes Choria Autonomous Agents that are not managed by Puppet
+# @param scout_overrides Override data for Scout checks
 # @param nightly_repo Install the nightly package repo as well as the release one
 # @param ensure Add or remove the software
 # @param repo_baseurl Used to override default packagecloud package source
@@ -8,6 +12,9 @@
 # @param mcollective_config_dir Directory where mcollective configuration is stored
 # @param broker_config_file The configuration file for the broker
 # @param server_config_file The configuration file for the server
+# @param server_provisioning_token_file The configuration token to configure server provisioning
+# @param server_provisioning_token The contents of the provisioning token
+# @param manage_server_config To manage the server config file or not, disable in provisioning mode
 # @param logfile The default file to log to
 # @param broker_logfile The file to log the broker to
 # @param server_logfile The file to log the server to
@@ -24,7 +31,10 @@
 # @param identity The identity this server will use to determine SSL cert names etc
 # @param server To enable or disable the choria server
 # @param server_config Configuration for the Choria Server
+# @param repo_gpgcheck Whether to enable repo gpgcheck (must be false for packagecloud mirrors)
 class choria (
+  Boolean $manage_package,
+  Boolean $manage_service,
   Boolean $manage_package_repo ,
   Boolean $nightly_repo,
   Enum["present", "absent"] $ensure,
@@ -35,6 +45,9 @@ class choria (
   Stdlib::Compat::Absolute_path $mcollective_config_dir,
   Stdlib::Compat::Absolute_path $broker_config_file,
   Stdlib::Compat::Absolute_path $server_config_file,
+  Stdlib::Compat::Absolute_path $server_provisioning_token_file,
+  Optional[String] $server_provisioning_token,
+  Boolean $manage_server_config,
   Stdlib::Compat::Absolute_path $logfile,
   Optional[Stdlib::Compat::Absolute_path] $statusfile,
   Integer $status_write_interval,
@@ -45,7 +58,11 @@ class choria (
   String $identity,
   Boolean $server,
   Hash $server_config,
-  String $root_group,
+  Optional[Boolean] $repo_gpgcheck,
+  Optional[String] $config_user,
+  Optional[String] $config_group,
+  Boolean $purge_machines = true,
+  Hash $scout_overrides = {},
   Enum[debug, info, warn, error, fatal] $broker_log_level = $log_level,
   Enum[debug, info, warn, error, fatal] $server_log_level = $log_level,
   Stdlib::Compat::Absolute_path $broker_logfile = $logfile,
