@@ -22,6 +22,10 @@ task :update do
     sh "puppet module install --modulepath `pwd`/environments/production/modules %s" % mod
   end
 
+  sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/concat --ignore-dependencies"
+  sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/systemd --ignore-dependencies"
+  sh "puppet module install --modulepath `pwd`/environments/production/modules puppet/archive --ignore-dependencies"
+  sh "puppet module install --modulepath `pwd`/environments/production/modules puppet/prometheus --ignore-dependencies"
   sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/puppet_authorization --ignore-dependencies"
   sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/puppetserver --ignore-dependencies"
 end

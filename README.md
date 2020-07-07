@@ -521,6 +521,8 @@ $ cat /var/log/puppetlabs/mcollective-audit.log
 
 ### Choria Scout
 
+Scout is a new feature that will enable monitoring pipelines to be built using Choria, further demo features will be added in future.
+
 A number of Scout Checks are configured:
 
 ```
@@ -564,7 +566,32 @@ Waiting for messages from topic choria.machine.watcher.*.state on nats://puppet:
 {"data":{"protocol":"io.choria.machine.watcher.nagios.v1.state","identity":"choria1.choria","id":"13808047-7298-4a7e-9f6d-5337887ca305","version":"1.0.0","timestamp":1594120453,"type":"nagios","machine":"heartbeat","name":"check","plugin":"","status":"OK","status_code":0,"output":"1594120453","check_time":1594120453,"perfdata":null,"runtime":0.000002961},"id":"b1716b62-db73-448a-834d-6b8cd722d987","source":"io.choria.machine","specversion":"1.0","subject":"choria1.choria","time":"2020-07-07T11:14:13Z","type":"io.choria.machine.watcher.nagios.v1.state"}
 ```
 
-Scout is a new feature, further demo features will be added in future.
+The nodes will run Prometheus Node Exporter with Scout integration enabled, after a while you can see the data Choria Scout makes available to Prometheus:
+
+```
+$ curl -s http://localhost:9100/metrics|grep choria_
+# HELP choria_machine_nagios_start_time Time the Choria Machine subsystem started in unix seconds
+# TYPE choria_machine_nagios_start_time gauge
+choria_machine_nagios_start_time 1.594124867e+09
+# HELP choria_machine_nagios_watcher_checks_count Choria Nagios Check Count
+# TYPE choria_machine_nagios_watcher_checks_count counter
+choria_machine_nagios_watcher_checks_count{name="heartbeat"} 7
+choria_machine_nagios_watcher_checks_count{name="ntp_peer"} 3
+choria_machine_nagios_watcher_checks_count{name="swap"} 1
+choria_machine_nagios_watcher_checks_count{name="zombieprocs"} 1
+# HELP choria_machine_nagios_watcher_last_run_seconds Choria Nagios Check Time
+# TYPE choria_machine_nagios_watcher_last_run_seconds gauge
+choria_machine_nagios_watcher_last_run_seconds{name="heartbeat"} 1.594125181e+09
+choria_machine_nagios_watcher_last_run_seconds{name="ntp_peer"} 1.594125139e+09
+choria_machine_nagios_watcher_last_run_seconds{name="swap"} 1.594124868e+09
+choria_machine_nagios_watcher_last_run_seconds{name="zombieprocs"} 1.594124868e+09
+# HELP choria_machine_nagios_watcher_status Choria Nagios Check Status
+# TYPE choria_machine_nagios_watcher_status gauge
+choria_machine_nagios_watcher_status{name="heartbeat",status="OK"} 0
+choria_machine_nagios_watcher_status{name="ntp_peer",status="CRITICAL"} 2
+choria_machine_nagios_watcher_status{name="swap",status="UNKNOWN"} 3
+choria_machine_nagios_watcher_status{name="zombieprocs",status="UNKNOWN"} 3
+```
 
 ## Further Reading
 

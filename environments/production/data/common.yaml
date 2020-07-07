@@ -1,7 +1,10 @@
+prometheus::node_exporter::extra_options: "--collector.textfile.directory=/var/lib/node_exporter/textfile"
+
 choria::manage_package_repo: true
 
 choria::server_config:
   plugin.choria.machine.store: /etc/choria/machine
+  plugin.choria.prometheus_textfile_directory: /var/lib/node_exporter/textfile
 
 mcollective_agent_nettest::gem_dependencies:
   "net-ping": "2.0.2"
