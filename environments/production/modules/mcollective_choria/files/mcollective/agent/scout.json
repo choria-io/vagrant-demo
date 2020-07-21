@@ -1,0 +1,208 @@
+{
+  "$schema": "https://choria.io/schemas/mcorpc/ddl/v1/agent.json",
+  "metadata": {
+    "name": "scout",
+    "description": "Choria Scout Management API",
+    "author": "R.I.Pienaar <rip@devco.net>",
+    "license": "Apache-2.0",
+    "version": "0.18.0",
+    "url": "https://choria.io",
+    "provider": "golang",
+    "timeout": 5
+  },
+  "actions": [
+    {
+      "action": "checks",
+      "input": {
+      },
+      "output": {
+        "checks": {
+          "description": "Details about each check",
+          "display_as": "Checks",
+          "default": null
+        }
+      },
+      "display": "ok",
+      "description": "Obtain a list of checks and their current status"
+    },
+    {
+      "action": "goss_validate",
+      "input": {
+        "file": {
+          "prompt": "Goss File",
+          "description": "Path to the Goss validation specification",
+          "type": "string",
+          "default": null,
+          "optional": false,
+          "validation": ".+",
+          "maxlength": 256
+        },
+        "vars": {
+          "prompt": "Vars File",
+          "description": "Path to a file to use as template variables",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": ".+",
+          "maxlength": 256
+        }
+      },
+      "output": {
+        "failures": {
+          "description": "The number of tests that failed",
+          "display_as": "Failed Tests",
+          "default": null
+        },
+        "results": {
+          "description": "The full test results",
+          "display_as": "Results",
+          "default": null
+        },
+        "runtime": {
+          "description": "The time it took to run the tests, in seconds",
+          "display_as": "Runtime",
+          "default": null
+        },
+        "success": {
+          "description": "Indicates if the test passed",
+          "display_as": "Success",
+          "default": null
+        },
+        "summary": {
+          "description": "A human friendly test result",
+          "display_as": "Summary",
+          "default": null
+        },
+        "tests": {
+          "description": "The number of tests that were run",
+          "display_as": "Tests",
+          "default": null
+        }
+      },
+      "display": "failed",
+      "description": "Performs a Goss validation using a specific file",
+      "aggregate": [
+        {
+          "function": "summary",
+          "args": [
+            "tests",
+            {
+              "format": "%s Test Cases on %d node(s)"
+            }
+          ]
+        },
+        {
+          "function": "summary",
+          "args": [
+            "failures",
+            {
+              "format": "%s Failed Cases on %d node(s)"
+            }
+          ]
+        },
+        {
+          "function": "summary",
+          "args": [
+            "success",
+            {
+              "format": "%s Passed Cases on %d node(s)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "action": "maintenance",
+      "input": {
+        "checks": {
+          "prompt": "Checks",
+          "description": "Check to pause, empty means all",
+          "type": "array",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "failed": {
+          "description": "List of checks that could not be paused",
+          "display_as": "Failed",
+          "default": null
+        },
+        "skipped": {
+          "description": "List of checks that was skipped",
+          "display_as": "Skipped",
+          "default": null
+        },
+        "transitioned": {
+          "description": "List of checks that were paused",
+          "display_as": "Triggered",
+          "default": null
+        }
+      },
+      "display": "failed",
+      "description": "Pause checking of one or more checks"
+    },
+    {
+      "action": "resume",
+      "input": {
+        "checks": {
+          "prompt": "Checks",
+          "description": "Check to resume, empty means all",
+          "type": "array",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "failed": {
+          "description": "List of checks that could not be resumed",
+          "display_as": "Failed",
+          "default": null
+        },
+        "skipped": {
+          "description": "List of checks that was skipped",
+          "display_as": "Skipped",
+          "default": null
+        },
+        "transitioned": {
+          "description": "List of checks that were resumed",
+          "display_as": "Triggered",
+          "default": null
+        }
+      },
+      "display": "failed",
+      "description": "Resume active checking of one or more checks"
+    },
+    {
+      "action": "trigger",
+      "input": {
+        "checks": {
+          "prompt": "Checks",
+          "description": "Check to trigger, empty means all",
+          "type": "array",
+          "default": null,
+          "optional": true
+        }
+      },
+      "output": {
+        "failed": {
+          "description": "List of checks that could not be triggered",
+          "display_as": "Failed",
+          "default": null
+        },
+        "skipped": {
+          "description": "List of checks that was skipped",
+          "display_as": "Skipped",
+          "default": null
+        },
+        "transitioned": {
+          "description": "List of checks that were triggered",
+          "display_as": "Triggered",
+          "default": null
+        }
+      },
+      "display": "failed",
+      "description": "Force an immediate check of one or more checks"
+    }
+  ]
+}

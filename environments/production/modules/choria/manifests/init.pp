@@ -4,7 +4,9 @@
 # @param manage_service Manage the choria-server package
 # @param manage_package_repo Installs the package repositories
 # @param purge_machines Deletes Choria Autonomous Agents that are not managed by Puppet
+# @param scout_checks Hash of Scout Checks for a node, ideal for use using Hiera
 # @param scout_overrides Override data for Scout checks
+# @param scout_gossfile Are validation rules for the Goss system
 # @param nightly_repo Install the nightly package repo as well as the release one
 # @param ensure Add or remove the software
 # @param repo_baseurl Used to override default packagecloud package source
@@ -63,6 +65,8 @@ class choria (
   Optional[String] $config_group,
   Boolean $purge_machines = true,
   Hash $scout_overrides = {},
+  Hash $scout_checks = {},
+  Hash $scout_gossfile = {},
   Enum[debug, info, warn, error, fatal] $broker_log_level = $log_level,
   Enum[debug, info, warn, error, fatal] $server_log_level = $log_level,
   Stdlib::Compat::Absolute_path $broker_logfile = $logfile,
@@ -78,8 +82,10 @@ class choria (
 
   class{"choria::install": }
   -> class{"choria::config": }
+  -> class{"choria::scout_checks": }
   -> class{"choria::service": }
 
   contain choria::install
+  contain choria::scout_checks
   contain choria::service
 }

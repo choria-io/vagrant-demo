@@ -533,9 +533,7 @@ heartbeat  ntp_peer  swap  zombieprocs
 You can watch the real time event stream these checks produce:
 
 ```
-$ choria machine watch
-puppet.choria heartbeat#check OK: 1594120227
-choria0.choria heartbeat#check OK: 1594120228
+$ choria scout watch
 ```
 
 In another terminal we can force an immediate check of all `swap` checks:
@@ -544,18 +542,8 @@ In another terminal we can force an immediate check of all `swap` checks:
 $ mco rpc choria_util machine_transition name=swap transition=FORCE_CHECK
 ```
 
-The first running `choria machine watch` should see:
+The first running `choria scout watch` should see several check transitions and events.
 
-```
-puppet.choria swap transitioned via event FORCE_CHECK: OK => FORCE_CHECK
-puppet.choria swap transitioned via event OK: FORCE_CHECK => OK
-choria1.choria swap#check OK: SWAP OK - 100% free (2045 MB out of 2047 MB) |swap=2045MB;614;409;0;2047
-choria0.choria swap#check OK: SWAP OK - 100% free (2045 MB out of 2047 MB) |swap=2045MB;614;409;0;2047
-choria1.choria swap transitioned via event FORCE_CHECK: UNKNOWN => FORCE_CHECK
-choria1.choria swap transitioned via event OK: FORCE_CHECK => OK
-choria0.choria swap transitioned via event FORCE_CHECK: UNKNOWN => FORCE_CHECK
-choria0.choria swap transitioned via event OK: FORCE_CHECK => OK
-```
 
 These events are JSON documents in the CloudEvents v1 format published on the network to `choria.machine.watcher.*.state`:
 

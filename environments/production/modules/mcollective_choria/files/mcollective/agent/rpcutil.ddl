@@ -2,7 +2,7 @@ metadata    :name        => "rpcutil",
             :description => "General helpful actions that expose stats and internals to SimpleRPC clients",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache License, Version 2.0",
-            :version     => "0.17.3",
+            :version     => "0.18.0",
             :url         => "https://docs.puppetlabs.com/mcollective/",
             :timeout     => 10
 
@@ -63,7 +63,7 @@ action "get_fact", :description => "Retrieve a single fact from the fact store" 
            :type        => :string,
            :validation  => '^[\w\-\.]+$',
            :optional    => false,
-           :maxlength   => 40
+           :maxlength   => 256
 
      output :fact,
             :description => "The name of the fact being returned",
