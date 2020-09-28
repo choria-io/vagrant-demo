@@ -48,21 +48,21 @@
 # @param puppetdb_url
 #  The URI to PuppetDB with http/https protocol at the beginning and `/pdb/query` at the end
 class prometheus::puppetdb_exporter (
-  String $download_extension              = 'tar.gz',
-  String $download_url_base               = 'https://github.com/camptocamp/prometheus-puppetdb-exporter/releases',
+  String[1] $download_extension           = 'tar.gz',
+  String[1] $download_url_base            = 'https://github.com/camptocamp/prometheus-puppetdb-exporter/releases',
   Array[String] $extra_groups             = [],
-  String $group                           = 'puppetdb-exporter',
-  String $package_ensure                  = 'present',
+  String[1] $group                        = 'puppetdb-exporter',
+  String[1] $package_ensure               = 'present',
   String[1] $package_name                 = 'puppetdb_exporter',
-  String $user                            = 'puppetdb-exporter',
-  String $version                         = '1.0.0',
+  String[1] $user                         = 'puppetdb-exporter',
+  String[1] $version                      = '1.0.0',
   Boolean $purge_config_dir               = true,
   Boolean $restart_on_change              = true,
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   String[1] $service_name                 = 'puppetdb_exporter',
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  Prometheus::Install $install_method     = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
@@ -70,15 +70,15 @@ class prometheus::puppetdb_exporter (
   String $extra_options                   = '',
   Optional[String] $download_url          = undef,
   String[1] $arch                         = $prometheus::real_arch,
-  String $bin_dir                         = $prometheus::bin_dir,
+  String[1] $bin_dir                      = $prometheus::bin_dir,
   Boolean $export_scrape_job              = false,
+  Optional[Stdlib::Host] $scrape_host     = undef,
   Stdlib::Port $scrape_port               = 9635,
   String[1] $scrape_job_name              = 'puppetdb',
   Optional[Hash] $scrape_job_labels       = undef,
   Optional[String[1]] $bin_name           = undef,
   Stdlib::HTTPUrl $puppetdb_url           = 'http://127.0.0.1:8080/pdb/query',
 ) inherits prometheus {
-
   $real_download_url = pick($download_url,"${download_url_base}/download/${version}/prometheus-puppetdb-exporter-${version}.${os}-${arch}.${download_extension}")
 
   $notify_service = $restart_on_change ? {
@@ -112,6 +112,7 @@ class prometheus::puppetdb_exporter (
     service_enable     => $service_enable,
     manage_service     => $manage_service,
     export_scrape_job  => $export_scrape_job,
+    scrape_host        => $scrape_host,
     scrape_port        => $scrape_port,
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,

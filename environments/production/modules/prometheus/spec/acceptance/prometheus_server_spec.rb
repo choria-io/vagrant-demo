@@ -32,7 +32,7 @@ describe 'prometheus server basics' do
     it { is_expected.to be_listening.with('tcp6') }
   end
 
-  it 'does not allow admin API' do # rubocop:disable RSpec/MultipleExpectations
+  it 'does not allow admin API' do
     shell('curl -s -XPOST http://127.0.0.1:9090/api/v1/admin/tsdb/snapshot') do |r|
       expect(r.stdout).to match(%r{admin APIs disabled})
       expect(r.exit_code).to eq(0)
@@ -46,7 +46,7 @@ describe 'prometheus server basics' do
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
-    it 'allows admin API' do # rubocop:disable RSpec/MultipleExpectations
+    it 'allows admin API' do
       shell('curl -s -XPOST http://127.0.0.1:9090/api/v1/admin/tsdb/snapshot') do |r|
         expect(r.stdout).not_to match(%r{admin APIs disabled})
         expect(r.stdout).to match(%r{success})

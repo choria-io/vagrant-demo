@@ -2,8 +2,7 @@
 #   This class implements prometheus service reload without
 #   restarting the whole service when a config changes
 # @api private
-class prometheus::service_reload() {
-
+class prometheus::service_reload () {
   if $prometheus::server::manage_service == true {
     $init_selector = $prometheus::run_service::init_selector
 
@@ -16,7 +15,7 @@ class prometheus::service_reload() {
 
     exec { 'prometheus-reload':
       command     => $prometheus_reload,
-      path        => [ '/usr/bin', '/bin', '/usr/sbin', '/sbin' ],
+      path        => ['/usr/bin', '/bin', '/usr/sbin', '/sbin'],
       refreshonly => true,
     }
   }

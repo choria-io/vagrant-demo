@@ -23,7 +23,7 @@ describe 'prometheus::graphite_exporter' do
           }
         end
 
-        it { is_expected.to contain_archive('/tmp/graphite_exporter-0.7.1.tar.gz') }
+        it { is_expected.to contain_archive('/tmp/graphite_exporter-0.9.0.tar.gz') }
       end
     end
   end

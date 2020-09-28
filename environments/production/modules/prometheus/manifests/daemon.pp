@@ -46,19 +46,19 @@
 #  Can also be set to `none` when you don't want the class to create a startup script/unit_file for you.
 #  Typically this can be used when a package is already providing the file.
 define prometheus::daemon (
-  String $version,
+  String[1] $version,
   Prometheus::Uri $real_download_url,
   $notify_service,
   String[1] $user,
   String[1] $group,
-  String $install_method                  = $prometheus::install_method,
+  Prometheus::Install $install_method     = $prometheus::install_method,
   String $download_extension              = $prometheus::download_extension,
   String[1] $os                           = $prometheus::os,
   String[1] $arch                         = $prometheus::real_arch,
   Stdlib::Absolutepath $bin_dir           = $prometheus::bin_dir,
-  String $bin_name                        = $name,
+  String[1] $bin_name                     = $name,
   Optional[String] $package_name          = undef,
-  String $package_ensure                  = 'installed',
+  String[1] $package_ensure               = 'installed',
   Boolean $manage_user                    = true,
   Array $extra_groups                     = [],
   Boolean $manage_group                   = true,
@@ -72,7 +72,7 @@ define prometheus::daemon (
   Optional[String] $env_file_path         = $prometheus::env_file_path,
   Optional[String[1]] $extract_command    = $prometheus::extract_command,
   Stdlib::Absolutepath $extract_path      = '/opt',
-  Stdlib::Absolutepath $archive_bin_path   = "/opt/${name}-${version}.${os}-${arch}/${name}",
+  Stdlib::Absolutepath $archive_bin_path  = "/opt/${name}-${version}.${os}-${arch}/${name}",
   Boolean $export_scrape_job              = false,
   Stdlib::Host $scrape_host               = $facts['networking']['fqdn'],
   Optional[Stdlib::Port] $scrape_port     = undef,
@@ -80,7 +80,6 @@ define prometheus::daemon (
   Hash $scrape_job_labels                 = { 'alias' => $scrape_host },
   Stdlib::Absolutepath $usershell         = $prometheus::usershell,
 ) {
-
   case $install_method {
     'url': {
       if $download_extension == '' {
@@ -130,16 +129,19 @@ define prometheus::daemon (
       }
     }
     'none': {}
-    default: {
-      fail("The provided install method ${install_method} is invalid")
-    }
+    default: {}
   }
   if $manage_user {
-    ensure_resource('user', [ $user ], {
-      ensure => 'present',
-      system => true,
-      groups => $extra_groups,
-      shell  => $usershell,
+    # if we manage the service, we need to reload it if our user changes
+    # important for cases where another group gets added
+    if $manage_service {
+      User[$user] ~> $notify_service
+    }
+    ensure_resource('user', [$user], {
+        ensure => 'present',
+        system => true,
+        groups => $extra_groups,
+        shell  => $usershell,
     })
 
     if $manage_group {
@@ -147,12 +149,11 @@ define prometheus::daemon (
     }
   }
   if $manage_group {
-    ensure_resource('group', [ $group ], {
-      ensure => 'present',
-      system => true,
+    ensure_resource('group', [$group], {
+        ensure => 'present',
+        system => true,
     })
   }
-
 
   case $init_style { # lint:ignore:case_without_default
     'upstart': {
@@ -173,7 +174,7 @@ define prometheus::daemon (
     }
     'systemd': {
       include 'systemd'
-      systemd::unit_file {"${name}.service":
+      systemd::unit_file { "${name}.service":
         content => template('prometheus/daemon.systemd.erb'),
         notify  => $notify_service,
       }

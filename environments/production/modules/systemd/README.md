@@ -1,7 +1,10 @@
 # Systemd
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
 [![Build Status](https://travis-ci.org/camptocamp/puppet-systemd.png?branch=master)](https://travis-ci.org/camptocamp/puppet-systemd)
+[![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/camptocamp/systemd.svg)](https://forge.puppetlabs.com/camptocamp/systemd)
+[![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
 
 ## Overview
 
@@ -104,6 +107,17 @@ use `daemon_reload => 'eager'` instead of the default `'lazy'`.  Be aware that t
 reloaded multiple times if you have multiple `systemd::dropin_file` resources and any one of them
 is using `'eager'`.
 
+dropin-files can also be generated via hiera:
+
+```yaml
+
+systemd::dropin_files:
+  my-foo.conf:
+    unit: foo.service
+    source: puppet:///modules/${module_name}/foo.conf
+
+```
+
 ### tmpfiles
 
 Let this module handle file creation and systemd reloading
@@ -131,11 +145,11 @@ file { '/etc/tmpfiles.d/foo.conf':
 
 ### timer units
 Create a systemd timer unit and a systemd service unit to execute from
-that timer 
+that timer
 
 The following will create a timer unit and a service unit file.
 The execution of `systemctl daemon-reload` will occur.
-When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be 
+When `active` and `enable` are set to `true` the puppet service `runoften.timer` will be
 declared, started and enabled.
 
 ```puppet
@@ -148,7 +162,7 @@ systemd::timer{'runoften.timer':
 ```
 
 A trivial daily run.
-In this case enable and active are both unset and so the service `daily.timer` 
+In this case enable and active are both unset and so the service `daily.timer`
 is not declared by the `systemd::timer` type.
 
 ```puppet
@@ -202,7 +216,7 @@ systemd::timer{'daily.timer':
   service_content => $_service,
   active          => true,
   enable          => true,
-} 
+}
 ```
 
 ### service limits
@@ -264,7 +278,7 @@ When configuring `systemd::resolved` you could set `dns_stub_resolver` to false 
 
 Systemd has introduced `DNS Over TLS` in the release 239. Currently two states are supported `no` and `opportunistic`. When enabled with `opportunistic` `systemd-resolved` will start a TCP-session to a DNS server with `DNS Over TLS` support. Note that there will be no host checking for `DNS Over TLS` due to missing implementation in `systemd-resolved`.
 
-It is possible to configure the default ntp servers in /etc/systemd/timesyncd.conf:
+It is possible to configure the default ntp servers in `/etc/systemd/timesyncd.conf`:
 
 ```puppet
 class{'systemd':
@@ -274,7 +288,7 @@ class{'systemd':
 }
 ```
 
-This requires puppetlabs-inifile, which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
+This requires [puppetlabs-inifile](https://forge.puppet.com/puppetlabs/inifile), which is only a soft dependency in this module (you need to explicitly install it). Both parameters accept a string or an array.
 
 ### Resource Accounting
 

@@ -4,7 +4,6 @@
 #   implement the package install method as well
 #   The package method needs specific yum or apt repo settings which are not made yet by the module
 class prometheus::install {
-
   assert_private()
 
   if $prometheus::server::localstorage {
@@ -69,11 +68,11 @@ class prometheus::install {
     }
   }
   if $prometheus::server::manage_user {
-    ensure_resource('user', [ $prometheus::server::user ], {
-      ensure => 'present',
-      system => true,
-      groups => $prometheus::server::extra_groups,
-      shell  => $prometheus::server::usershell,
+    ensure_resource('user', [$prometheus::server::user], {
+        ensure => 'present',
+        system => true,
+        groups => $prometheus::server::extra_groups,
+        shell  => $prometheus::server::usershell,
     })
 
     if $prometheus::server::manage_group {
@@ -81,9 +80,9 @@ class prometheus::install {
     }
   }
   if $prometheus::server::manage_group {
-    ensure_resource('group', [ $prometheus::server::group ],{
-      ensure => 'present',
-      system => true,
+    ensure_resource('group', [$prometheus::server::group],{
+        ensure => 'present',
+        system => true,
     })
   }
   file { $prometheus::server::config_dir:

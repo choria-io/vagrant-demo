@@ -44,20 +44,20 @@
 # @param version
 #  The binary release version
 class prometheus::pushgateway (
-  String $download_extension,
-  String $download_url_base,
+  String[1] $download_extension,
+  String[1] $download_url_base,
   Array $extra_groups,
-  String $group,
-  String $package_ensure,
-  String $package_name,
-  String $user,
-  String $version,
+  String[1] $group,
+  String[1] $package_ensure,
+  String[1] $package_name,
+  String[1] $user,
+  String[1] $version,
   Boolean $restart_on_change              = true,
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   String[1] $service_name                 = 'pushgateway',
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  String[1] $install_method               = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
@@ -65,9 +65,8 @@ class prometheus::pushgateway (
   String $extra_options                   = '',
   Optional[String] $download_url          = undef,
   String[1] $arch                         = $prometheus::real_arch,
-  String $bin_dir                         = $prometheus::bin_dir,
+  String[1] $bin_dir                      = $prometheus::bin_dir,
 ) inherits prometheus {
-
   # Prometheus added a 'v' on the realease name at 0.3.0
   if versioncmp ($version, '0.3.0') >= 0 {
     $release = "v${version}"

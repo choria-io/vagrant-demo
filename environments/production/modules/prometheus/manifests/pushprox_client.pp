@@ -51,33 +51,32 @@
 #  The environment variable to pass to the daemon
 class prometheus::pushprox_client (
   String[1] $proxy_url,
-  String $download_extension,
+  String[1] $download_extension,
   Prometheus::Uri $download_url_base,
   Array[String[1]] $extra_groups,
-  String $group,
-  String $package_ensure,
-  String $package_name,
-  String $user,
-  String $version,
+  String[1] $group,
+  String[1] $package_ensure,
+  String[1] $package_name,
+  String[1] $user,
+  String[1] $version,
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   String[1] $service_name                 = 'pushprox_client',
   Boolean $restart_on_change              = true,
   Boolean $purge_config_dir               = true,
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  String[1] $install_method               = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
   String[1] $os                           = $prometheus::os,
   String $extra_options                   = '',
   Optional[String] $download_url          = undef,
-  String $config_mode                     = $prometheus::config_mode,
+  String[1] $config_mode                  = $prometheus::config_mode,
   String[1] $arch                         = $prometheus::real_arch,
   Stdlib::Absolutepath $bin_dir           = $prometheus::bin_dir,
   Hash[String, Scalar] $env_vars          = {},
 ) inherits prometheus {
-
   $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/PushProx-${version}.${os}-${arch}.${download_extension}")
 
   $notify_service = $restart_on_change ? {

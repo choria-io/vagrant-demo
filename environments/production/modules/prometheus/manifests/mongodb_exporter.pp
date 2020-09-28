@@ -52,23 +52,23 @@
 #  this param to define how we call the mongodb.uri in the $options
 #  https://github.com/percona/mongodb_exporter/blob/v0.7.0/CHANGELOG.md
 class prometheus::mongodb_exporter (
-  String $cnf_uri,
-  String $download_extension,
-  String $download_url_base,
+  String[1] $cnf_uri,
+  String[1] $download_extension,
+  String[1] $download_url_base,
   Array  $extra_groups,
-  String $group,
-  String $package_ensure,
+  String[1] $group,
+  String[1] $package_ensure,
   String[1] $package_name,
   String[1] $service_name,
-  String $user,
-  String $version,
+  String[1] $user,
+  String[1] $version,
   Boolean $use_kingpin,
   Boolean $purge_config_dir               = true,
   Boolean $restart_on_change              = true,
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  Prometheus::Install $install_method     = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
@@ -76,13 +76,13 @@ class prometheus::mongodb_exporter (
   String $extra_options                   = '',
   Optional[String] $download_url          = undef,
   String[1] $arch                         = $prometheus::real_arch,
-  String $bin_dir                         = $prometheus::bin_dir,
+  String[1] $bin_dir                      = $prometheus::bin_dir,
   Boolean $export_scrape_job              = false,
+  Optional[Stdlib::Host] $scrape_host     = undef,
   Stdlib::Port $scrape_port               = 9216,
   String[1] $scrape_job_name              = 'mongodb',
   Optional[Hash] $scrape_job_labels       = undef,
 ) inherits prometheus {
-
   #Please provide the download_url for versions < 0.9.0
   $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
 
@@ -121,6 +121,7 @@ class prometheus::mongodb_exporter (
     service_enable     => $service_enable,
     manage_service     => $manage_service,
     export_scrape_job  => $export_scrape_job,
+    scrape_host        => $scrape_host,
     scrape_port        => $scrape_port,
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,

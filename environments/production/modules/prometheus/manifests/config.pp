@@ -1,6 +1,5 @@
 # @summary Configuration class for prometheus monitoring system
 class prometheus::config {
-
   assert_private()
 
   $max_open_files = $prometheus::server::max_open_files
@@ -37,7 +36,7 @@ class prometheus::config {
   }
 
   $invalid_options = $invalid_args
-  .filter |$key,$value| { $value or $key in $prometheus::server::extra_options}
+  .filter |$key,$value| { $value or $key in $prometheus::server::extra_options }
   .map    |$key,$value| { $key }
 
   unless empty($invalid_options) {
@@ -179,13 +178,13 @@ class prometheus::config {
       }
     }
     'systemd': {
-      systemd::unit_file {'prometheus.service':
+      systemd::unit_file { 'prometheus.service':
         content => epp("${module_name}/prometheus.systemd.epp", {
-          'user'           => $prometheus::server::user,
-          'group'          => $prometheus::server::group,
-          'daemon_flags'   => $daemon_flags,
-          'max_open_files' => $max_open_files,
-          'bin_dir'        => $prometheus::server::bin_dir,
+            'user'           => $prometheus::server::user,
+            'group'          => $prometheus::server::group,
+            'daemon_flags'   => $daemon_flags,
+            'max_open_files' => $max_open_files,
+            'bin_dir'        => $prometheus::server::bin_dir,
         }),
         notify  => $notify,
       }
@@ -239,7 +238,12 @@ class prometheus::config {
 
     $job_name = $job_definition['job_name']
 
-    Prometheus::Scrape_job <<| job_name == $job_name |>> {
+    $node_tag = $prometheus::server::collect_tag ? {
+      Undef   => 'prometheus::scrape_job',
+      default => $prometheus::server::collect_tag,
+    }
+
+    Prometheus::Scrape_job <<| job_name == $job_name and tag == $node_tag |>> {
       collect_dir => "${prometheus::config_dir}/file_sd_config.d",
       notify      => Class['::prometheus::service_reload'],
     }
@@ -249,9 +253,9 @@ class prometheus::config {
   $collected_scrape_jobs = $prometheus::server::collect_scrape_jobs.map |$job_definition| {
     $job_name = $job_definition['job_name']
     merge($job_definition, {
-      file_sd_configs => [{
-        files => [ "${prometheus::config_dir}/file_sd_config.d/${job_name}_*.yaml" ]
-      }]
+        file_sd_configs => [{
+            files => ["${prometheus::config_dir}/file_sd_config.d/${job_name}_*.yaml"]
+        }]
     })
   }
 
@@ -274,5 +278,4 @@ class prometheus::config {
       validate_cmd => "${prometheus::server::bin_dir}/promtool ${cfg_verify_cmd} %",
     }
   }
-
 }

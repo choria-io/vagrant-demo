@@ -70,16 +70,16 @@
 #       }
 #     ]
 #   }
-class prometheus::process_exporter(
-  String $download_extension,
+class prometheus::process_exporter (
+  String[1] $download_extension,
   Prometheus::Uri $download_url_base,
   Array $extra_groups,
-  String $group,
-  String $package_ensure,
+  String[1] $group,
+  String[1] $package_ensure,
   String[1] $package_name,
   String[1] $service_name,
-  String $user,
-  String $version,
+  String[1] $user,
+  String[1] $version,
   Stdlib::Absolutepath $config_path,
   Array $watched_processes                = [],
   Hash $hash_watched_processes            = {},
@@ -88,22 +88,22 @@ class prometheus::process_exporter(
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  Prometheus::Install $install_method     = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
   String[1] $os                           = downcase($facts['kernel']),
   String $extra_options                   = '',
-  String $config_mode                     = $prometheus::config_mode,
+  String[1] $config_mode                  = $prometheus::config_mode,
   Optional[Prometheus::Uri] $download_url = undef,
   String[1] $arch                         = $prometheus::real_arch,
   Stdlib::Absolutepath $bin_dir           = $prometheus::bin_dir,
   Boolean $export_scrape_job              = false,
+  Optional[Stdlib::Host] $scrape_host     = undef,
   Stdlib::Port $scrape_port               = 9256,
   String[1] $scrape_job_name              = 'process',
   Optional[Hash] $scrape_job_labels       = undef,
 ) inherits prometheus {
-
   $filename = "${package_name}-${version}.${os}-${arch}.${download_extension}"
   $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${filename}")
   $notify_service = $restart_on_change ? {
@@ -151,6 +151,7 @@ class prometheus::process_exporter(
     service_enable     => $service_enable,
     manage_service     => $manage_service,
     export_scrape_job  => $export_scrape_job,
+    scrape_host        => $scrape_host,
     scrape_port        => $scrape_port,
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,

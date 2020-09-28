@@ -16,7 +16,7 @@ describe 'prometheus::node_exporter' do
         if facts[:os]['name'] == 'Archlinux'
           it { is_expected.not_to contain_user('node-exporter') }
           it { is_expected.not_to contain_group('node-exporter') }
-          it { is_expected.not_to contain_file('/opt/node_exporter-0.18.1.linux-amd64/node_exporter') }
+          it { is_expected.not_to contain_file('/opt/node_exporter-1.0.1.linux-amd64/node_exporter') }
           it { is_expected.not_to contain_file('/usr/local/bin/node_exporter') }
           it { is_expected.to contain_package('prometheus-node-exporter') }
           it { is_expected.to contain_file('/etc/default/node_exporter') }
@@ -24,7 +24,7 @@ describe 'prometheus::node_exporter' do
         else
           it { is_expected.to contain_user('node-exporter') }
           it { is_expected.to contain_group('node-exporter') }
-          it { is_expected.to contain_file('/opt/node_exporter-0.18.1.linux-amd64/node_exporter') }
+          it { is_expected.to contain_file('/opt/node_exporter-1.0.1.linux-amd64/node_exporter') }
           it { is_expected.to contain_file('/usr/local/bin/node_exporter') }
         end
 
@@ -48,7 +48,7 @@ describe 'prometheus::node_exporter' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_archive('/tmp/node_exporter-0.18.1.tar.gz') }
+        it { is_expected.to contain_archive('/tmp/node_exporter-1.0.1.tar.gz') }
         it { is_expected.to contain_prometheus__daemon('node_exporter').with(options: ' --collector.foo --collector.bar --no-collector.baz --no-collector.qux') }
         if facts[:os]['name'] == 'Archlinux'
           it { is_expected.to contain_file('/usr/bin/node_exporter') }

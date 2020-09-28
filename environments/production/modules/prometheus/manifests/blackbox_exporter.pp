@@ -47,6 +47,8 @@
 #  User which runs the service
 # @param version
 #  The binary release version
+# @param config_mode
+#  The permissions of the configuration files
 # Example for configuring named blackbox modules via hiera
 # details of the format: https://github.com/prometheus/blackbox_exporter/blob/master/CONFIGURATION.md
 # @example
@@ -61,37 +63,37 @@
 #     tcp:
 #       preferred_ip_protocol: ip4
 class prometheus::blackbox_exporter (
-  String $config_file,
-  String $download_extension,
-  String $download_url_base,
+  String[1] $config_file,
+  String[1] $download_extension,
+  String[1] $download_url_base,
   Array[String] $extra_groups,
-  String $group,
-  String $package_ensure,
+  String[1] $group,
+  String[1] $package_ensure,
   String[1] $package_name,
-  String $user,
-  String $version,
+  String[1] $user,
+  String[1] $version,
   Boolean $restart_on_change              = true,
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   String[1] $service_name                 = 'blackbox_exporter',
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  Prometheus::Install $install_method     = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
   String[1] $os                           = downcase($facts['kernel']),
   String $extra_options                   = '',
   Optional[String] $download_url          = undef,
-  String $config_mode                     = $prometheus::config_mode,
+  String[1] $config_mode                  = $prometheus::config_mode,
   String[1] $arch                         = $prometheus::real_arch,
-  String $bin_dir                         = $prometheus::bin_dir,
+  String[1] $bin_dir                      = $prometheus::bin_dir,
   Hash $modules                           = {},
   Boolean $export_scrape_job              = false,
+  Optional[Stdlib::Host] $scrape_host     = undef,
   Stdlib::Port $scrape_port               = 9115,
   String[1] $scrape_job_name              = 'blackbox',
   Optional[Hash] $scrape_job_labels       = undef,
 ) inherits prometheus {
-
   # Prometheus added a 'v' on the release name at 0.1.0 of blackbox
   if versioncmp ($version, '0.1.0') >= 0 {
     $release = "v${version}"
@@ -108,14 +110,13 @@ class prometheus::blackbox_exporter (
   $options = "--config.file=${config_file} ${extra_options}"
 
   file { $config_file:
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => $group,
     mode    => $config_mode,
     content => template('prometheus/blackbox_exporter.yaml.erb'),
     notify  => $notify_service,
   }
-
 
   prometheus::daemon { $service_name:
     install_method     => $install_method,
@@ -139,6 +140,7 @@ class prometheus::blackbox_exporter (
     service_enable     => $service_enable,
     manage_service     => $manage_service,
     export_scrape_job  => $export_scrape_job,
+    scrape_host        => $scrape_host,
     scrape_port        => $scrape_port,
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,

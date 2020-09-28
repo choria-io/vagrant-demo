@@ -22,7 +22,7 @@ describe 'prometheus::snmp_exporter' do
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_file('/etc/snmp-exporter.yaml').with(
-              'ensure'  => 'present',
+              'ensure'  => 'file',
               'owner'   => 'root',
               'group'   => 'snmp-exporter',
               'mode'    => '0640',

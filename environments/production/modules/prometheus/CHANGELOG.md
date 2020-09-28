@@ -4,6 +4,68 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v10.2.0](https://github.com/voxpupuli/puppet-prometheus/tree/v10.2.0) (2020-09-26)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v10.1.0...v10.2.0)
+
+Debian 8 is EOL since a few months now. This release will be the last with official Debian 8 compatibility and support. The next release will be v11.0.0 without Debian 8 support!
+
+**Implemented enhancements:**
+
+- Allow filtering scrape jobs by nodes [\#488](https://github.com/voxpupuli/puppet-prometheus/pull/488) ([fbs](https://github.com/fbs))
+- Add option to override `scrape_host` for exporters [\#487](https://github.com/voxpupuli/puppet-prometheus/pull/487) ([fbs](https://github.com/fbs))
+
+**Merged pull requests:**
+
+- Extend puppet type check for install\_method [\#492](https://github.com/voxpupuli/puppet-prometheus/pull/492) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v10.1.0](https://github.com/voxpupuli/puppet-prometheus/tree/v10.1.0) (2020-08-23)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v10.0.0...v10.1.0)
+
+**Implemented enhancements:**
+
+- Add support for Google Cloud gs storage [\#485](https://github.com/voxpupuli/puppet-prometheus/pull/485) ([j0sh3rs](https://github.com/j0sh3rs))
+- prometheus::dellhw\_exporter: Add scrape\_ipadress parameter [\#484](https://github.com/voxpupuli/puppet-prometheus/pull/484) ([lconsuegra](https://github.com/lconsuegra))
+
+## [v10.0.0](https://github.com/voxpupuli/puppet-prometheus/tree/v10.0.0) (2020-08-15)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v9.1.0...v10.0.0)
+
+**Breaking changes:**
+
+- update version numbers to latest releases [\#479](https://github.com/voxpupuli/puppet-prometheus/pull/479) ([antondollmaier](https://github.com/antondollmaier))
+
+**Implemented enhancements:**
+
+- Fixes for prometheus::dellhw\_exporter not working as is [\#480](https://github.com/voxpupuli/puppet-prometheus/pull/480) ([lconsuegra](https://github.com/lconsuegra))
+
+**Merged pull requests:**
+
+- Prometheus: Update 2.20.0-\>2.20.1 [\#481](https://github.com/voxpupuli/puppet-prometheus/pull/481) ([bastelfreak](https://github.com/bastelfreak))
+- modulesync 3.0.0 & puppet-lint updates [\#478](https://github.com/voxpupuli/puppet-prometheus/pull/478) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v9.1.0](https://github.com/voxpupuli/puppet-prometheus/tree/v9.1.0) (2020-07-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v9.0.0...v9.1.0)
+
+**Implemented enhancements:**
+
+- Issue 469: Add dellhw\_exporter support [\#470](https://github.com/voxpupuli/puppet-prometheus/pull/470) ([kkunkel](https://github.com/kkunkel))
+
+**Fixed bugs:**
+
+- Exporters: Reload service if user has changed attributes [\#474](https://github.com/voxpupuli/puppet-prometheus/pull/474) ([bastelfreak](https://github.com/bastelfreak))
+
+**Closed issues:**
+
+- Add support for dellhw\_exporter [\#469](https://github.com/voxpupuli/puppet-prometheus/issues/469)
+- Thanos unable to write to tsdb directory [\#466](https://github.com/voxpupuli/puppet-prometheus/issues/466)
+
+**Merged pull requests:**
+
+- updating String to String\[1\] when '' is invalid [\#471](https://github.com/voxpupuli/puppet-prometheus/pull/471) ([kkunkel](https://github.com/kkunkel))
+
 ## [v9.0.0](https://github.com/voxpupuli/puppet-prometheus/tree/v9.0.0) (2020-06-16)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v8.5.0...v9.0.0)

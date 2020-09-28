@@ -55,21 +55,21 @@
 # @param version
 #  The binary release version
 class prometheus::node_exporter (
-  String $download_extension,
-  String $download_url_base,
+  String[1] $download_extension,
+  String[1] $download_url_base,
   Array[String] $extra_groups,
-  String $group,
-  String $package_ensure,
+  String[1] $group,
+  String[1] $package_ensure,
   String[1] $package_name,
-  String $user,
-  String $version,
+  String[1] $user,
+  String[1] $version,
   Boolean $purge_config_dir               = true,
   Boolean $restart_on_change              = true,
   Boolean $service_enable                 = true,
   Stdlib::Ensure::Service $service_ensure = 'running',
   String[1] $service_name                 = 'node_exporter',
   Prometheus::Initstyle $init_style       = $facts['service_provider'],
-  String $install_method                  = $prometheus::install_method,
+  Prometheus::Install $install_method     = $prometheus::install_method,
   Boolean $manage_group                   = true,
   Boolean $manage_service                 = true,
   Boolean $manage_user                    = true,
@@ -77,17 +77,17 @@ class prometheus::node_exporter (
   String $extra_options                   = '',
   Optional[String] $download_url          = undef,
   String[1] $arch                         = $prometheus::real_arch,
-  String $bin_dir                         = $prometheus::bin_dir,
+  String[1] $bin_dir                      = $prometheus::bin_dir,
   Optional[Array[String]] $collectors     = undef,
   Array[String] $collectors_enable        = [],
   Array[String] $collectors_disable       = [],
+  Optional[Stdlib::Host] $scrape_host     = undef,
   Boolean $export_scrape_job              = false,
   Stdlib::Port $scrape_port               = 9100,
   String[1] $scrape_job_name              = 'node',
   Optional[Hash] $scrape_job_labels       = undef,
   Optional[String[1]] $bin_name           = undef,
 ) inherits prometheus {
-
   # Prometheus added a 'v' on the realease name at 0.13.0
   if versioncmp ($version, '0.13.0') >= 0 {
     $release = "v${version}"
@@ -113,10 +113,9 @@ class prometheus::node_exporter (
     "--no-collector.${collector}"
   }
 
-
-    $options = join([$extra_options,
+  $options = join([$extra_options,
       join($cmd_collectors_enable, ' '),
-      join($cmd_collectors_disable, ' ') ], ' ')
+  join($cmd_collectors_disable, ' ')], ' ')
 
   prometheus::daemon { $service_name:
     install_method     => $install_method,
@@ -141,6 +140,7 @@ class prometheus::node_exporter (
     service_enable     => $service_enable,
     manage_service     => $manage_service,
     export_scrape_job  => $export_scrape_job,
+    scrape_host        => $scrape_host,
     scrape_port        => $scrape_port,
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,
