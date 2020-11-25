@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-augeas_core",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "author": "puppetlabs",
   "summary": "Manage files using Augeas",
   "license": "Apache-2.0",
@@ -8,9 +8,8 @@
   "project_page": "https://github.com/puppetlabs/puppetlabs-augeas_core",
   "issues_url": "https://tickets.puppetlabs.com/projects/MODULES",
   "dependencies": [
-  
+
   ],
-  "data_provider": null,
   "operatingsystem_support": [
     {
       "operatingsystem": "CentOS",

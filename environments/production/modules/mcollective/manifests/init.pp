@@ -37,56 +37,58 @@
 # @param purge When true will remove unmanaged files from the $configdir/plugin.d, $configdir/policies and $libdir
 # @param gem_source where to find gems, useful for local gem mirrors
 # @param manage_bin_symlinks Enables creating symlinks in the bin dir for the mco command
+# @param plugin_file_transfer_type enum to configure global type for file resources in plugins. could be overwritten for every plugin in their defined resource
 class mcollective (
-  Array[String] $plugintypes,
-  Array[String] $plugin_classes,
-  Array[String] $plugin_classes_exclude = [],
+  Array[String[1]] $plugintypes,
+  Array[String[1]] $plugin_classes,
+  Array[String[1]] $plugin_classes_exclude = [],
   Hash $server_config = {},
   Hash $client_config = {},
   Hash $common_config = {},
-  String $bindir,
-  String $libdir,
-  String $configdir,
-  String $rubypath,
+  Stdlib::Absolutepath $bindir,
+  Stdlib::Absolutepath $libdir,
+  Stdlib::Absolutepath $configdir,
+  Stdlib::Absolutepath $rubypath,
   Boolean $manage_bin_symlinks = false,
   Integer $facts_refresh_interval,
   Array[Mcollective::Collective] $collectives,
   Array[Mcollective::Collective] $client_collectives = $collectives,
   Optional[Mcollective::Collective] $main_collective = undef,
   Optional[Mcollective::Collective] $client_main_collective = undef,
-  Optional[String] $facts_pidfile,
-  Optional[String] $plugin_owner,
-  Optional[String] $plugin_group,
-  Optional[String] $plugin_mode,
-  Optional[String] $plugin_executable_mode,
-  Array[String] $required_directories = [],
+  Optional[Stdlib::Absolutepath] $facts_pidfile,
+  Optional[String[1]] $plugin_owner,
+  Optional[String[1]] $plugin_group,
+  Optional[Stdlib::Filemode] $plugin_mode,
+  Optional[Stdlib::Filemode] $plugin_executable_mode,
+  Array[Stdlib::Absolutepath] $required_directories = [],
   Mcollective::Policy_action $policy_default,
   Array[Mcollective::Policy] $site_policies = [],
   Array[Mcollective::Policy] $rpcutil_policies = [],
   Array[Mcollective::Policy] $choria_util_policies = [],
   Array[Mcollective::Policy] $scout_policies = [],
-  String $default_rego_policy_source,
+  Stdlib::Filesource $default_rego_policy_source,
   Boolean $manage_package,
   Enum["present", "latest"] $package_ensure,
-  String $package_name,
+  String[1] $package_name,
   Enum["stopped", "running"] $service_ensure,
-  String $service_name,
+  String[1] $service_name,
   Boolean $service_enable,
   Boolean $client,
   Boolean $server,
   Boolean $purge,
-  Optional[String] $gem_source = undef,
-  String $gem_provider
+  Optional[String[1]] $gem_source = undef,
+  String[1] $gem_provider,
+  Enum['content', 'source'] $plugin_file_transfer_type = 'source',
 ) {
   $factspath = "${configdir}/generated-facts.yaml"
 
   if $mcollective::manage_package {
-    include mcollective::package
+    contain mcollective::package
   }
-  include mcollective::plugin_dirs
-  include mcollective::config
-  include mcollective::facts
-  include mcollective::service
+  contain mcollective::plugin_dirs
+  contain mcollective::config
+  contain mcollective::facts
+  contain mcollective::service
 
-  include $plugin_classes - $plugin_classes_exclude
+  contain $plugin_classes - $plugin_classes_exclude
 }

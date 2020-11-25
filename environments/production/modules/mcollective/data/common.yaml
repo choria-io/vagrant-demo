@@ -18,8 +18,6 @@ mcollective::server_config:
   plugin.rpcaudit.logfile: "/var/log/puppetlabs/mcollective-audit.log"
   factsource: "yaml"
   plugin.yaml: "/etc/puppetlabs/mcollective/generated-facts.yaml"
-  registerinterval: 10
-  registration: "Choria"
   logfile: "/var/log/puppetlabs/mcollective.log"
   daemonize: 1
 
@@ -50,12 +48,13 @@ mcollective::scout_policies:
     classes: "*"
 
 mcollective::plugin_classes:
-  - "mcollective_choria"
-  - "mcollective_agent_puppet"
-  - "mcollective_agent_service"
-  - "mcollective_agent_package"
-  - "mcollective_agent_filemgr"
-  - "mcollective_util_actionpolicy"
+  - mcollective_choria
+  - mcollective_agent_puppet
+  - mcollective_agent_service
+  - mcollective_agent_package
+  - mcollective_agent_filemgr
+  - mcollective_util_actionpolicy
+  - choria
 
 mcollective::manage_package: false
 mcollective::package_name: "mcollective"
@@ -66,8 +65,8 @@ mcollective::purge: false
 mcollective::facts_refresh_interval: 10
 mcollective::facts_pidfile: "/var/run/puppetlabs/mcollective-facts_refresh.pid"
 mcollective::service_name: "mcollective"
-mcollective::service_ensure: "running"
-mcollective::service_enable: true
+mcollective::service_ensure: stopped
+mcollective::service_enable: false
 mcollective::plugin_owner: "root"
 mcollective::plugin_group: "root"
 mcollective::plugin_mode: "0644"
@@ -77,7 +76,7 @@ mcollective::libdir: "/opt/puppetlabs/mcollective/plugins"
 mcollective::configdir: "/etc/puppetlabs/mcollective"
 mcollective::rubypath: "/opt/puppetlabs/puppet/bin/ruby"
 mcollective::gem_provider: "puppet_gem"
-mcollective::manage_bin_symlinks: false
+mcollective::manage_bin_symlinks: true
 mcollective::default_rego_policy_source: "puppet:///modules/mcollective/default.rego"
 mcollective::plugintypes:
   - "agent"

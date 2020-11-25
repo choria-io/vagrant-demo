@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v1.3.0](https://github.com/puppetlabs/puppetlabs-package/tree/v1.3.0) (2020-09-08)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v1.2.0...v1.3.0)
+
+### Added
+
+- pdksync - \(IAC-973\) - Update travis/appveyor to run on new default branch `main` [\#208](https://github.com/puppetlabs/puppetlabs-package/pull/208) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- pdksync - \(feat\) - Removal of inappropriate terminology [\#213](https://github.com/puppetlabs/puppetlabs-package/pull/213) ([pmcmaw](https://github.com/pmcmaw))
+
 ## [v1.2.0](https://github.com/puppetlabs/puppetlabs-package/tree/v1.2.0) (2020-06-26)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v1.1.0...v1.2.0)
@@ -29,7 +41,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - \(FM-8692\) - Addition of Support for CentOS 8 [\#161](https://github.com/puppetlabs/puppetlabs-package/pull/161) ([david22swan](https://github.com/david22swan))
-- \(BOLT-1525\) Zypper implementation [\#143](https://github.com/puppetlabs/puppetlabs-package/pull/143) ([m0dular](https://github.com/m0dular))
 
 ## [v0.7.0](https://github.com/puppetlabs/puppetlabs-package/tree/v0.7.0) (2019-10-28)
 
@@ -37,6 +48,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- \(BOLT-1525\) Zypper implementation [\#143](https://github.com/puppetlabs/puppetlabs-package/pull/143) ([m0dular](https://github.com/m0dular))
 - \(FM-8225\) Convert to litmus testing [\#134](https://github.com/puppetlabs/puppetlabs-package/pull/134) ([sheenaajay](https://github.com/sheenaajay))
 
 ## [v0.6.0](https://github.com/puppetlabs/puppetlabs-package/tree/v0.6.0) (2019-06-12)
@@ -101,7 +113,6 @@ All notable changes to this project will be documented in this file. The format 
 - pdksync - \(FM-7392\) - Puppet 6 Testing Changes [\#88](https://github.com/puppetlabs/puppetlabs-package/pull/88) ([pmcmaw](https://github.com/pmcmaw))
 - \(DI-3260\) Adding agentless windows task \(for choco\) [\#81](https://github.com/puppetlabs/puppetlabs-package/pull/81) ([HairyMike](https://github.com/HairyMike))
 - \(DI-2373\) Adding agentless linux task [\#77](https://github.com/puppetlabs/puppetlabs-package/pull/77) ([tphoney](https://github.com/tphoney))
-- \(FM-7263\) - Addition of support for ubuntu 18.04 [\#70](https://github.com/puppetlabs/puppetlabs-package/pull/70) ([david22swan](https://github.com/david22swan))
 - \[FM-7058\] Addition of support for Debian 9 to package [\#69](https://github.com/puppetlabs/puppetlabs-package/pull/69) ([david22swan](https://github.com/david22swan))
 
 ## 0.2.0
