@@ -3,12 +3,7 @@
 #
 module Puppet::Parser::Functions
   newfunction(:to_bytes, :type => :rvalue, :doc => <<-DOC
-    @summary
-        Converts the argument into bytes, for example 4 kB becomes 4096.
-
-    @return
-      converted value into bytes
-
+    Converts the argument into bytes, for example 4 kB becomes 4096.
     Takes a single string value as an argument.
     These conversions reflect a layperson's understanding of
     1 MB = 1024 KB, when in fact 1 MB = 1000 KB, and 1 MiB = 1024 KiB.

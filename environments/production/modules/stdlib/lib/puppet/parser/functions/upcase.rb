@@ -4,19 +4,15 @@
 #
 module Puppet::Parser::Functions
   newfunction(:upcase, :type => :rvalue, :doc => <<-DOC
-    @summary
-      Converts a string or an array of strings to uppercase.
+    Converts a string or an array of strings to uppercase.
 
-    @return
-      converted string ot array of strings to uppercase
+    *Examples:*
 
-    @example **Usage**
+        upcase("abcd")
 
-      upcase("abcd")
-      Will return ABCD
+    Will return:
 
-    > *Note:* from Puppet 6.0.0, the compatible function with the same name in Puppet core
-    will be used instead of this function.
+        ABCD
   DOC
              ) do |arguments|
 

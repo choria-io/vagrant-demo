@@ -5,13 +5,8 @@ require 'uri'
 #
 module Puppet::Parser::Functions
   newfunction(:uriescape, :type => :rvalue, :doc => <<-DOC
-    @summary
-      Urlencodes a string or array of strings.
-      Requires either a single string or an array as an input.
-
-    @return [String]
-      a string that contains the converted value
-
+    Urlencodes a string or array of strings.
+    Requires either a single string or an array as an input.
     DOC
              ) do |arguments|
 

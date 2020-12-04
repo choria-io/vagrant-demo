@@ -3,17 +3,11 @@
 #
 module Puppet::Parser::Functions
   newfunction(:pry, :type => :statement, :doc => <<-DOC
-    @summary
-      This function invokes a pry debugging session in the current scope object.
-    This is useful for debugging manifest code at specific points during a compilation.
+    This function invokes a pry debugging session in the current scope object. This is useful for debugging manifest code at specific points during a compilation.
 
-    @return
-      debugging information
+    *Examples:*
 
-    @example **Usage**
-
-      `pry()`
-
+        pry()
     DOC
              ) do |arguments|
     begin

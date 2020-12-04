@@ -3,23 +3,18 @@
 #
 module Puppet::Parser::Functions
   newfunction(:getvar, :type => :rvalue, :doc => <<-'DOC') do |args|
-    @summary
-      Lookup a variable in a given namespace.
+    Lookup a variable in a remote namespace.
 
-    @return
-      undef - if variable does not exist
+    For example:
 
-    @example Example usage
-      $foo = getvar('site::data::foo') # Equivalent to $foo = $site::data::foo
+        $foo = getvar('site::data::foo')
+        # Equivalent to $foo = $site::data::foo
 
-    @example Where namespace is stored in a string
-      $datalocation = 'site::data'
-      $bar = getvar("${datalocation}::bar") # Equivalent to $bar = $site::data::bar
+    This is useful if the namespace itself is stored in a string:
 
-    > **Note:** from Puppet 6.0.0, the compatible function with the same name in Puppet core
-    will be used instead of this function. The new function also has support for
-    digging into a structured value. See the built-in
-    [`getvar`](https://puppet.com/docs/puppet/latest/function.html#getvar) function
+        $datalocation = 'site::data'
+        $bar = getvar("${datalocation}::bar")
+        # Equivalent to $bar = $site::data::bar
     DOC
 
     unless args.length == 1
@@ -32,7 +27,7 @@ module Puppet::Parser::Functions
         result = lookupvar((args[0]).to_s)
       end
 
-      # avoid relying on inconsistent behaviour around ruby return values from catch
+      # avoid relying on incosistent behaviour around ruby return values from catch
       result
     rescue Puppet::ParseError # rubocop:disable Lint/HandleExceptions : Eat the exception if strict_variables = true is set
     end

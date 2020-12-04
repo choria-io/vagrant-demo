@@ -2,27 +2,23 @@
 # validate_array.rb
 #
 module Puppet::Parser::Functions
-  newfunction(:validate_array, :doc => <<-DOC) do |args|
-    @summary
-      Validate that all passed values are array data structures. Abort catalog
-      compilation if any value fails this check.
+  newfunction(:validate_array, :doc => <<-'DOC') do |args|
+    Validate that all passed values are array data structures. Abort catalog
+    compilation if any value fails this check.
 
-    @return
-      validate array
+    The following values will pass:
 
-    @example **Usage**
-      The following values will pass:
+        $my_array = [ 'one', 'two' ]
+        validate_array($my_array)
 
-          $my_array = [ 'one', 'two' ]
-          validate_array($my_array)
+    The following values will fail, causing compilation to abort:
 
-      The following values will fail, causing compilation to abort:
+        validate_array(true)
+        validate_array('some_string')
+        $undefined = undef
+        validate_array($undefined)
 
-          validate_array(true)
-          validate_array('some_string')
-          $undefined = undef
-          validate_array($undefined)
-      DOC
+    DOC
 
     function_deprecation([:validate_array, 'This method is deprecated, please use the stdlib validate_legacy function,
       with Stdlib::Compat::Array. There is further documentation for validate_legacy function in the README.'])

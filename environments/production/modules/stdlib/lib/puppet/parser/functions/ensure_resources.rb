@@ -2,15 +2,9 @@ require 'puppet/parser/functions'
 
 Puppet::Parser::Functions.newfunction(:ensure_resources,
                                       :type => :statement,
-                                      :doc => <<-DOC
-  @summary
+                                      :doc => <<-'DOC'
     Takes a resource type, title (only hash), and a list of attributes that describe a
     resource.
-
-  @return
-    created resources with the passed type and attributes
-
-  @example Example usage
 
         user { 'dan':
           gid => 'mygroup',
@@ -20,7 +14,7 @@ Puppet::Parser::Functions.newfunction(:ensure_resources,
     An hash of resources should be passed in and each will be created with
     the type and parameters specified if it doesn't already exist.
 
-    ensure_resources('user', {'dan' => { gid => 'mygroup', uid => '600' }, 'alex' => { gid => 'mygroup' }}, {'ensure' => 'present'})
+        ensure_resources('user', {'dan' => { gid => 'mygroup', uid => '600' } ,  'alex' => { gid => 'mygroup' }}, {'ensure' => 'present'})
 
     From Hiera Backend:
 

@@ -3,10 +3,7 @@
 #
 module Puppet::Parser::Functions
   newfunction(:dirname, :type => :rvalue, :doc => <<-DOC
-    @summary
-      Returns the dirname of a path.
-
-    @return [String] the given path's dirname
+    Returns the dirname of a path.
     DOC
              ) do |arguments|
 
@@ -18,10 +15,6 @@ module Puppet::Parser::Functions
     end
     unless arguments[0].is_a?(String)
       raise(Puppet::ParseError, 'dirname(): Requires string as argument')
-    end
-    # undef is converted to an empty string ''
-    if arguments[0].empty?
-      raise(Puppet::ParseError, 'dirname(): Requires a non-empty string as argument')
     end
 
     return File.dirname(arguments[0])

@@ -3,22 +3,23 @@
 #
 module Puppet::Parser::Functions
   newfunction(:unique, :type => :rvalue, :doc => <<-DOC
-    @summary
-      This function will remove duplicates from strings and arrays.
+    This function will remove duplicates from strings and arrays.
 
-    @return
-      String or array with duplicates removed
+    *Examples:*
 
-    @example **Usage**
+        unique("aabbcc")
 
-      unique("aabbcc")
-      Will return: abc
+    Will return:
 
-      You can also use this with arrays:
+        abc
 
-      unique(["a","a","b","b","c","c"])
-      This returns: ["a","b","c"]
+    You can also use this with arrays:
 
+        unique(["a","a","b","b","c","c"])
+
+    This returns:
+
+        ["a","b","c"]
     DOC
              ) do |arguments|
 

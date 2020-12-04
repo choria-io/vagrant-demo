@@ -2,30 +2,25 @@
 # validate_bool.rb
 #
 module Puppet::Parser::Functions
-  newfunction(:validate_bool, :doc => <<-DOC
-    @summary
-      Validate that all passed values are either true or false. Abort catalog
-      compilation if any value fails this check.
+  newfunction(:validate_bool, :doc => <<-'DOC') do |args|
+    Validate that all passed values are either true or false. Abort catalog
+    compilation if any value fails this check.
 
-    @return
-      validate boolean
+    The following values will pass:
 
-    @example **Usage**
+        $iamtrue = true
+        validate_bool(true)
+        validate_bool(true, true, false, $iamtrue)
 
-      The following values will pass:
+    The following values will fail, causing compilation to abort:
 
-          $iamtrue = true
-          validate_bool(true)
-          validate_bool(true, true, false, $iamtrue)
+        $some_array = [ true ]
+        validate_bool("false")
+        validate_bool("true")
+        validate_bool($some_array)
 
-      The following values will fail, causing compilation to abort:
+    DOC
 
-          $some_array = [ true ]
-          validate_bool("false")
-          validate_bool("true")
-          validate_bool($some_array)
-      DOC
-             ) do |args|
     if args.empty?
       raise Puppet::ParseError, "validate_bool(): wrong number of arguments (#{args.length}; must be > 0)"
     end

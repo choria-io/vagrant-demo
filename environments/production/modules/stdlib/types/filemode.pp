@@ -1,4 +1,1 @@
-# See `man chmod.1` for the regular expression for symbolic mode
-# lint:ignore:140chars
-type Stdlib::Filemode = Pattern[/\A(([0-7]{1,4})|(([ugoa]*([-+=]([rwxXst]*|[ugo]))+|[-+=][0-7]+)(,([ugoa]*([-+=]([rwxXst]*|[ugo]))+|[-+=][0-7]+))*))\z/]
-# lint:endignore
+type Stdlib::Filemode = Pattern[/^[0124]{1}[0-7]{3}$/]

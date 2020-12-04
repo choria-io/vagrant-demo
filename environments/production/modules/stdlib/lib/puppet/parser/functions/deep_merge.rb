@@ -3,23 +3,19 @@
 #
 module Puppet::Parser::Functions
   newfunction(:deep_merge, :type => :rvalue, :doc => <<-'DOC') do |args|
-    @summary
-      Recursively merges two or more hashes together and returns the resulting hash.
+    Recursively merges two or more hashes together and returns the resulting hash.
 
-    @example Example usage
+    For example:
 
-      $hash1 = {'one' => 1, 'two' => 2, 'three' => { 'four' => 4 } }
-      $hash2 = {'two' => 'dos', 'three' => { 'five' => 5 } }
-      $merged_hash = deep_merge($hash1, $hash2)
+        $hash1 = {'one' => 1, 'two' => 2, 'three' => { 'four' => 4 } }
+        $hash2 = {'two' => 'dos', 'three' => { 'five' => 5 } }
+        $merged_hash = deep_merge($hash1, $hash2)
+        # The resulting hash is equivalent to:
+        # $merged_hash = { 'one' => 1, 'two' => 'dos', 'three' => { 'four' => 4, 'five' => 5 } }
 
-      The resulting hash is equivalent to:
+    When there is a duplicate key that is a hash, they are recursively merged.
+    When there is a duplicate key that is not a hash, the key in the rightmost hash will "win."
 
-      $merged_hash = { 'one' => 1, 'two' => 'dos', 'three' => { 'four' => 4, 'five' => 5 } }
-
-      When there is a duplicate key that is a hash, they are recursively merged.
-      When there is a duplicate key that is not a hash, the key in the rightmost hash will "win."
-
-    @return [Hash] The merged hash
     DOC
 
     if args.length < 2

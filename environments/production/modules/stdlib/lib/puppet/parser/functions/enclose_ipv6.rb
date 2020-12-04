@@ -3,12 +3,7 @@
 #
 module Puppet::Parser::Functions
   newfunction(:enclose_ipv6, :type => :rvalue, :doc => <<-DOC
-    @summary
-      Takes an array of ip addresses and encloses the ipv6 addresses with square brackets.
-
-    @return
-      encloses the ipv6 addresses with square brackets.
-
+    Takes an array of ip addresses and encloses the ipv6 addresses with square brackets.
   DOC
              ) do |arguments|
 

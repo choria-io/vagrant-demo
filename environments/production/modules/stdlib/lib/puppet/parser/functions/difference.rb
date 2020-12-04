@@ -3,25 +3,15 @@
 #
 module Puppet::Parser::Functions
   newfunction(:difference, :type => :rvalue, :doc => <<-DOC
-    @summary
-      This function returns the difference between two arrays.
-
+    This function returns the difference between two arrays.
     The returned array is a copy of the original array, removing any items that
     also appear in the second array.
 
-    @example Example usage
+    *Examples:*
 
-      difference(["a","b","c"],["b","c","d"])
-      Would return: `["a"]`
+        difference(["a","b","c"],["b","c","d"])
 
-    > *Note:*
-    Since Puppet 4 the minus (-) operator in the Puppet language does the same thing:
-    ['a', 'b', 'c'] - ['b', 'c', 'd']
-    Would return: `['a']`
-
-    @return [Array]
-      The difference between the two given arrays
-
+    Would return: ["a"]
     DOC
              ) do |arguments|
 

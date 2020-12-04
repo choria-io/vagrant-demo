@@ -1,1 +1,1 @@
-type Stdlib::HTTPUrl = Pattern[/(?i:\Ahttps?:\/\/.*\z)/]
+type Stdlib::HTTPUrl = Pattern[/^https?:\/\//]

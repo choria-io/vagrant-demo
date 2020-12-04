@@ -3,14 +3,7 @@
 #
 module Puppet::Parser::Functions
   newfunction(:is_float, :type => :rvalue, :doc => <<-DOC
-    @summary
-      **Deprecated:** Returns true if the variable passed to this function is a float.
-
-    @return [Boolean]
-      Returns `true` or `false`
-
-    > **Note:* **Deprecated** Will be removed in a future version of stdlib. See
-    [`validate_legacy`](#validate_legacy).
+    Returns true if the variable passed to this function is a float.
     DOC
              ) do |arguments|
 

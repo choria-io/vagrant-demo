@@ -3,13 +3,7 @@
 #
 module Puppet::Parser::Functions
   newfunction(:reverse, :type => :rvalue, :doc => <<-DOC
-    @summary
-      Reverses the order of a string or array.
-
-    @return
-      reversed string or array
-
-    > *Note:* that the same can be done with the reverse_each() function in Puppet.
+    Reverses the order of a string or array.
     DOC
              ) do |arguments|
 

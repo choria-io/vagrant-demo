@@ -1,27 +1,22 @@
 #
-# join_keys_to_values.rb
+# join.rb
 #
 module Puppet::Parser::Functions
   newfunction(:join_keys_to_values, :type => :rvalue, :doc => <<-DOC
-    @summary
-      This function joins each key of a hash to that key's corresponding value with a
-      separator.
-
-    Keys are cast to strings. If values are arrays, multiple keys
+    This function joins each key of a hash to that key's corresponding value with a
+    separator. Keys are cast to strings. If values are arrays, multiple keys
     are added for each element. The return value is an array in
     which each element is one joined key/value pair.
 
-    @example Example Usage:
-      join_keys_to_values({'a'=>1,'b'=>2}, " is ") # Results in: ["a is 1","b is 2"]
-      join_keys_to_values({'a'=>1,'b'=>[2,3]}, " is ") # Results in: ["a is 1","b is 2","b is 3"]
+    *Examples:*
 
-    @return [Hash]
-      The joined hash
+        join_keys_to_values({'a'=>1,'b'=>2}, " is ")
 
-    > **Note:** Since Puppet 5.0.0 - for more detailed control over the formatting (including indentations and
-    line breaks, delimiters around arrays and hash entries, between key/values in hash entries, and individual
-    formatting of values in the array) - see the `new` function for `String` and its formatting
-    options for `Array` and `Hash`.
+    Would result in: ["a is 1","b is 2"]
+
+        join_keys_to_values({'a'=>1,'b'=>[2,3]}, " is ")
+
+    Would result in: ["a is 1","b is 2","b is 3"]
     DOC
              ) do |arguments|
 

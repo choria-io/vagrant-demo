@@ -3,15 +3,13 @@
 #
 module Puppet::Parser::Functions
   newfunction(:union, :type => :rvalue, :doc => <<-DOC
-    @summary
-      This function returns a union of two or more arrays.
+    This function returns a union of two or more arrays.
 
-    @return
-      a unionized array of two or more arrays
-    @example **Usage**
+    *Examples:*
 
-      union(["a","b","c"],["b","c","d"])
-      Would return: ["a","b","c","d"]
+        union(["a","b","c"],["b","c","d"])
+
+    Would return: ["a","b","c","d"]
     DOC
              ) do |arguments|
 
