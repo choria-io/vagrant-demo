@@ -14,12 +14,10 @@ mcollective::server_config:
   rpcauthorization: 1
   rpcauthprovider: "action_policy"
   rpcaudit: 1
-  rpcauditprovider: "choria"
-  plugin.rpcaudit.logfile: "/var/log/puppetlabs/mcollective-audit.log"
   factsource: "yaml"
-  plugin.yaml: "/etc/puppetlabs/mcollective/generated-facts.yaml"
-  logfile: "/var/log/puppetlabs/mcollective.log"
-  daemonize: 1
+  plugin.yaml: "/etc/choria/generated-facts.yaml"
+  logfile: "/var/log/choria-mcorpc.log"
+  daemonize: 0
 
 mcollective::client_config:
   logger_type: "console"
@@ -57,23 +55,20 @@ mcollective::plugin_classes:
   - choria
 
 mcollective::manage_package: false
-mcollective::package_name: "mcollective"
-mcollective::package_ensure: "present"
+mcollective::package_name: ~
+mcollective::package_ensure: present
 mcollective::server: true
 mcollective::client: false
-mcollective::purge: false
+mcollective::purge: true
 mcollective::facts_refresh_interval: 10
 mcollective::facts_pidfile: "/var/run/puppetlabs/mcollective-facts_refresh.pid"
-mcollective::service_name: "mcollective"
-mcollective::service_ensure: stopped
-mcollective::service_enable: false
 mcollective::plugin_owner: "root"
 mcollective::plugin_group: "root"
 mcollective::plugin_mode: "0644"
 mcollective::plugin_executable_mode: "0755"
 mcollective::bindir: "/usr/bin"
 mcollective::libdir: "/opt/puppetlabs/mcollective/plugins"
-mcollective::configdir: "/etc/puppetlabs/mcollective"
+mcollective::configdir: "/etc/choria"
 mcollective::rubypath: "/opt/puppetlabs/puppet/bin/ruby"
 mcollective::gem_provider: "puppet_gem"
 mcollective::manage_bin_symlinks: true
@@ -93,7 +88,6 @@ mcollective::plugintypes:
   - "pluginpackager"
 
 mcollective::required_directories:
-  - /etc/puppetlabs/mcollective
   - /opt/puppetlabs/mcollective
 
 lookup_options:

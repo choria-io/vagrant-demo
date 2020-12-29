@@ -67,12 +67,15 @@ class mcollective::config {
     }
   }
 
-  mcollective::config_file{"${mcollective::configdir}/server.cfg":
-    settings => $server_config,
-    notify   => Class["mcollective::service"]
+  file{"${mcollective::configdir}/server.cfg":
+    ensure => absent,
   }
 
-  mcollective::config_file{"${mcollective::configdir}/client.cfg":
+  file{"${mcollective::configdir}/client.cfg":
+    ensure => absent
+  }
+
+  mcollective::config_file{"${mcollective::configdir}/client.conf":
     settings => $client_config,
   }
 
@@ -97,7 +100,6 @@ class mcollective::config {
     group   => $mcollective::plugin_group,
     mode    => $mcollective::plugin_mode,
     content => $cu_policy_content,
-    notify  => Class["mcollective::service"]
   }
 
   $ru_policy_content = epp("mcollective/policy_file.epp", {
@@ -112,7 +114,6 @@ class mcollective::config {
     group   => $mcollective::plugin_group,
     mode    => $mcollective::plugin_mode,
     content => $ru_policy_content,
-    notify  => Class["mcollective::service"]
   }
 
   $scout_policy_content = epp("mcollective/policy_file.epp", {
@@ -127,7 +128,6 @@ class mcollective::config {
     group   => $mcollective::plugin_group,
     mode    => $mcollective::plugin_mode,
     content => $scout_policy_content,
-    notify  => Class["mcollective::service"]
   }
 
   if $mcollective::default_rego_policy_source != "" {

@@ -1,4 +1,4 @@
-# mcollective_choria
+# mcollective_agent_bolt_tasks
 
 #### Table of Contents
 
@@ -8,15 +8,15 @@
 
 ## Overview
 
-Configuration of the Choria MCollective Compatibility Layer
+Agent to support executing Bolt Tasks using Choria
 
-See [choria.io](http://choria.io) for full details
+See [choria.io](https://choria.io/docs/tasks/) for full details
 
 ## Module Description
 
 ## Usage
 
-A deployment guide can be found at the [Choria Website](http://choria.io)
+A deployment guide can be found at the [Choria Website](https://choria.io/docs/tasks/)
 
 ## Data Reference
 

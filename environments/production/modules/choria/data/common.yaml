@@ -3,9 +3,9 @@ choria::server_config:
   classesfile: "/opt/puppetlabs/puppet/cache/state/classes.txt"
   rpcaudit: 1
   plugin.rpcaudit.logfile: "/var/log/choria-audit.log"
-  plugin.yaml: "/etc/puppetlabs/mcollective/generated-facts.yaml"
+  plugin.yaml: "/etc/choria/generated-facts.yaml"
   plugin.choria.agent_provider.mcorpc.agent_shim: "/usr/bin/choria_mcollective_agent_compat.rb"
-  plugin.choria.agent_provider.mcorpc.config: "/etc/puppetlabs/mcollective/choria-shim.cfg"
+  plugin.choria.agent_provider.mcorpc.config: "/etc/choria/choria-shim.cfg"
   plugin.choria.agent_provider.mcorpc.libdir: "/opt/puppetlabs/mcollective/plugins"
   plugin.choria.machine.store: "/etc/choria/machine"
   plugin.scout.overrides: "/etc/choria/overrides.json"
@@ -13,14 +13,13 @@ choria::server_config:
 choria::rubypath: "/opt/puppetlabs/puppet/bin/ruby"
 choria::manage_package: true
 choria::manage_service: true
-choria::manage_package_repo: false
+choria::manage_package_repo: true
 choria::nightly_repo: false
 choria::repo_baseurl: "https://packagecloud.io/choria"
 choria::ensure: "present"
 choria::version: "present"
 choria::log_level: "warn"
 choria::srvdomain: "%{facts.networking.domain}"
-choria::mcollective_config_dir: "/etc/puppetlabs/mcollective"
 choria::broker_config_file: "/etc/choria/broker.conf"
 choria::server_config_file: "/etc/choria/server.conf"
 choria::manage_server_config: true
@@ -57,6 +56,9 @@ lookup_options:
   choria::collectives:
     merge: "unique"
   choria::scout_gossfile:
+    merge:
+      strategy: "deep"
+  choria::scout_metrics:
     merge:
       strategy: "deep"
   choria::scout_checks:

@@ -5,6 +5,7 @@
 # @param manage_package_repo Installs the package repositories
 # @param purge_machines Deletes Choria Autonomous Agents that are not managed by Puppet
 # @param scout_checks Hash of Scout Checks for a node, ideal for use using Hiera
+# @param scout_metrics Hash of Scout Metrics for a node, ideal for use using Hiera
 # @param scout_overrides Override data for Scout checks
 # @param scout_gossfile Are validation rules for the Goss system
 # @param scout_annotations Annotations that will be applied to all Scout Checks
@@ -12,7 +13,6 @@
 # @param ensure Add or remove the software
 # @param repo_baseurl Used to override default packagecloud package source
 # @param version The version of Choria to install
-# @param mcollective_config_dir Directory where mcollective configuration is stored
 # @param broker_config_file The configuration file for the broker
 # @param server_config_file The configuration file for the server
 # @param server_provisioning_token_file The configuration token to configure server provisioning
@@ -45,7 +45,6 @@ class choria (
   String $version,
   Enum[debug, info, warn, error, fatal] $log_level,
   Optional[String] $srvdomain,
-  Stdlib::Compat::Absolute_path $mcollective_config_dir,
   Stdlib::Compat::Absolute_path $broker_config_file,
   Stdlib::Compat::Absolute_path $server_config_file,
   Stdlib::Compat::Absolute_path $server_provisioning_token_file,
@@ -68,6 +67,7 @@ class choria (
   Hash $scout_overrides = {},
   Hash[String, String] $scout_annotations = {},
   Choria::ScoutChecks $scout_checks = {},
+  Choria::ScoutMetrics $scout_metrics = {},
   Choria::GossFiles $scout_gossfile = {},
   Enum[debug, info, warn, error, fatal] $broker_log_level = $log_level,
   Enum[debug, info, warn, error, fatal] $server_log_level = $log_level,
@@ -85,9 +85,24 @@ class choria (
   class{"choria::install": }
   -> class{"choria::config": }
   -> class{"choria::scout_checks": }
-  -> class{"choria::service": }
+
+  # We use a different class to disable choria service than enable it
+  # to help the discovery system find machines where the service is actually
+  # running vs those with it off - it searches on all machines with class
+  # choria::service so this facilitates client oly installs by setting server false
+  if $server {
+    class{"choria::service":
+      require => Class["choria::scout_checks"]
+    }
+    contain choria::service
+  } else {
+    class{"choria::service_disable":
+      require => Class["choria::scout_checks"]
+    }
+    contain choria::service_disable
+  }
 
   contain choria::install
   contain choria::scout_checks
-  contain choria::service
+  contain choria::scout_metrics
 }

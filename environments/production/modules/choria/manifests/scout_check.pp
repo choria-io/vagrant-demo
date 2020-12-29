@@ -10,6 +10,7 @@
 # @param remediate_states What states the remediation command should be run in
 # @param remediate_interval Interval between remediation attempts
 # @param annotations A Hash of user supplied data for this check that will be published in events. Merged with `$choria::scout_annotations`.
+# @param properties Additional properties to pass to the check
 define choria::scout_check(
   String $plugin = "",
   String $arguments = "",
@@ -20,15 +21,16 @@ define choria::scout_check(
   String $remediate_command = "",
   Array[String] $remediate_states = ["CRITICAL"],
   String $remediate_interval = "15m",
+  Hash[String, Any] $properties = {},
   Hash[String, String] $annotations = {},
   Enum["present", "absent"] $ensure = "present"
 ) {
   if $plugin == "" and $builtin == "" {
-    fail("${plugin} or ${builtin} is required for scout checks")
+    fail("plugin or builtin is required for scout checks")
   }
 
   if $plugin != "" and $builtin != "" {
-    fail("Only one of ${plugin} and ${builtin} can be set")
+    fail("Only one of plugin and builtin can be set")
   }
 
   if $plugin != "" {
@@ -49,7 +51,7 @@ define choria::scout_check(
       type        => "nagios",
       interval    => $check_interval,
       state_match => ["UNKNOWN", "OK", "WARNING", "CRITICAL"],
-      properties  => $_watcher_properties + {
+      properties  => $properties + $_watcher_properties + {
         annotations => $choria::scout_annotations + $annotations
       },
     }
@@ -73,6 +75,7 @@ define choria::scout_check(
   }
 
   choria::machine{$name:
+    ensure        => $ensure,
     version       => "1.0.0",
     initial_state => "UNKNOWN",
     watchers      => $_watchers,

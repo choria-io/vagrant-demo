@@ -55,3 +55,7 @@ checks:
     plugin: /usr/lib64/nagios/plugins/check_procs
     arguments: -w 5 -c 10 -s Z
 
+choria::nightly_repo: true
+choria::version: latest
+
+

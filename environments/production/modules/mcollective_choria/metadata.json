@@ -2,23 +2,18 @@
   "name": "choria-mcollective_choria",
   "version": "0.19.0",
   "author": "R.I.Pienaar <rip@devco.net>",
-  "summary": "A suite of MCollective Plugins for AIO Puppet",
+  "summary": "Configuration of the Choria MCollective Compatibility Layer",
   "license": "Apache-2.0",
-  "source": "https://github.com/choria-io/mcollective-choria",
-  "project_page": "https://github.com/choria-io/mcollective-choria/wiki",
-  "issues_url": "https://github.com/choria-io/mcollective-choria/issues",
+  "source": "https://github.com/choria-plugins/mcollective_choria",
+  "project_page": "https://github.com/choria-io/general/",
+  "issues_url": "https://github.com/choria-io/general/discussions",
   "dependencies": [
-    { "name": "choria/mcollective","version_requirement":">= 0.11.0 < 2.0.0"},
-    { "name": "choria/mcollective_agent_puppet", "version_requirement": ">= 2.3.3" },
-    { "name": "choria/mcollective_agent_package", "version_requirement": ">= 5.3.0" },
-    { "name": "choria/mcollective_agent_service", "version_requirement": ">= 4.0.1" },
-    { "name": "choria/mcollective_agent_filemgr", "version_requirement": ">= 2.0.1" },
-    { "name": "choria/mcollective_util_actionpolicy", "version_requirement": ">= 3.0.0" }
+    { "name": "choria/mcollective","version_requirement":">= 0.11.0 < 2.0.0"}
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.0.0 < 7.0.0"
+      "version_requirement": ">= 6.0.0 < 8.0.0"
     }
   ]
 }
