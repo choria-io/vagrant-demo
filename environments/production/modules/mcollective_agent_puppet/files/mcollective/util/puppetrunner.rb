@@ -218,6 +218,7 @@ module MCollective
         end
 
         arguments[:tags] = Array(@configuration[:tag]).join(",") if @configuration.include?(:tag)
+        arguments[:skip_tags] = Array(@configuration[:skip_tag]).join(",") if @configuration.include?(:skip_tag)
 
         arguments
       end

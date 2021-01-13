@@ -4,7 +4,7 @@ metadata    :name        => "choria_util",
             :license     => "Apache-2.0",
             :version     => "0.19.0",
             :url         => "https://choria.io",
-            :timeout     => 20
+            :timeout     => 2
 
 requires :mcollective => "2.9.0"
 
@@ -50,7 +50,7 @@ action "machine_transition", :description => "Attempts to force a transition in 
         :optional => false
 
   output :success,
-         :description => "Indicates if the transition was succesfully accepted",
+         :description => "Indicates if the transition was successfully accepted",
          :display_as => "Accepted"
 end
 

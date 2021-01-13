@@ -40,6 +40,11 @@ END_OF_USAGE
          :description => "Restrict the run to specific tags",
          :type        => :array
 
+  option :skip_tag,
+         :arguments   => ["--skip_tags TAG", "--skip_tag"],
+         :description => "Exclude specific tags from the run",
+         :type        => :array
+
   option :noop,
          :arguments   => ["--noop"],
          :description => "Do a noop run",
@@ -51,7 +56,7 @@ END_OF_USAGE
          :type        => :bool
 
   option :environment,
-         :arguments   => ["--environment ENVIRONMENT"],
+         :arguments   => ["--environment ENVIRONMENT" , "-E"],
          :description => "Place the node in a specific environment for this run",
          :type        => String
 
@@ -253,6 +258,7 @@ END_OF_USAGE
     end
 
     arguments[:tags] = Array(configuration[:tag]).join(",") if configuration.include?(:tag)
+    arguments[:skip_tags] = Array(configuration[:skip_tag]).join(",") if configuration.include?(:skip_tag)
 
     arguments
   end

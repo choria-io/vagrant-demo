@@ -231,6 +231,7 @@ module MCollective
           end
         end
         args[:tags] = request[:tags].split(",").map{|t| t.strip} if request[:tags]
+        args[:skip_tags] = request[:skip_tags].split(",").map{|t| t.strip} if request[:skip_tags]
         args[:ignoreschedules] = request[:ignoreschedules] if request[:ignoreschedules]
         args[:signal_daemon] = false if MCollective::Util.windows?
         args[:use_cached_catalog] = request[:use_cached_catalog] if request.include?(:use_cached_catalog)

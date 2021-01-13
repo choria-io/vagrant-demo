@@ -3,8 +3,8 @@ metadata    :name        => "rpcutil",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache License, Version 2.0",
             :version     => "0.19.0",
-            :url         => "https://docs.puppetlabs.com/mcollective/",
-            :timeout     => 10
+            :url         => "https://choria.io/",
+            :timeout     => 2
 
 action "collective_info", :description => "Info about the main and sub collectives" do
     display :always
@@ -65,9 +65,9 @@ action "get_fact", :description => "Retrieve a single fact from the fact store" 
            :prompt      => "The name of the fact",
            :description => "The fact to retrieve",
            :type        => :string,
-           :validation  => '^[\w\-\.]+$',
+           :validation  => '.+',
            :optional    => false,
-           :maxlength   => 256
+           :maxlength   => 512
 
      output :fact,
             :description => "The name of the fact being returned",

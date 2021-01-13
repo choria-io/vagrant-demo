@@ -2,6 +2,14 @@
 
 Change history for `choria/mcollective_agent_puppet`
 
+## 2.4.0
+
+Release 2021-01-01
+
+ * Support `-E` to set the environment as a shorthand for `--environment`
+ * Support Puppet 7 (#46)
+ * Support `--skip_tags` (#39)
+
 ## 2.3.3
 
 Release 2020-06-23

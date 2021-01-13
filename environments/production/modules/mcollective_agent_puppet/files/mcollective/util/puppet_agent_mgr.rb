@@ -51,7 +51,7 @@ module MCollective
               when "2"
                 raise "Window is not supported yet" if MCollective::Util.windows?
                 return MgrV2.new(configfile, service_name, testing)
-              when "3", "4", "5", "6"
+              when "3", "4", "5", "6", "7"
                 if MCollective::Util.windows?
                   return MgrWindows.new(configfile, service_name, testing)
                 else
@@ -207,11 +207,12 @@ module MCollective
       end
 
       # validates arguments and returns the CL options to execute puppet
-      def create_common_puppet_cli(noop=nil, tags=[], environment=nil,
+      def create_common_puppet_cli(noop=nil, tags=[], skip_tags=[], environment=nil,
                                    server=nil, splay=nil, splaylimit=nil,
                                    ignoreschedules=nil, use_cached_catalog=nil)
         opts = []
         tags = [tags].flatten.compact
+        skip_tags = [skip_tags].flatten.compact
 
         MCollective::Util::PuppetServerAddressValidation.validate_server(server)
         hostname, port = \
@@ -232,6 +233,15 @@ module MCollective
             end
           end
           opts << "--tags %s" % tags.join(",")
+        end
+
+        unless skip_tags.empty?
+          [skip_tags].flatten.each do |skip_tag|
+            skip_tag.split("::").each do |part|
+              raise("Invalid skip_tag '%s' specified" % skip_tag) unless valid_name?(part)
+            end
+          end
+          opts << "--skip_tags %s" % skip_tags.join(",")
         end
 
         opts << "--splay" if splay == true
@@ -270,6 +280,7 @@ module MCollective
       # :signal_daemon   - if the daemon is running, sends it USR1 to wake it up
       # :noop            - enables or disabled noop mode based on true/false
       # :tags            - an array of tags to limit the run to
+      # :skip_tags       - an array of tags to skip for this run
       # :environment     - the environment to run
       # :server          - puppet master to use, can be some.host or some.host:port
       # :splay           - enables or disables splay based on true/false
@@ -280,7 +291,7 @@ module MCollective
       # an idling daemon is present and :signal_daemon was false
       def runonce!(options={})
         valid_options = [:noop, :signal_daemon, :foreground_run, :tags,
-                         :environment, :server, :splay, :splaylimit,
+                         :skip_tags, :environment, :server, :splay, :splaylimit,
                          :options_only, :ignoreschedules, :use_cached_catalog]
 
         options.keys.each do |opt|
@@ -308,8 +319,9 @@ module MCollective
         ignoreschedules = options.fetch(:ignoreschedules, nil)
         use_cached_catalog = options.fetch(:use_cached_catalog, nil)
         tags            = [ options[:tags] ].flatten.compact
+        skip_tags       = [ options[:skip_tags] ].flatten.compact
 
-        clioptions = create_common_puppet_cli(noop, tags, environment,
+        clioptions = create_common_puppet_cli(noop, tags, skip_tags, environment,
                                               server, splay, splaylimit,
                                               ignoreschedules, use_cached_catalog)
 

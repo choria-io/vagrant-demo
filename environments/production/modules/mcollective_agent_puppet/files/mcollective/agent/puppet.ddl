@@ -2,7 +2,7 @@ metadata :name        => "puppet",
          :description => "Manages the Life Cycle of the Puppet Agent",
          :author      => "R.I.Pienaar <rip@devco.net>",
          :license     => "Apache-2.0",
-         :version     => "2.3.3",
+         :version     => "2.4.0",
          :url         => "https://github.com/choria-plugins/puppet-agent",
          :timeout => 20
 
@@ -271,6 +271,14 @@ action "runonce", :description => "Invoke a single Puppet run" do
     input :tags,
           :prompt      => "Tags",
           :description => "Restrict the Puppet run to a comma list of tags",
+          :type        => :string,
+          :validation  => :puppet_tags,
+          :optional    => true,
+          :maxlength   => 120
+
+    input :skip_tags,
+          :prompt      => "Skip tags",
+          :description => "Exclude a comma list of tags from the Puppet run",
           :type        => :string,
           :validation  => :puppet_tags,
           :optional    => true,

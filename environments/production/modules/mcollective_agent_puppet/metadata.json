@@ -1,6 +1,6 @@
 {
   "name": "choria-mcollective_agent_puppet",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "author": "R.I.Pienaar <rip@devco.net>",
   "license": "Apache-2.0",
   "summary": "Manages the Life Cycle of the Puppet Agent",

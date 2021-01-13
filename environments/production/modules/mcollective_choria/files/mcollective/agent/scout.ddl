@@ -1,8 +1,8 @@
 metadata :name        => "scout",
-         :description => "Choria Scout Management API",
+         :description => "Choria Scout Agent Management API",
          :author      => "R.I.Pienaar <rip@devco.net>",
          :license     => "Apache-2.0",
-         :version     => "0.19.0",
+         :version     => "0.0.1",
          :url         => "https://choria.io",
          :provider    => "golang",
          :timeout     => 5

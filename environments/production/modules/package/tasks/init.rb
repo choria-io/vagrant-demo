@@ -4,8 +4,9 @@ require 'puppet'
 Puppet.initialize_settings
 require 'json'
 
-def install(provider, _version)
+def install(provider, version)
   if !([:absent, :purged] & Array(provider.properties[:ensure])).empty?
+    provider.resource[:ensure] = version unless version.nil?
     provider.install
     provider.flush
     { status: 'installed', version: Array(provider.properties[:ensure]).join(', ') }

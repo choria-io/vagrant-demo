@@ -77,6 +77,15 @@ action "run_and_wait", :description => "Runs a Puppet Task that was previously d
         :default     => "{}",
         :maxlength   => 102400
 
+  input :run_as,
+        :prompt      => "Run As",
+        :description => "User to run the task as",
+        :type        => :string,
+        :validation  => ".+",
+        :optional    => true,
+        :default     => nil,
+        :maxlength   => 32
+
   output :task_id,
          :description => "The ID the task was created with",
          :display_as  => "Task ID",
@@ -164,6 +173,15 @@ action "run_no_wait", :description => "Runs a Puppet Task that was previously do
         :optional    => true,
         :default     => "{}",
         :maxlength   => 102400
+
+  input :run_as,
+        :prompt      => "Run As",
+        :description => "User to run the task as",
+        :type        => :string,
+        :validation  => ".+",
+        :optional    => true,
+        :default     => nil,
+        :maxlength   => 32
 
   output :task_id,
          :description => "The ID the task was created with",

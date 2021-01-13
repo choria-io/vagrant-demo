@@ -37,7 +37,8 @@ module MCollective
           "task" => request[:task],
           "input_method" => request[:input_method],
           "input" => request[:input],
-          "files" => JSON.parse(request[:files])
+          "files" => JSON.parse(request[:files]),
+          "run_as" => request[:run_as]
         }
 
         unless tasks.cached?(task["files"])
@@ -77,7 +78,8 @@ module MCollective
           "task" => request[:task],
           "input_method" => request[:input_method],
           "input" => request[:input],
-          "files" => JSON.parse(request[:files])
+          "files" => JSON.parse(request[:files]),
+          "run_as" => request[:run_as]
         }
 
         status = tasks.run_task_command(reply[:task_id], task, false, request.caller)

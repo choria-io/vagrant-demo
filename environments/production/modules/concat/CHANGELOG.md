@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.4.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v6.4.0) (2020-12-14)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v6.3.0...v6.4.0)
+
+### Added
+
+- pdksync - \(feat\) Add support for Puppet 7 [\#672](https://github.com/puppetlabs/puppetlabs-concat/pull/672) ([daianamezdrea](https://github.com/daianamezdrea))
+
+### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
+
+- PDK Update for GA workflows [\#667](https://github.com/puppetlabs/puppetlabs-concat/pull/667) ([carabasdaniel](https://github.com/carabasdaniel))
+
+## [v6.3.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v6.3.0) (2020-11-30)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v6.2.0...v6.3.0)
+
+### Added
+
+- \(IAC-746\) - Add ubuntu 20.04 support [\#644](https://github.com/puppetlabs/puppetlabs-concat/pull/644) ([david22swan](https://github.com/david22swan))
+- Add support for Deferred function in concat fragment [\#627](https://github.com/puppetlabs/puppetlabs-concat/pull/627) ([baurmatt](https://github.com/baurmatt))
+
+### Fixed
+
+- \(MODULES-9711\) Consistently manage concat with no fragments [\#661](https://github.com/puppetlabs/puppetlabs-concat/pull/661) ([seanmil](https://github.com/seanmil))
+- \(IAC-981\) - Removal of inappropriate terminology [\#659](https://github.com/puppetlabs/puppetlabs-concat/pull/659) ([david22swan](https://github.com/david22swan))
+
 ## [v6.2.0](https://github.com/puppetlabs/puppetlabs-concat/tree/v6.2.0) (2020-01-21)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-concat/compare/v6.1.0...v6.2.0)
@@ -359,7 +385,7 @@ should be able to use 1.1.0 without any failures, but you may find deprecation
 warnings and we'll be aggressively moving for a 2.0 to remove those too.
 
 For further information on deprecations, please read:
-https://github.com/puppetlabs/puppetlabs-concat/blob/master/README.md#api-deprecations
+https://github.com/puppetlabs/puppetlabs-concat/blob/main/README.md#api-deprecations
 
 #### Removed
 - Puppet 0.24 support.

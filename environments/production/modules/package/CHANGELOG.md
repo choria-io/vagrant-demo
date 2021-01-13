@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v1.4.0](https://github.com/puppetlabs/puppetlabs-package/tree/v1.4.0) (2020-12-08)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v1.3.0...v1.4.0)
+
+### Added
+
+- pdksync - \(feat\) - Add support for Puppet 7 [\#224](https://github.com/puppetlabs/puppetlabs-package/pull/224) ([daianamezdrea](https://github.com/daianamezdrea))
+- \(MODULES-10842\) - Allow version to be set when installing via init task [\#217](https://github.com/puppetlabs/puppetlabs-package/pull/217) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- \(MODULES-10844\) Fix missing version info in task output [\#216](https://github.com/puppetlabs/puppetlabs-package/pull/216) ([pgrant87](https://github.com/pgrant87))
+
 ## [v1.3.0](https://github.com/puppetlabs/puppetlabs-package/tree/v1.3.0) (2020-09-08)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-package/compare/v1.2.0...v1.3.0)
@@ -113,6 +126,7 @@ All notable changes to this project will be documented in this file. The format 
 - pdksync - \(FM-7392\) - Puppet 6 Testing Changes [\#88](https://github.com/puppetlabs/puppetlabs-package/pull/88) ([pmcmaw](https://github.com/pmcmaw))
 - \(DI-3260\) Adding agentless windows task \(for choco\) [\#81](https://github.com/puppetlabs/puppetlabs-package/pull/81) ([HairyMike](https://github.com/HairyMike))
 - \(DI-2373\) Adding agentless linux task [\#77](https://github.com/puppetlabs/puppetlabs-package/pull/77) ([tphoney](https://github.com/tphoney))
+- \(FM-7263\) - Addition of support for ubuntu 18.04 [\#70](https://github.com/puppetlabs/puppetlabs-package/pull/70) ([david22swan](https://github.com/david22swan))
 - \[FM-7058\] Addition of support for Debian 9 to package [\#69](https://github.com/puppetlabs/puppetlabs-package/pull/69) ([david22swan](https://github.com/david22swan))
 
 ## 0.2.0

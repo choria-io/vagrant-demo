@@ -7,7 +7,7 @@
     "license": "Apache-2.0",
     "version": "0.19.0",
     "url": "https://choria.io",
-    "timeout": 20
+    "timeout": 2
   },
   "actions": [
     {
@@ -232,7 +232,7 @@
       },
       "output": {
         "success": {
-          "description": "Indicates if the transition was succesfully accepted",
+          "description": "Indicates if the transition was successfully accepted",
           "display_as": "Accepted",
           "default": null
         }

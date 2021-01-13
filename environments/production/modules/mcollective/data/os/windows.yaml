@@ -1,7 +1,5 @@
 mcollective::plugin_owner: ~
 mcollective::plugin_group: ~
-mcollective::plugin_mode: ~
-mcollective::plugin_executable_mode: ~
 
 mcollective::bindir: "C:/Program Files/choria/bin"
 mcollective::libdir: "C:/ProgramData/choria/lib/plugins"
@@ -12,7 +10,6 @@ mcollective::manage_bin_symlinks: false
 
 mcollective::required_directories:
   - "C:/ProgramData/choria"
-  - "C:/ProgramData/choria/etc"
   - "C:/ProgramData/choria/lib"
   - "C:/ProgramData/choria/var"
   - "C:/ProgramData/choria/var/log"

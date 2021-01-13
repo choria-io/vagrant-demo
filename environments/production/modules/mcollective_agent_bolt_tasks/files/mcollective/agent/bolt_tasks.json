@@ -101,6 +101,15 @@
           "optional": false,
           "validation": "^.+$",
           "maxlength": 102400
+        },
+        "run_as": {
+          "prompt": "Run As",
+          "description": "User to run the task as",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": ".+",
+          "maxlength": 32
         }
       },
       "output": {
@@ -233,6 +242,15 @@
           "optional": true,
           "validation": "^.+$",
           "maxlength": 102400
+        },
+        "run_as": {
+          "prompt": "Run As",
+          "description": "User to run the task as",
+          "type": "string",
+          "default": null,
+          "optional": true,
+          "validation": ".+",
+          "maxlength": 32
         }
       },
       "output": {

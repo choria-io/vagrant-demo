@@ -6,8 +6,8 @@
     "author": "R.I.Pienaar <rip@devco.net>",
     "license": "Apache License, Version 2.0",
     "version": "0.19.0",
-    "url": "https://docs.puppetlabs.com/mcollective/",
-    "timeout": 10
+    "url": "https://choria.io/",
+    "timeout": 2
   },
   "actions": [
     {
@@ -216,8 +216,8 @@
           "type": "string",
           "default": null,
           "optional": false,
-          "validation": "^[\\w\\-\\.]+$",
-          "maxlength": 256
+          "validation": ".+",
+          "maxlength": 512
         }
       },
       "output": {
@@ -308,8 +308,7 @@
         },
         "machines": {
           "description": "Autonomous Agents",
-          "display_as": "Machines",
-          "default": null
+          "display_as": "Machines"
         }
       },
       "display": "always",

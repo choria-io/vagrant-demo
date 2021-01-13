@@ -1,3 +1,5 @@
 ---
+mcollective_choria::package_dependencies:
+  "rubygem-choria-mcorpc-support": "present"
 mcollective_choria::config:
   tasks.wrapper_path: /usr/local/bin/task_wrapper

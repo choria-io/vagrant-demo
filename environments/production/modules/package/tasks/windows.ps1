@@ -89,7 +89,7 @@ try
       Write-Host @"
 {
   "status"  : "Installed $Name",
-  "version" : ""
+  "version" : "$version"
 }
 "@
     }
