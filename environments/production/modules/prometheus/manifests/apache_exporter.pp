@@ -51,7 +51,7 @@
 #  The binary release version
 class prometheus::apache_exporter (
   String[1] $scrape_uri,
-  String[1] $download_extension,
+  String $download_extension,
   Prometheus::Uri $download_url_base,
   Array[String[1]] $extra_groups,
   String[1] $group,

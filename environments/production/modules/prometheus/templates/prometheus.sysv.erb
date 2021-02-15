@@ -51,8 +51,8 @@ start() {
         [ -f $PID_FILE ] && rm $PID_FILE
         daemon --user=<%= scope.lookupvar('prometheus::server::user') %> \
             --pidfile="$PID_FILE" \
-            "$DAEMON" <%= @daemon_flags.join(" \\\n            ") %> \
-             >> "$LOG_FILE" &
+            "'$DAEMON' <%= @daemon_flags.join(" \\\n            ") %> \
+            >> '$LOG_FILE' 2>&1 &"
         retcode=$?
         mkpidfile
         touch /var/lock/subsys/prometheus

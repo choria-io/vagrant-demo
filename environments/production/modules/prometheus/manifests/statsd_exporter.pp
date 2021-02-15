@@ -55,7 +55,7 @@
 # @param version
 #  The binary release version
 class prometheus::statsd_exporter (
-  String[1] $download_extension,
+  String $download_extension,
   Prometheus::Uri $download_url_base,
   Array $extra_groups,
   String[1] $group,

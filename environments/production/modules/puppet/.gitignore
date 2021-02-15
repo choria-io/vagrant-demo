@@ -1,0 +1,46 @@
+# This file is managed centrally by modulesync
+#   https://github.com/theforeman/foreman-installer-modulesync
+
+## MAC OS
+.DS_Store
+
+## TEXTMATE
+*.tmproj
+tmtags
+
+## EMACS
+*~
+\#*
+.\#*
+
+## VIM
+*.swp
+*.swo
+tags
+
+## Bundler
+Gemfile.lock
+.bundle
+vendor/
+
+## rbenv / rvm
+.rbenv*
+.rvmrc*
+.ruby-*
+
+## rspec
+spec/fixtures/
+junit/
+
+## Puppet module
+pkg/
+coverage/
+.yardoc/
+REFERENCE.md
+
+## InteliJ / RubyMine
+.idea
+
+## Beaker
+.vagrant/
+log/

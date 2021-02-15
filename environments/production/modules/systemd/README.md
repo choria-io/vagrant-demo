@@ -266,6 +266,7 @@ class{'systemd':
   manage_networkd  => true,
   manage_timesyncd => true,
   manage_journald  => true,
+  manage_udevd     => true,
   manage_logind    => true,
 }
 ```
@@ -320,6 +321,41 @@ systemd::journald_settings:
     ensure: absent
 ```
 
+### udevd configuration
+
+It allows you to manage the udevd configuration.  You can set the udev.conf values via the `udev_log`, `udev_children_max`, `udev_exec_delay`, `udev_event_timeout`, `udev_resolve_names`, and `udev_timeout_signal` parameters.
+
+Additionally you can set custom udev rules with the `udev_rules` parameter.
+
+```puppet
+class { 'systemd':
+  manage_udevd => true,
+  udev_rules   => { 
+      'example_raw.rules' => {
+      'rules'             => [
+        'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"',
+        'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+      ],
+    },
+  },
+}
+```
+
+### udev::rules configuration
+
+Custom udev rules can be defined for specific events.
+
+```yaml
+systemd::udev::rule:
+  ensure: present
+  path: /etc/udev/rules.d
+  selinux_ignore_defaults: false
+  notify: "Service[systemd-udevd']"
+  rules:
+    - 'ACTION=="add", KERNEL=="sda", RUN+="/bin/raw /dev/raw/raw1 %N"'
+    - 'ACTION=="add", KERNEL=="sdb", RUN+="/bin/raw /dev/raw/raw2 %N"',
+```
+
 ### logind configuration
 
 It also allows you to manage logind settings. You can manage logind settings through setting the `logind_settings` parameter. If you want a parameter to be removed, you can pass its value as params.
@@ -342,3 +378,5 @@ loginctl_user { 'foo':
   linger => enabled,
 }
 ```
+
+or as a hash via the `systemd::loginctl_users` parameter.

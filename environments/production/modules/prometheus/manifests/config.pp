@@ -194,17 +194,13 @@ class prometheus::config {
         Class['systemd::systemctl::daemon_reload'] -> Class['prometheus::run_service']
       }
     }
-    'sysv', 'redhat', 'debian', 'sles': {
-      $content = $prometheus::server::init_style ? {
-        'redhat' => template('prometheus/prometheus.sysv.erb'), # redhat and sysv share the same template file
-        default  => template("prometheus/prometheus.${prometheus::server::init_style}.erb"),
-      }
+    'sysv', 'sles': {
       file { "/etc/init.d/${prometheus::server::service_name}":
         ensure  => file,
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
-        content => $content,
+        content => template("prometheus/prometheus.${prometheus::server::init_style}.erb"),
         notify  => $notify,
       }
     }
@@ -226,7 +222,7 @@ class prometheus::config {
   file { "${prometheus::config_dir}/file_sd_config.d":
     ensure  => directory,
     group   => $prometheus::server::group,
-    purge   => true,
+    purge   => $prometheus::purge_config_dir,
     recurse => true,
     notify  => Class['prometheus::service_reload'], # After purging, a reload is needed
   }
@@ -245,7 +241,7 @@ class prometheus::config {
 
     Prometheus::Scrape_job <<| job_name == $job_name and tag == $node_tag |>> {
       collect_dir => "${prometheus::config_dir}/file_sd_config.d",
-      notify      => Class['::prometheus::service_reload'],
+      notify      => Class['prometheus::service_reload'],
     }
   }
   # assemble the scrape jobs in a single list that gets appended to

@@ -1,6 +1,6 @@
 {
   "name": "choria-mcollective_choria",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "author": "R.I.Pienaar <rip@devco.net>",
   "summary": "Configuration of the Choria MCollective Compatibility Layer",
   "license": "Apache-2.0",

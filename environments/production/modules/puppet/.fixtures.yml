@@ -1,0 +1,20 @@
+fixtures:
+  repositories:
+    augeas_core:
+      repo: 'https://github.com/puppetlabs/puppetlabs-augeas_core'
+      puppet_version: '>= 6.0.0'
+    concat:   'https://github.com/puppetlabs/puppetlabs-concat.git'
+    cron_core:
+      repo: 'https://github.com/puppetlabs/puppetlabs-cron_core'
+      puppet_version: '>= 6.0.0'
+    extlib:   'https://github.com/voxpupuli/puppet-extlib.git'
+    foreman:  'https://github.com/theforeman/puppet-foreman.git'
+    git:      'https://github.com/theforeman/puppet-git.git'
+    inifile:  'https://github.com/puppetlabs/puppetlabs-inifile.git'
+    puppetdb: 'https://github.com/puppetlabs/puppetlabs-puppetdb.git'
+    redis:    'https://github.com/voxpupuli/puppet-redis.git'
+    stdlib:   'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+    systemd:  'https://github.com/camptocamp/puppet-systemd.git'
+    yumrepo_core:
+      repo: 'https://github.com/puppetlabs/puppetlabs-yumrepo_core'
+      puppet_version: '>= 6.0.0'

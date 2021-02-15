@@ -47,6 +47,8 @@
 #  User which runs the service
 # @param version
 #  The binary release version
+# @param env_vars
+#  hash with custom environment variables thats passed to the exporter via init script / unit file
 #
 # @see https://github.com/czerwonk/bird_exporter
 #
@@ -82,6 +84,7 @@ class prometheus::bird_exporter (
   String[1] $scrape_job_name              = 'bird',
   Optional[Hash] $scrape_job_labels       = undef,
   Optional[String[1]] $bin_name           = undef,
+  Hash[String[1], Scalar] $env_vars       = {},
 ) inherits prometheus {
   $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}_${os}_${arch}")
 
@@ -118,5 +121,6 @@ class prometheus::bird_exporter (
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,
     bin_name           => $bin_name,
+    env_vars           => $env_vars,
   }
 }

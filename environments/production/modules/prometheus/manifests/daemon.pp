@@ -68,8 +68,8 @@ define prometheus::daemon (
   Stdlib::Ensure::Service $service_ensure = 'running',
   Boolean $service_enable                 = true,
   Boolean $manage_service                 = true,
-  Hash[String, Scalar] $env_vars          = {},
-  Optional[String] $env_file_path         = $prometheus::env_file_path,
+  Hash[String[1], Scalar] $env_vars       = {},
+  Stdlib::Absolutepath $env_file_path     = $prometheus::env_file_path,
   Optional[String[1]] $extract_command    = $prometheus::extract_command,
   Stdlib::Absolutepath $extract_path      = '/opt',
   Stdlib::Absolutepath $archive_bin_path  = "/opt/${name}-${version}.${os}-${arch}/${name}",
@@ -184,22 +184,12 @@ define prometheus::daemon (
         Class['systemd::systemctl::daemon_reload'] -> Service[$name]
       }
     }
-    # service_provider returns redhat on CentOS using sysv, https://tickets.puppetlabs.com/browse/PUP-5296
-    'sysv','redhat': {
+    'sysv': {
       file { "/etc/init.d/${name}":
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
         content => template('prometheus/daemon.sysv.erb'),
-        notify  => $notify_service,
-      }
-    }
-    'debian': {
-      file { "/etc/init.d/${name}":
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
-        content => template('prometheus/daemon.debian.erb'),
         notify  => $notify_service,
       }
     }
@@ -224,7 +214,7 @@ define prometheus::daemon (
     'none': {}
   }
 
-  if $env_file_path != undef {
+  unless $env_vars.empty {
     file { "${env_file_path}/${name}":
       mode    => '0644',
       owner   => 'root',

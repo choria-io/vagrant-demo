@@ -71,7 +71,7 @@ class prometheus::rabbitmq_exporter (
   String[1] $package_ensure,
   String[1] $package_name,
   String[1] $service_name,
-  String[1] $download_extension,
+  String $download_extension,
   String[1] $user,
   String[1] $version,
   String[1] $rabbit_url,

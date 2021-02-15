@@ -1,0 +1,11 @@
+<%- if @os['name'] == 'Fedora' and @os['release']['major'] <= '31' -%>
+.include /usr/lib/systemd/system/<%= @service_name %>.service
+<% end -%>
+[Service]
+Environment=PGPORT=<%= @port %>
+<%- if @os['family'] == 'Gentoo' -%>
+Environment=DATA_DIR=<%= @datadir %>
+<%- else -%>
+Environment=PGDATA=<%= @datadir %>
+<%- end -%>
+<%= @extra_systemd_config %>

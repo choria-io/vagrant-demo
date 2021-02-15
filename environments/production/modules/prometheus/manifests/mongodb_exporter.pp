@@ -53,7 +53,7 @@
 #  https://github.com/percona/mongodb_exporter/blob/v0.7.0/CHANGELOG.md
 class prometheus::mongodb_exporter (
   String[1] $cnf_uri,
-  String[1] $download_extension,
+  String $download_extension,
   String[1] $download_url_base,
   Array  $extra_groups,
   String[1] $group,

@@ -58,7 +58,7 @@
 class prometheus::consul_exporter (
   Boolean $consul_health_summary,
   String[1] $consul_server,
-  String[1] $download_extension,
+  String $download_extension,
   String[1] $download_url_base,
   Array $extra_groups,
   String[1] $group,

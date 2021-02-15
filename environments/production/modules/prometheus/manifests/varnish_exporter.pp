@@ -46,7 +46,7 @@
 # @param version
 #  The binary release version
 class prometheus::varnish_exporter (
-  String[1] $download_extension,
+  String $download_extension,
   Array $extra_groups,
   String[1] $group,
   String[1] $package_ensure,

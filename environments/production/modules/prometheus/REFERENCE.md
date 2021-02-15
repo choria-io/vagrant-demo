@@ -8,7 +8,7 @@
 
 #### Public Classes
 
-* [`prometheus`](#prometheus): #sammary This module manages prometheus
+* [`prometheus`](#prometheus): This module manages prometheus
 * [`prometheus::alertmanager`](#prometheusalertmanager): This module manages prometheus alertmanager
 * [`prometheus::apache_exporter`](#prometheusapache_exporter): This module manages prometheus apache_exporter
 * [`prometheus::beanstalkd_exporter`](#prometheusbeanstalkd_exporter): This module manages prometheus beanstalkd_exporter
@@ -72,7 +72,7 @@ This can be used to make prometheus find instances of your running service or ap
 
 ### `prometheus`
 
-#sammary This module manages prometheus
+This module manages prometheus
 
 #### Parameters
 
@@ -1045,7 +1045,7 @@ Default value: `$prometheus::config_mode`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -1291,7 +1291,7 @@ Address to bind beanstalkd_exporter to. Default is different than upstream (*:93
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -1674,6 +1674,14 @@ The binary release version
 
 Default value: `'1.2.4'`
 
+##### `env_vars`
+
+Data type: `Hash[String[1], Scalar]`
+
+hash with custom environment variables thats passed to the exporter via init script / unit file
+
+Default value: `{}`
+
 ##### `export_scrape_job`
 
 Data type: `Boolean`
@@ -1765,7 +1773,7 @@ Absolute path to configuration file (blackbox module definitions)
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -1989,7 +1997,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -2211,7 +2219,7 @@ Generate a health summary for each service instance. Needs n+1 queries to collec
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -2443,7 +2451,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -2711,7 +2719,7 @@ Timeout for trying to get stats from elasticsearch URI
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -2933,7 +2941,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -3160,7 +3168,7 @@ Default value: `$prometheus::config_mode`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -3382,7 +3390,7 @@ The URI to obtain HAProxy stats from
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -3603,7 +3611,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -3855,7 +3863,7 @@ The URI to obtain mesos stats from
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -4075,7 +4083,7 @@ The URI to obtain MongoDB stats from
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -4356,7 +4364,7 @@ Default value: `$prometheus::config_mode`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -4817,7 +4825,7 @@ Default value: `[]`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -5262,7 +5270,7 @@ Default value: `{}`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -5533,7 +5541,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -5778,7 +5786,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -5942,7 +5950,7 @@ Data type: `String[1]`
 
 The binary release version
 
-Default value: `'1.0.0'`
+Default value: `'1.1.0'`
 
 ##### `puppetdb_url`
 
@@ -6576,7 +6584,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -6849,7 +6857,7 @@ Array of address of one or more redis nodes. Defaults to redis://localhost:6379
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -7491,7 +7499,7 @@ Configuration template to use. If empty, uses upstream config (default "")
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -7713,7 +7721,7 @@ Default value: `$prometheus::config_mode`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -7944,7 +7952,7 @@ Default value: `$prometheus::bin_dir`
 
 ##### `download_extension`
 
-Data type: `String[1]`
+Data type: `String`
 
 Extension for the release binary archive
 
@@ -8390,7 +8398,7 @@ Default value: `''`
 
 ##### `env_vars`
 
-Data type: `Hash[String, Scalar]`
+Data type: `Hash[String[1], Scalar]`
 
 
 
@@ -8398,7 +8406,7 @@ Default value: `{}`
 
 ##### `env_file_path`
 
-Data type: `Optional[String]`
+Data type: `Stdlib::Absolutepath`
 
 
 
@@ -8504,7 +8512,7 @@ Alias of `Pattern[/^gs:\/\//]`
 
 The Prometheus::Initstyle data type.
 
-Alias of `Enum['sysv', 'redhat', 'systemd', 'sles', 'debian', 'launchd', 'upstart', 'none']`
+Alias of `Enum['sysv', 'systemd', 'sles', 'launchd', 'upstart', 'none']`
 
 ### `Prometheus::Install`
 

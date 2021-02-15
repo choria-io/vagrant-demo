@@ -52,7 +52,7 @@
 class prometheus::mesos_exporter (
   String[1] $server_type,
   String[1] $cnf_scrape_uri,
-  String[1] $download_extension,
+  String $download_extension,
   String[1] $download_url_base,
   Array $extra_groups,
   String[1] $group,

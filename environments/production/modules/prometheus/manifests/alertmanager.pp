@@ -139,10 +139,10 @@ class prometheus::alertmanager (
   }
 
   $alertmanager_reload = $prometheus::init_style ? {
-    'systemd'                     => "systemctl reload-or-restart ${service_name}",
-    /^(upstart|none)$/            => "service ${service_name} reload",
-    /^(sysv|redhat|sles|debian)$/ => "/etc/init.d/${service_name} reload",
-    'launchd'                     => "launchctl stop ${service_name} && launchctl start ${service_name}",
+    'systemd'          => "systemctl reload-or-restart ${service_name}",
+    /^(upstart|none)$/ => "service ${service_name} reload",
+    /^(sysv|sles)$/    => "/etc/init.d/${service_name} reload",
+    'launchd'          => "launchctl stop ${service_name} && launchctl start ${service_name}",
   }
 
   exec { 'alertmanager-reload':

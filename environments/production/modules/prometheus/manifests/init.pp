@@ -1,4 +1,4 @@
-# #sammary This module manages prometheus
+# @summary This module manages prometheus
 # @param configname
 #  the name of the configfile, defaults to prometheus.yaml or prometheus.yml on most operating systems
 # @param manage_user

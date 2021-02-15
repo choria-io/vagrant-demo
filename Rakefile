@@ -1,6 +1,7 @@
 desc "Update Choria modules"
 task :update do
   modules = [
+    "puppetlabs/stdlib",
     "choria/choria",
     "choria/mcollective_data_sysctl",
     "choria/mcollective_agent_shell",
@@ -13,6 +14,13 @@ task :update do
     "puppetlabs/inifile",
     "herculesteam/augeasproviders_core",
     "camptocamp/augeas",
+    "puppetlabs/concat",
+    "puppetlabs/puppetdb",
+    "camptocamp/systemd",
+    "puppet/archive",
+    "puppet/prometheus",
+    "puppetlabs/puppet_authorization",
+    "theforeman/puppet"
   ]
 
   rm_rf "environments/production/modules"
@@ -21,11 +29,4 @@ task :update do
   modules.each do |mod|
     sh "puppet module install --modulepath `pwd`/environments/production/modules %s" % mod
   end
-
-  sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/concat --ignore-dependencies"
-  sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/systemd --ignore-dependencies"
-  sh "puppet module install --modulepath `pwd`/environments/production/modules puppet/archive --ignore-dependencies"
-  sh "puppet module install --modulepath `pwd`/environments/production/modules puppet/prometheus --ignore-dependencies"
-  sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/puppet_authorization --ignore-dependencies"
-  sh "puppet module install --modulepath `pwd`/environments/production/modules camptocamp/puppetserver --ignore-dependencies"
 end

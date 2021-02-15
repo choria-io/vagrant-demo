@@ -40,7 +40,7 @@
 #   Takes a boolean argument or "opportunistic"
 #
 # @param cache
-#   Takes a boolean argument.
+#   Takes a boolean argument or "no-negative".
 #
 # @param dns_stub_listener
 #   Takes a boolean argument or one of "udp" and "tcp".
@@ -75,11 +75,40 @@
 # @param journald_settings
 #   Config Hash that is used to configure settings in journald.conf
 #
+# @param manage_udevd
+#   Manage the systemd udev daemon
+#
+# @param udev_log
+#   The value of /etc/udev/udev.conf udev_log
+#
+# @param udev_children_max
+#   The value of /etc/udev/udev.conf children_max
+#
+# @param udev_exec_delay
+#   The value of /etc/udev/udev.conf exec_delay
+#
+# @param udev_event_timeout
+#   The value of /etc/udev/udev.conf event_timeout
+#
+# @param udev_resolve_names
+#   The value of /etc/udev/udev.conf resolve_names
+#
+# @param udev_timeout_signal
+#   The value of /etc/udev/udev.conf timeout_signal
+#
+# @param udev_rules
+#   Config Hash that is used to generate instances of our
+#   `udev::rule` define.
+#
 # @param manage_logind
 #   Manage the systemd logind
 #
 # @param logind_settings
 #   Config Hash that is used to configure settings in logind.conf
+#
+# @param loginctl_users
+#   Config Hash that is used to generate instances of our type
+#   `loginctl_user`.
 #
 # @param dropin_files
 #   Configure dropin files via hiera with factory pattern
@@ -94,7 +123,7 @@ class systemd (
   Optional[Variant[Boolean,Enum['resolve']]]             $multicast_dns,
   Optional[Variant[Boolean,Enum['allow-downgrade']]]     $dnssec,
   Optional[Variant[Boolean,Enum['opportunistic', 'no']]] $dnsovertls,
-  Boolean                                                $cache,
+  Optional[Variant[Boolean,Enum['no-negative']]]         $cache,
   Optional[Variant[Boolean,Enum['udp','tcp']]]           $dns_stub_listener,
   Boolean                                                $use_stub_resolver,
   Boolean                                                $manage_networkd,
@@ -108,11 +137,19 @@ class systemd (
   Boolean                                                $purge_dropin_dirs,
   Boolean                                                $manage_journald,
   Systemd::JournaldSettings                              $journald_settings,
+  Boolean                                                $manage_udevd,
+  Optional[Variant[Integer,String]]                      $udev_log,
+  Optional[Integer]                                      $udev_children_max,
+  Optional[Integer]                                      $udev_exec_delay,
+  Optional[Integer]                                      $udev_event_timeout,
+  Optional[Enum['early', 'late', 'never']]               $udev_resolve_names,
+  Optional[Variant[Integer,String]]                      $udev_timeout_signal,
   Boolean                                                $manage_logind,
   Systemd::LogindSettings                                $logind_settings,
+  Hash                                                   $loginctl_users = {},
   Hash                                                   $dropin_files = {},
-){
-
+  Hash                                                   $udev_rules = {},
+) {
   contain systemd::systemctl::daemon_reload
 
   create_resources('systemd::service_limits', $service_limits)
@@ -127,6 +164,10 @@ class systemd (
 
   if $manage_timesyncd and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-timesyncd.service'] {
     contain systemd::timesyncd
+  }
+
+  if $manage_udevd {
+    contain systemd::udevd
   }
 
   if $manage_accounting {

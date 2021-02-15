@@ -64,7 +64,7 @@
 #       preferred_ip_protocol: ip4
 class prometheus::blackbox_exporter (
   String[1] $config_file,
-  String[1] $download_extension,
+  String $download_extension,
   String[1] $download_url_base,
   Array[String] $extra_groups,
   String[1] $group,

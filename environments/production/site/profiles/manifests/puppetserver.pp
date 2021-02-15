@@ -1,39 +1,17 @@
 class profiles::puppetserver {
-  include puppetserver
+  include puppetdb
 
-  ini_setting{"code dir":
-    ensure  => present,
-    path    => "/etc/puppetlabs/puppet/puppet.conf",
-    section => "master",
-    setting => "codedir",
-    value   => "/vagrant",
+  class{"puppet":
+    server => true,
+    server_reports => "puppetdb",
+    server_foreman => false,
+    server_external_nodes => "",  
+    runmode => "unmanaged",
+    codedir => "/vagrant",
+    server_envs_dir => "/vagrant/environments"
   }
 
-  ini_setting{"environment path":
-    ensure  => present,
-    path    => "/etc/puppetlabs/puppet/puppet.conf",
-    section => "master",
-    setting => "environmentpath",
-    value   => "/vagrant/environments",
-  }
-
-  puppet_authorization::rule { "puppetlabs tasks file contents":
-    match_request_path   => "/puppet/v3/file_content/tasks",
-    match_request_type   => "path",
-    match_request_method => "get",
-    allow                => ["*"],
-    sort_order           => 510,
-    path                 => "/etc/puppetlabs/puppetserver/conf.d/auth.conf",
-    notify               => Class["puppetserver::config"]
-  }
-
-  puppet_authorization::rule { "puppetlabs tasks":
-    match_request_path   => "/puppet/v3/tasks",
-    match_request_type   => "path",
-    match_request_method => "get",
-    allow                => ["*"],
-    sort_order           => 510,
-    path                 => "/etc/puppetlabs/puppetserver/conf.d/auth.conf",
-    notify               => Class["puppetserver::config"]
+  class{"puppet::server::puppetdb":
+    server => "puppet.choria",
   }
 }

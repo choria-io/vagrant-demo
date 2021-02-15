@@ -1,0 +1,13 @@
+#
+# Managed by Puppet
+#
+[Unit]
+Description=Systemd Timer Service for Puppet Agent
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=<%= @command %>
+SuccessExitStatus=2
+User=root
+Group=root

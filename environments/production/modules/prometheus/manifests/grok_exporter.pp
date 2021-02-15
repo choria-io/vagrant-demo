@@ -55,7 +55,7 @@
 class prometheus::grok_exporter (
   Hash $config,
   String[1] $config_file,
-  String[1] $download_extension,
+  String $download_extension,
   Prometheus::Uri $download_url_base,
   Array[String[1]] $extra_groups,
   String[1] $group,

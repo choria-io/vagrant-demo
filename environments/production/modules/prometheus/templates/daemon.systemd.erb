@@ -7,7 +7,9 @@ After=basic.target network.target
 [Service]
 User=<%= @user %>
 Group=<%= @group %>
+<%- unless @env_vars.empty? -%>
 EnvironmentFile=<%= @env_file_path %>/<%= @name%>
+<% end %>
 <%- require 'shellwords' -%>
 ExecStart=<%= @bin_dir %>/<%= @bin_name %><% for option in Shellwords.split(@options) %> \
 <%= option -%>

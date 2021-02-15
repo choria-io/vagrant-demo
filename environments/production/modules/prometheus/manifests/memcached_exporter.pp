@@ -46,7 +46,7 @@
 # @param version
 #  The binary release version
 class prometheus::memcached_exporter (
-  String[1] $download_extension           = 'tar.gz',
+  String $download_extension              = 'tar.gz',
   String[1] $download_url_base            = 'https://github.com/prometheus/memcached_exporter/releases',
   Array[String] $extra_groups             = [],
   String[1] $group                        = 'memcached-exporter',

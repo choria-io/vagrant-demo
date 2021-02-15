@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v11.0.0](https://github.com/voxpupuli/puppet-prometheus/tree/v11.0.0) (2021-01-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v10.2.0...v11.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 5; require at least Puppet 6.1.0 [\#518](https://github.com/voxpupuli/puppet-prometheus/pull/518) ([bastelfreak](https://github.com/bastelfreak))
+- puppetdb\_exporter: Update 1.0.0-\>1.1.0 [\#513](https://github.com/voxpupuli/puppet-prometheus/pull/513) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EOL CentOS 6 support [\#512](https://github.com/voxpupuli/puppet-prometheus/pull/512) ([bastelfreak](https://github.com/bastelfreak))
+- Drop Debian 8 support/compatibility [\#496](https://github.com/voxpupuli/puppet-prometheus/pull/496) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Support Puppet 7.x [\#515](https://github.com/voxpupuli/puppet-prometheus/pull/515) ([bastelfreak](https://github.com/bastelfreak))
+- Add Ubuntu 20.04 support [\#514](https://github.com/voxpupuli/puppet-prometheus/pull/514) ([bastelfreak](https://github.com/bastelfreak))
+- Daemon: create env files only if required [\#493](https://github.com/voxpupuli/puppet-prometheus/pull/493) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- Purge collected configs based on $purge\_config\_dir [\#517](https://github.com/voxpupuli/puppet-prometheus/pull/517) ([towo](https://github.com/towo))
+- \(FACT-2880\) fact: call Puppet within setcode block [\#511](https://github.com/voxpupuli/puppet-prometheus/pull/511) ([bastelfreak](https://github.com/bastelfreak))
+- Allow download\_extension to be empty string [\#507](https://github.com/voxpupuli/puppet-prometheus/pull/507) ([treydock](https://github.com/treydock))
+- fix sysv init scripts [\#502](https://github.com/voxpupuli/puppet-prometheus/pull/502) ([kubicgruenfeld](https://github.com/kubicgruenfeld))
+
+**Closed issues:**
+
+- haproxy\_exporter fails scraping when haproxy.scrape-uri contains specials characters  [\#516](https://github.com/voxpupuli/puppet-prometheus/issues/516)
+- scrape\_job exported resources are ignoring custom collect dir [\#490](https://github.com/voxpupuli/puppet-prometheus/issues/490)
+- config.pp does not honor $prometheus::purge\_config\_dir value [\#460](https://github.com/voxpupuli/puppet-prometheus/issues/460)
+- SysV init script leaves dangling shell processes [\#293](https://github.com/voxpupuli/puppet-prometheus/issues/293)
+
+**Merged pull requests:**
+
+- Fix typo in init.pp docs [\#504](https://github.com/voxpupuli/puppet-prometheus/pull/504) ([genebean](https://github.com/genebean))
+
 ## [v10.2.0](https://github.com/voxpupuli/puppet-prometheus/tree/v10.2.0) (2020-09-26)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-prometheus/compare/v10.1.0...v10.2.0)

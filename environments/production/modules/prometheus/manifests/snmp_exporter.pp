@@ -54,7 +54,7 @@
 class prometheus::snmp_exporter (
   String[1] $config_file,
   String $config_template,
-  String[1] $download_extension,
+  String $download_extension,
   String[1] $download_url_base,
   Array $extra_groups,
   String[1] $group,

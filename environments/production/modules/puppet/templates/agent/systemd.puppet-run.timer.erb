@@ -1,0 +1,13 @@
+#
+# Managed by Puppet
+#
+[Unit]
+Description=Systemd Timer for Puppet Agent
+
+[Timer]
+OnCalendar=*-*-* <%= Array(@_hour).join(',') %>:<%= Array(@_minute).join(',') %>:00
+Persistent=true
+RandomizedDelaySec=<%= @randomizeddelaysec %>
+
+[Install]
+WantedBy=timers.target
