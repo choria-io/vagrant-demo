@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-package",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "author": "puppetlabs",
   "summary": "Tasks that manipulate a package",
   "license": "Apache-2.0",
@@ -19,7 +19,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7",
         "8"
@@ -28,7 +27,6 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -36,7 +34,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7",
         "8"
@@ -64,11 +61,11 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.10 < 8.0.0"
+      "version_requirement": ">= 6.0.0 < 8.0.0"
     }
   ],
   "description": "Tasks that manipulate a package",
   "pdk-version": "1.18.1",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#main",
-  "template-ref": "heads/main-0-g5afcd3d"
+  "template-url": "https://github.com/puppetlabs/pdk-templates.git#main",
+  "template-ref": "heads/main-0-g2bf2de6"
 }

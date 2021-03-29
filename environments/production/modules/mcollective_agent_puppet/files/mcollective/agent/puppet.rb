@@ -29,7 +29,11 @@ module MCollective
 
       def run(command, options)
         if MCollective::Util.windows?
-          require 'win32/process'
+          unless Process.respond_to?(:create)
+            # Prior to Puppet 7 we rely on win32/process bundled with Puppet
+            # and which provide Process.create
+            require 'win32/process'
+          end
           # If creating the process doesn't outright fail, assume everything
           # was okay. The caller wants to know our exit code, so we'll just use
           # 0 or 1.

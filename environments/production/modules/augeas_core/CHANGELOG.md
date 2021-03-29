@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.1.2](https://github.com/puppetlabs/puppetlabs-augeas_core/tree/1.1.2) (2021-03-08)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-augeas_core/compare/1.1.1...1.1.2)
+
+### Fixed
+
+- \(MODULES-10950\) Infer application name from run mode [\#37](https://github.com/puppetlabs/puppetlabs-augeas_core/pull/37) ([GabrielNagy](https://github.com/GabrielNagy))
+
 ## [1.1.1](https://github.com/puppetlabs/puppetlabs-augeas_core/tree/1.1.1) (2020-09-29)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-augeas_core/compare/1.1.0...1.1.1)

@@ -31,6 +31,7 @@ choria::status_write_interval: 30
 choria::package_name: "choria"
 choria::broker_service_name: "choria-broker"
 choria::server_service_name: "choria-server"
+choria::server_service_enable: true
 choria::identity: "%{trusted.certname}"
 choria::server: true
 choria::repo_gpgcheck: false
@@ -43,14 +44,21 @@ choria::broker::federation_cluster: "%{::environment}"
 choria::broker::listen_address: "::"
 choria::broker::stats_listen_address: "::"
 choria::broker::client_port: 4222
-choria::broker::cluster_peer_port: 4223
 choria::broker::stats_port: 8222
 choria::broker::network_peers: []
 choria::broker::federation_middleware_hosts: []
 choria::broker::collective_middleware_hosts: []
 choria::broker::client_hosts: []
 choria::broker::adapters: {}
+choria::broker::leafnode_upstreams: {}
 choria::broker::identity: "%{trusted.certname}"
+choria::broker::cluster_peer_port: 0
+choria::broker::leafnode_port: 0
+choria::broker::advisory_retention: "30d"
+choria::broker::event_retention: "30d"
+choria::broker::machine_retention: "30d"
+choria::broker::system_user: ""
+choria::broker::system_password: ""
 
 lookup_options:
   choria::collectives:

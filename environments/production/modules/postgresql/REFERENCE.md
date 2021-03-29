@@ -23,6 +23,7 @@
 
 #### Private Classes
 
+* `postgresql::dnfmodule`: Manage the DNF module
 * `postgresql::params`
 * `postgresql::repo`
 * `postgresql::repo::apt_postgresql_org`
@@ -189,6 +190,7 @@ The following parameters are available in the `postgresql::globals` class:
 * [`manage_logdir`](#manage_logdir)
 * [`manage_xlogdir`](#manage_xlogdir)
 * [`manage_package_repo`](#manage_package_repo)
+* [`manage_dnf_module`](#manage_dnf_module)
 * [`module_workdir`](#module_workdir)
 * [`manage_selinux`](#manage_selinux)
 
@@ -609,6 +611,16 @@ Data type: `Any`
 Sets up official PostgreSQL repositories on your host if set to true.
 
 Default value: ``undef``
+
+##### <a name="manage_dnf_module"></a>`manage_dnf_module`
+
+Data type: `Boolean`
+
+Manage the DNF module. This only makes sense on distributions that use DNF
+package manager, such as EL8 or Fedora. It also requires Puppet 5.5.20+ or
+Puppet 6.15.0+ since they ship the dnfmodule provider.
+
+Default value: ``false``
 
 ##### <a name="module_workdir"></a>`module_workdir`
 
@@ -3034,6 +3046,7 @@ The following parameters are available in the `postgresql_psql` type.
 * [`psql_user`](#psql_user)
 * [`refreshonly`](#refreshonly)
 * [`search_path`](#search_path)
+* [`sensitive`](#sensitive)
 * [`unless`](#unless)
 
 ##### <a name="connect_settings"></a>`connect_settings`
@@ -3107,6 +3120,15 @@ Default value: ``false``
 ##### <a name="search_path"></a>`search_path`
 
 The schema search path to use when executing the SQL command
+
+##### <a name="sensitive"></a>`sensitive`
+
+Valid values: ``true``, ``false``
+
+If 'true', then the executed command will not be echoed into the log. Use this to protect sensitive information passing
+through.
+
+Default value: ``false``
 
 ##### <a name="unless"></a>`unless`
 

@@ -2,7 +2,7 @@ metadata    :name        => "puppet_server_address",
             :description => "Validates that a string is a valid Puppet Server and Port for the Puppet agent",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache-2.0",
-            :version     => "2.4.0",
+            :version     => "2.4.1",
             :url         => "https://github.com/choria-plugins/puppet-agent",
             :timeout     => 1
 

@@ -54,7 +54,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @param [Array<String>] existing paths, from Augeas#match
   # @return [String] new node label
   def self.next_seq(matches)
-    last = matches.map {|p| path_label(nil, p).to_i }.max || 0
+    last = matches.map { |p| path_label(nil, p).to_i }.max || 0
     (last + 1).to_s
   end
 
@@ -147,21 +147,19 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @raise [Augeas::Error] if saving fails
   # @api public
   def self.augsave!(aug, reload = false)
-    begin
-      aug.save!
-    rescue Augeas::Error
-      errors = []
-      aug.match("/augeas//error").each do |errnode|
-        aug.match("#{errnode}/*").each do |subnode|
-          subvalue = aug.get(subnode)
-          errors << "#{subnode} = #{subvalue}"
-        end
+    aug.save!
+  rescue Augeas::Error
+    errors = []
+    aug.match('/augeas//error').each do |errnode|
+      aug.match("#{errnode}/*").each do |subnode|
+        subvalue = aug.get(subnode)
+        errors << "#{subnode} = #{subvalue}"
       end
-      debug("Save failure details:\n" + errors.join("\n"))
-      raise Augeas::Error, 'Failed to save Augeas tree to file. See debug logs for details.'
-    ensure
-      aug.load! if reload
     end
+    debug("Save failure details:\n" + errors.join("\n"))
+    raise Augeas::Error, 'Failed to save Augeas tree to file. See debug logs for details.'
+  ensure
+    aug.load! if reload
   end
 
   # Define a method with a block passed to #augopen
@@ -178,7 +176,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
       augopen(true, *args, &block)
     end
   end
- 
+
   # Define a method with a block passed to #augopen!
   #
   # @param [Symbol] method the name of the method to create
@@ -206,7 +204,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # If sublabel is given, values of matching nodes beneath the
   # label node will be returned in an array.  If sublabel is :seq, values of
   # nodes matching a numbered seq will be returned.
-  # 
+  #
   # :hash causes the getter to return a hash of the value of each matching
   # label node against the value of each sublabel node.
   #
@@ -224,40 +222,33 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     sublabel = opts[:sublabel] || nil
     split_by = opts[:split_by] || nil
 
-    rpath = label == :resource ? '$resource' : "$resource/#{label}"
+    rpath = (label == :resource) ? '$resource' : "$resource/#{label}"
 
-    if type == :hash and sublabel.nil?
-      fail "You must provide a sublabel for type hash"
+    if type == :hash && sublabel.nil?
+      raise(Puppet::Error, 'You must provide a sublabel for type hash')
     end
 
     unless [:string, :array, :hash].include? type
-      fail "Invalid type: #{type}"
+      raise(Puppet::Error, "Invalid type: #{type}")
     end
 
     # Class getter method using an existing aug handler
     # Emulate define_singleton_method for Ruby 1.8
     metaclass = class << self; self; end
-    metaclass.send(:define_method, "attr_aug_reader_#{name}") do |aug, *args|
+    metaclass.send(:define_method, "attr_aug_reader_#{name}") do |aug, *_args|
       case type
       when :string
         aug.get(rpath)
       when :array
-        if split_by
-          (aug.get(rpath) || "").split(split_by)
-        else
-          aug.match(rpath).map do |p|
-            if sublabel.nil?
-              aug.get(p)
-            else
-              if sublabel == :seq
-                sp = "#{p}/*[label()=~regexp('[0-9]+')]"
-              else
-                sp = "#{p}/#{sublabel}"
-              end
-              aug.match(sp).map { |spp| aug.get(spp) }
-            end
-          end.flatten
-        end
+        return (aug.get(rpath) || '').split(split_by) if split_by
+        aug.match(rpath).map { |p|
+          if sublabel.nil?
+            aug.get(p)
+          else
+            sp = (sublabel == :seq) ? "#{p}/*[label()=~regexp('[0-9]+')]" : "#{p}/#{sublabel}"
+            aug.match(sp).map { |spp| aug.get(spp) }
+          end
+        }.flatten
       when :hash
         values = {}
         aug.match(rpath).each do |p|
@@ -276,7 +267,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     # We are calling the resource's augopen here, not the class
     define_method(name) do |*args|
       augopen do |aug|
-        self.send("attr_aug_reader_#{name}", aug, *args)
+        send("attr_aug_reader_#{name}", aug, *args)
       end
     end
   end
@@ -301,14 +292,14 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     rm_node = opts[:rm_node] || false
     split_by = opts[:split_by] || nil
 
-    rpath = label == :resource ? '$resource' : "$resource/#{label}"
+    rpath = (label == :resource) ? '$resource' : "$resource/#{label}"
 
-    if type == :hash and sublabel.nil?
-      fail "You must provide a sublabel for type hash"
+    if type == :hash && sublabel.nil?
+      raise(Puppet::Error, 'You must provide a sublabel for type hash')
     end
 
     unless [:string, :array, :hash].include? type
-      fail "Invalid type: #{type}"
+      raise(Puppet::Error, "Invalid type: #{type}")
     end
 
     # Class setter method using an existing aug handler
@@ -328,32 +319,30 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
       when :array
         if args[0].nil? || args[0].empty?
           aug.rm(rpath)
+        elsif split_by
+          aug.set(rpath, args[0].join(split_by))
+        elsif sublabel.nil?
+          aug.rm(rpath)
+          count = 0
+          args[0].each do |v|
+            count += 1
+            aug.set("#{rpath}[#{count}]", v)
+          end
+        elsif sublabel == :seq
+          # Make sure only our values are used
+          aug.rm("#{rpath}/*[label()=~regexp('[0-9]+')]")
+          count = 0
+          args[0].each do |v|
+            count += 1
+            aug.set("#{rpath}/#{count}", v)
+          end
         else
-          if split_by
-            aug.set(rpath, args[0].join(split_by))
-          elsif sublabel.nil?
-            aug.rm(rpath)
-            count = 0
-            args[0].each do |v|
-              count += 1
-              aug.set("#{rpath}[#{count}]", v)
-            end
-          elsif sublabel == :seq
-            # Make sure only our values are used
-            aug.rm("#{rpath}/*[label()=~regexp('[0-9]+')]")
-            count = 0
-            args[0].each do |v|
-              count += 1
-              aug.set("#{rpath}/#{count}", v)
-            end
-          else
-            # Make sure only our values are used
-            aug.rm("#{rpath}/#{sublabel}")
-            count = 0
-            args[0].each do |v|
-              count += 1
-              aug.set("#{rpath}/#{sublabel}[#{count}]", v)
-            end
+          # Make sure only our values are used
+          aug.rm("#{rpath}/#{sublabel}")
+          count = 0
+          args[0].each do |v|
+            count += 1
+            aug.set("#{rpath}/#{sublabel}[#{count}]", v)
           end
         end
       when :hash
@@ -376,7 +365,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     # We are calling the resource's augopen here, not the class
     define_method("#{name}=") do |*args|
       augopen! do |aug|
-        self.send("attr_aug_writer_#{name}", aug, *args)
+        send("attr_aug_writer_#{name}", aug, *args)
       end
     end
   end
@@ -426,7 +415,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     if block_given?
       @lens_block = block
     else
-      fail 'Lens is not provided' unless @lens_block
+      raise(Puppet::Error, 'Lens is not provided') unless @lens_block
       @lens_block.call(resource)
     end
   end
@@ -444,7 +433,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     end
 
     # Fallback
-    label || path.split("/")[-1].split("[")[0]
+    label || path.split('/')[-1].split('[')[0]
   end
 
   # Determine which quote is needed
@@ -455,21 +444,21 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @api public
   def self.whichquote(value, resource = nil, oldvalue = nil)
     oldquote = readquote oldvalue
- 
-    if resource and resource.parameters.include? :quoted
-      quote = resource[:quoted]
-    else
-      quote = :auto
-    end
- 
+
+    quote = if resource && resource.parameters.include?(:quoted)
+              resource[:quoted]
+            else
+              :auto
+            end
+
     if quote == :auto
       quote = if oldquote
-        oldquote
-      elsif value =~ /[|&;()<>\s]/
-        :double
-      else
-        :none
-      end
+                oldquote
+              elsif value =~ %r{[|&;()<>\s]}
+                :double
+              else
+                :none
+              end
     end
 
     case quote
@@ -492,18 +481,19 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     quote = whichquote(value, resource, oldvalue)
     "#{quote}#{value}#{quote}"
   end
- 
+
   # Detect what type of quoting a value uses
   #
   # @param [String] value the value to be analyzed
   # @return [Symbol] the type of quoting used (:double, :single or nil)
   # @api public
   def self.readquote(value)
-    if value =~ /^(["'])(.*)(?:\1)$/
-      case $1
+    if value =~ %r{^(["'])(.*)(?:\1)$}
+      case Regexp.last_match(1)
       when '"' then :double
       when "'" then :single
-      else nil end
+      else nil
+      end
     else
       nil
     end
@@ -534,12 +524,10 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   def self.resource_path(resource = nil, &block)
     if block_given?
       @resource_path_block = block
+    elsif @resource_path_block
+      @resource_path_block.call(resource)
     else
-      if @resource_path_block
-        @resource_path_block.call(resource)
-      else
-        "#{target(resource)}/#{resource[:name]}"
-      end
+      "#{target(resource)}/#{resource[:name]}"
     end
   end
 
@@ -567,7 +555,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # Gets the path expression representing the file being managed.
   #
   # If supplied with a resource, this will represent the file identified by
-  # the resource, else the default file that the provider manages. 
+  # the resource, else the default file that the provider manages.
   #
   # @param [Puppet::Resource] resource resource being evaluated
   # @return [String] path expression representing the file being managed
@@ -577,19 +565,19 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @api public
   def self.target(resource = nil)
     file = @default_file_block.call if @default_file_block
-    file = resource[:target] if resource and resource[:target]
-    fail 'No target file given' if file.nil?
+    file = resource[:target] if resource && resource[:target]
+    raise(Puppet::Error, 'No target file given') if file.nil?
     file.chomp('/')
   end
 
   # Automatically unquote a value
-  # 
+  #
   # @param [String] value the value to unquote
   # @return [String] the unquoted value
   # @api public
   def self.unquoteit(value)
-    if value =~ /^(["'])(.*)(?:\1)$/
-      $2
+    if value =~ %r{^(["'])(.*)(?:\1)$}
+      Regexp.last_match(2)
     else
       value
     end
@@ -615,21 +603,21 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
           tmpfile.write(text)
           tmpfile.flush
           aug.transform(
-            :lens => lens,
-            :name => 'Text_store',
-            :incl => tmpfile.path.to_s,
-            :excl => []
+            lens: lens,
+            name: 'Text_store',
+            incl: tmpfile.path.to_s,
+            excl: [],
           )
           aug.load!
-          return aug.match("/files#{tmpfile.path.to_s}/#{path}").any?
+          return aug.match("/files#{tmpfile.path}/#{path}").any?
         end
       end
     end
-    return false
+    false
   end
 
   # Sets the post_resource_eval class hook for Puppet
-  # This is only used with Puppet > 3.4.0    
+  # This is only used with Puppet > 3.4.0
   # and allows to clean the shared Augeas handler.
   def self.post_resource_eval
     augclose!(aug_handler)
@@ -642,7 +630,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   def self.loadpath
     loadpath = nil
     plugins = File.join(Puppet[:libdir], 'augeas', 'lenses')
-    if File.exists?(plugins)
+    if File.exist?(plugins)
       loadpath = loadpath.to_s.split(File::PATH_SEPARATOR).push(plugins).join(File::PATH_SEPARATOR)
     end
     loadpath
@@ -677,13 +665,13 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
     aug = aug_handler
     file = target(resource)
     begin
-      lens_name = lens[/[^\.]+/]
+      lens_name = lens[%r{[^\.]+}]
       if aug.match("/augeas/load/#{lens_name}").empty?
         aug.transform(
-          :lens => lens,
-          :name => lens_name,
-          :incl => file,
-          :excl => []
+          lens: lens,
+          name: lens_name,
+          incl: file,
+          excl: [],
         )
         aug.load!
       elsif aug.match("/augeas/load/#{lens_name}/incl[.='#{file}']").empty?
@@ -700,7 +688,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
           message += " (line:#{line}, character:#{char})"
         end
         from = loadpath.nil? ? '' : " from #{loadpath}"
-        fail("Augeas didn't load #{file} with #{lens}#{from}: #{message}")
+        raise(Puppet::Error, "Augeas didn't load #{file} with #{lens}#{from}: #{message}")
       end
 
       if block_given?
@@ -768,7 +756,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @raise [Puppet::Error] if Augeas did not load the file
   # @api public
   def augopen(yield_resource = false, *yield_params, &block)
-    self.class.augopen(self.resource, yield_resource, *yield_params, &block)
+    self.class.augopen(resource, yield_resource, *yield_params, &block)
   end
 
   # Opens Augeas and returns a handle to use.  It loads only the file
@@ -790,7 +778,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @raise [Puppet::Error] if Augeas did not load the file
   # @api public
   def augopen!(yield_resource = false, *yield_params, &block)
-    self.class.augopen!(self.resource, yield_resource, *yield_params, &block)
+    self.class.augopen!(resource, yield_resource, *yield_params, &block)
   end
 
   # Saves all changes made in the current Augeas handle and checks for any
@@ -840,7 +828,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @return [String] the quoted value
   # @api public
   def whichquote(value, oldvalue = nil)
-    self.class.whichquote(value, self.resource, oldvalue)
+    self.class.whichquote(value, resource, oldvalue)
   end
 
   # Automatically quote a value
@@ -850,7 +838,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @return [String] the quoted value
   # @api public
   def quoteit(value, oldvalue = nil)
-    self.class.quoteit(value, self.resource, oldvalue)
+    self.class.quoteit(value, resource, oldvalue)
   end
 
   # Detect what type of quoting a value uses
@@ -873,7 +861,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @see #target
   # @api public
   def resource_path
-    self.class.resource_path(self.resource)
+    self.class.resource_path(resource)
   end
 
   # Sets useful Augeas variables for the session:
@@ -891,7 +879,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @see #resource_path
   # @api public
   def setvars(aug)
-    self.class.setvars(aug, self.resource)
+    self.class.setvars(aug, resource)
   end
 
   # Gets the path expression representing the file being managed for the
@@ -902,11 +890,11 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @see #resource_path
   # @api public
   def target
-    self.class.target(self.resource)
+    self.class.target(resource)
   end
 
   # Automatically unquote a value
-  # 
+  #
   # @param [String] value the value to unquote
   # @return [String] the unquoted value
   # @api public
@@ -922,7 +910,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # @return [Boolean] whether the path was found when parsing text with lens
   # @api public
   def parsed_as?(text, path, lens = nil)
-    lens ||= self.class.lens(self.resource)
+    lens ||= self.class.lens(resource)
     self.class.parsed_as?(text, path, lens)
   end
 
@@ -930,7 +918,7 @@ Puppet::Type.type(:augeasprovider).provide(:default) do
   # can be overridden if necessary
   def exists?
     augopen do |aug|
-      not aug.match('$resource').empty?
+      !aug.match('$resource').empty?
     end
   end
 

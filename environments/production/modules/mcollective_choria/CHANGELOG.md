@@ -1,5 +1,7 @@
 |Date      |Issue |Description                                                                                              |
 |----------|------|---------------------------------------------------------------------------------------------------------|
-|2020/02/03|      |Release 0.20.1                                                                                           |
-|2020/02/03|      |Update choria-mcorpc-support gem                                                                         |
-|2020/01/13|      |Release 0.20.0                                                                                           |
+|2021/03/29|      |Release 0.20.2                                                                                           |
+|2021/02/04|      |Do not package .git files                                                                                |
+|2021/02/03|      |Release 0.20.1                                                                                           |
+|2021/02/03|      |Update choria-mcorpc-support gem                                                                         |
+|2021/01/13|      |Release 0.20.0                                                                                           |

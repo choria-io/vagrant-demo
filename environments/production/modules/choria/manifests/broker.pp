@@ -47,9 +47,18 @@
 # @param client_port Port clients will connec tto
 # @param cluster_peer_port Port other brokers will connect to
 # @param stats_port Port where Prometheus stats are hosted
+# @param leafnode_port Port leafnode connections will be accepted on
 # @param client_hosts Whitelist of clients that are allowed to connect to broker
+# @param adapters Data adapters to configure
+# @param leafnode_upstreams Leafnode connections to configure
 # @param tls_timeout TLS Handshake timeout (in seconds)
 # @param identity The identity this broker will use to determine SSL cert names etc
+# @param stream_store Enables Streaming and store data in this path
+# @param advisory_retention How long to store server advisories for in the Stream
+# @param event_retention How long to store events for in the Stream
+# @param machine_retention How long to store Choria Autonomous Agent events
+# @param system_user Username to use for access to the System account
+# @param system_password Password to use for access to the System account
 class choria::broker (
   Boolean $network_broker,
   Boolean $federation_broker,
@@ -59,14 +68,22 @@ class choria::broker (
   Integer $client_port,
   Integer $cluster_peer_port,
   Integer $stats_port,
+  Integer $leafnode_port,
   Array[String] $network_peers,
   Array[String] $federation_middleware_hosts,
   Array[String] $collective_middleware_hosts,
   Array[String] $client_hosts,
   Choria::Adapters $adapters,
+  Choria::Leafnodes $leafnode_upstreams,
   String $identity,
   Optional[Stdlib::Absolutepath] $ssldir = undef,
   Optional[Integer] $tls_timeout = undef,
+  Optional[Stdlib::Absolutepath] $stream_store = undef,
+  String $advisory_retention,
+  String $event_retention,
+  String $machine_retention,
+  String $system_user,
+  String $system_password,
 ) {
   require choria
 

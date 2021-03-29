@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.0
+
+- Lint with Rubocop (GH #23)
+- Raise Puppet::Error instead of using fail() (GH #24)
+- Migrate to PDK (GH #25)
+- Support stdlib 7.x (GH #26)
+
 ## 2.6.0
 
 - Add array split_by option (GH #20)

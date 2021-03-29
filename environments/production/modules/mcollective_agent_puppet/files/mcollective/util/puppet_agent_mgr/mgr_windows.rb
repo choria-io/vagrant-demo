@@ -4,17 +4,27 @@ module MCollective
       class MgrWindows < MgrV3
 
         # is the agent daemon currently running?
-        # this will require win32/service
         def daemon_present?
-          require 'win32/service'
-          case Win32::Service.status(@puppet_service).current_state
-          when "running", "continue pending", "start pending"
-            true
+          if defined?(Puppet::Util::Windows::Service)
+            # Puppet 7 has built-in support for Windows sevices
+            [
+              :SERVICE_RUNNING,
+              :SERVICE_CONTINUE_PENDING,
+              :SERVICE_START_PENDING
+            ].include?(Puppet::Util::Windows::Service.service_state(@puppet_service))
           else
-            false
+            # Prior to Puppet 7 we rely on win32/service bundled with Puppet
+            begin
+              require 'win32/service'
+              [
+                "running",
+                "continue pending",
+                "start pending"
+              ].include?(Win32::Service.status(@puppet_service).current_state)
+            rescue Win32::Service::Error
+              false
+            end
           end
-        rescue Win32::Service::Error
-          false
         end
 
         # is the agent currently applying a catalog
@@ -51,9 +61,13 @@ module MCollective
           true
         end
 
-        # this will require win32/process
         def run_in_background(clioptions, execute=true)
-          require 'win32/process'
+          unless Process.respond_to?(:create)
+            # Prior to Puppet 7 we rely on win32/process bundled with Puppet
+            # and which provide Process.create
+            require 'win32/process'
+          end
+
           options =["--onetime", "--color=false"].concat(clioptions)
           return options unless execute
           command = "puppet.bat agent #{options.join(' ')}"
@@ -61,7 +75,6 @@ module MCollective
                            :creation_flags => ::Process::CREATE_NO_WINDOW)
         end
 
-        # this will require win32/process
         def run_in_foreground(clioptions, execute=true)
           run_in_background(clioptions, execute)
         end

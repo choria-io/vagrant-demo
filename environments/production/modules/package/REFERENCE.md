@@ -12,7 +12,7 @@
 
 ## Tasks
 
-### `init`
+### <a name="init"></a>`init`
 
 Manage and inspect the state of packages
 
@@ -44,7 +44,7 @@ Data type: `Optional[String[1]]`
 
 The provider to use to manage or inspect the package, defaults to the system package manager. Only used when the 'puppet-agent' feature is available on the target so we can leverage Puppet.
 
-### `linux`
+### <a name="linux"></a>`linux`
 
 Manage and inspect the state of packages (without a puppet agent)
 
@@ -76,7 +76,7 @@ Data type: `Optional[String[1]]`
 
 The provider to use to manage or inspect the package, defaults to the system package manager. Only used when the 'puppet-agent' feature is available on the target so we can leverage Puppet.
 
-### `windows`
+### <a name="windows"></a>`windows`
 
 Manage the state of packages (without a puppet agent)
 

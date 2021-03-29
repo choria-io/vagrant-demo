@@ -2,7 +2,7 @@ metadata    :name        => "resource",
             :description => "Information about Puppet managed resources",
             :author      => "R.I.Pienaar <rip@devco.net>",
             :license     => "Apache-2.0",
-            :version     => "2.4.0",
+            :version     => "2.4.1",
             :url         => "https://github.com/choria-plugins/puppet-agent",
             :timeout     => 1
 

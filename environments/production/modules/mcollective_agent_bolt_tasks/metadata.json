@@ -1,6 +1,6 @@
 {
   "name": "choria-mcollective_agent_bolt_tasks",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "author": "R.I.Pienaar <rip@devco.net>",
   "summary": "Puppet Tasks integration for Choria",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
   "project_page": "https://github.com/choria-io/general/",
   "issues_url": "https://github.com/choria-io/general/discussions",
   "dependencies": [
-    { "name": "choria/mcollective","version_requirement":">= 0.12.0"}
+    { "name": "choria/mcollective","version_requirement":">= 0.13.2"}
   ],
   "requirements": [
     {

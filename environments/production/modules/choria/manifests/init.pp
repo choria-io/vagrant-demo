@@ -31,6 +31,7 @@
 # @param package_name The package to install
 # @param broker_service_name The service name of the Choria Broker
 # @param server_service_name The service name of the Choria Server
+# @param server_service_enable Enable Choria Server at boot
 # @param identity The identity this server will use to determine SSL cert names etc
 # @param server To enable or disable the choria server
 # @param server_config Configuration for the Choria Server
@@ -45,18 +46,19 @@ class choria (
   String $version,
   Enum[debug, info, warn, error, fatal] $log_level,
   Optional[String] $srvdomain,
-  Stdlib::Compat::Absolute_path $broker_config_file,
-  Stdlib::Compat::Absolute_path $server_config_file,
-  Stdlib::Compat::Absolute_path $server_provisioning_token_file,
+  Stdlib::Absolutepath $broker_config_file,
+  Stdlib::Absolutepath $server_config_file,
+  Stdlib::Absolutepath $server_provisioning_token_file,
   Optional[String] $server_provisioning_token,
   Boolean $manage_server_config,
-  Stdlib::Compat::Absolute_path $logfile,
-  Optional[Stdlib::Compat::Absolute_path] $statusfile,
+  Stdlib::Absolutepath $logfile,
+  Optional[Stdlib::Absolutepath] $statusfile,
   Integer $status_write_interval,
-  Stdlib::Compat::Absolute_path $rubypath,
+  Stdlib::Absolutepath $rubypath,
   String $package_name,
   String $broker_service_name,
   String $server_service_name,
+  Boolean $server_service_enable,
   String $identity,
   Boolean $server,
   Hash $server_config,
@@ -71,8 +73,8 @@ class choria (
   Choria::GossFiles $scout_gossfile = {},
   Enum[debug, info, warn, error, fatal] $broker_log_level = $log_level,
   Enum[debug, info, warn, error, fatal] $server_log_level = $log_level,
-  Stdlib::Compat::Absolute_path $broker_logfile = $logfile,
-  Stdlib::Compat::Absolute_path $server_logfile = $logfile,
+  Stdlib::Absolutepath $broker_logfile = $logfile,
+  Stdlib::Absolutepath $server_logfile = $logfile,
   Boolean $manage_mcollective = true,
 ) {
   if $manage_package_repo {

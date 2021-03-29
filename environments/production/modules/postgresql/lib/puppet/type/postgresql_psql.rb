@@ -124,6 +124,13 @@ Puppet::Type.newtype(:postgresql_psql) do
     newvalues(:true, :false)
   end
 
+  newparam(:sensitive, boolean: true) do
+    desc "If 'true', then the executed command will not be echoed into the log. Use this to protect sensitive information passing through."
+
+    defaultto(:false)
+    newvalues(:true, :false)
+  end
+
   autorequire(:class) { ['Postgresql::Server::Service'] }
 
   def should_run_sql(refreshing = false)
@@ -137,5 +144,16 @@ Puppet::Type.newtype(:postgresql_psql) do
 
   def refresh
     property(:command).sync if should_run_sql(true)
+  end
+
+  private
+
+  def set_sensitive_parameters(sensitive_parameters)
+    # Respect sensitive commands
+    if sensitive_parameters.include?(:unless)
+      sensitive_parameters.delete(:unless)
+      parameter(:unless).sensitive = true
+    end
+    super(sensitive_parameters)
   end
 end

@@ -72,7 +72,7 @@ case "$available_manager" in
     provided_package="$(rpm -q --whatprovides "$name")" || provided_package=
 
     # <package>-<version> is the syntax for installing a specific version in yum
-    [[ $version ]] && name="${name}-${version}"
+    [[ $version ]] && full_name="${name}-${version}" || full_name="${name}"
 
     # For Ruby compatibility, 'status' and 'install' will check if the package is upgradable
     case "$action" in
@@ -81,14 +81,14 @@ case "$available_manager" in
         ;;
 
       "install")
-        yum install "$name" "${options[@]}" >/dev/null || fail
+        yum install "$full_name" "${options[@]}" >/dev/null || fail
         # Check for this again after installing
         provided_package="$(rpm -q --whatprovides "$name")" || provided_package=
         yum_check_latest
         ;;
 
       "uninstall")
-        yum remove "$name" "${options[@]}" >/dev/null || fail
+        yum remove "$full_name" "${options[@]}" >/dev/null || fail
         cmd_status="$(yum_status '\{ "status": "installed", "version": "%{VERSION}-%{RELEASE}" \}')" || {
           cmd_status='{ "status": "uninstalled" }'
         }
@@ -104,8 +104,8 @@ case "$available_manager" in
 
         # Why does yum upgrade not return non-zero on a nonexistent package...
         # Because of this, check the output
-        yum_out=$(yum upgrade "$name" "${options[@]}") || fail
-        [[ $yum_out =~ "No package $name available" ]] && fail
+        yum_out=$(yum upgrade "$full_name" "${options[@]}") || fail
+        [[ $yum_out =~ "No package $full_name available" ]] && fail
 
         # For Ruby compatibility, this command uses a different output format
         # Check for this again after installing
