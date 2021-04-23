@@ -1,5 +1,73 @@
 # Changelog
 
+## [14.2.1](https://github.com/theforeman/puppet-puppet/tree/14.2.1) (2021-01-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppet/compare/14.2.0...14.2.1)
+
+**Fixed bugs:**
+
+- run Puppet agent from systemd only after network is brought up [\#765](https://github.com/theforeman/puppet-puppet/pull/765) ([anarcat](https://github.com/anarcat))
+
+## [14.2.0](https://github.com/theforeman/puppet-puppet/tree/14.2.0) (2020-10-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppet/compare/14.1.0...14.2.0)
+
+**Implemented enhancements:**
+
+- adds param for user-provided puppetserver auth.conf [\#769](https://github.com/theforeman/puppet-puppet/pull/769) ([chadh](https://github.com/chadh))
+- Add `server\_puppetserver\_trusted\_certificate\_extensions` [\#758](https://github.com/theforeman/puppet-puppet/pull/758) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Remove `systemd` from puppet::agent::service case [\#768](https://github.com/theforeman/puppet-puppet/pull/768) ([alexjfisher](https://github.com/alexjfisher))
+
+**Merged pull requests:**
+
+- Remove unused parameter docs [\#767](https://github.com/theforeman/puppet-puppet/pull/767) ([alexjfisher](https://github.com/alexjfisher))
+- Remove duplicate docs [\#766](https://github.com/theforeman/puppet-puppet/pull/766) ([alexjfisher](https://github.com/alexjfisher))
+
+## [14.1.0](https://github.com/theforeman/puppet-puppet/tree/14.1.0) (2020-08-05)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppet/compare/14.0.0...14.1.0)
+
+**Implemented enhancements:**
+
+- Use server\_trusted\_agents in v4 catalog endpoint [\#756](https://github.com/theforeman/puppet-puppet/pull/756) ([alexjfisher](https://github.com/alexjfisher))
+- also allow whitelisted admin clients to clean certs [\#748](https://github.com/theforeman/puppet-puppet/pull/748) ([foxxx0](https://github.com/foxxx0))
+
+**Fixed bugs:**
+
+- Don't re-create existing CA certs [\#747](https://github.com/theforeman/puppet-puppet/pull/747) ([zipkid](https://github.com/zipkid))
+
+## [14.0.0](https://github.com/theforeman/puppet-puppet/tree/14.0.0) (2020-05-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppet/compare/13.0.0...14.0.0)
+
+**Breaking changes:**
+
+- Use modern facts [\#743](https://github.com/theforeman/puppet-puppet/issues/743)
+- Drop EOL Windows 7, 2008 R2 [\#739](https://github.com/theforeman/puppet-puppet/pull/739) ([ekohl](https://github.com/ekohl))
+- Drop Foreman API version parameters [\#736](https://github.com/theforeman/puppet-puppet/pull/736) ([ekohl](https://github.com/ekohl))
+- Refactor PuppetDB integration [\#732](https://github.com/theforeman/puppet-puppet/pull/732) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Support Ubuntu Focal \(20.04\) [\#746](https://github.com/theforeman/puppet-puppet/pull/746) ([mmoll](https://github.com/mmoll))
+- Fixes [\#29735](https://projects.theforeman.org/issues/29735) - support el8 [\#742](https://github.com/theforeman/puppet-puppet/pull/742) ([wbclark](https://github.com/wbclark))
+- Switch AIO detection to use aio\_agent\_version fact [\#737](https://github.com/theforeman/puppet-puppet/pull/737) ([ekohl](https://github.com/ekohl))
+- Allow extlib 5.x [\#733](https://github.com/theforeman/puppet-puppet/pull/733) ([mmoll](https://github.com/mmoll))
+- Add server\_trusted\_external\_command parameter [\#731](https://github.com/theforeman/puppet-puppet/pull/731) ([baurmatt](https://github.com/baurmatt))
+- Add server\_ca\_client\_self\_delete to CA Servers [\#728](https://github.com/theforeman/puppet-puppet/pull/728) ([neilfromit](https://github.com/neilfromit))
+- implement 'versioned code' for puppetserver [\#726](https://github.com/theforeman/puppet-puppet/pull/726) ([mmoll](https://github.com/mmoll))
+
+**Closed issues:**
+
+- Systemd dependency missing [\#704](https://github.com/theforeman/puppet-puppet/issues/704)
+
+**Merged pull requests:**
+
+- Add Fedora 31, drop Fedora 26 [\#745](https://github.com/theforeman/puppet-puppet/pull/745) ([ekohl](https://github.com/ekohl))
+
 ## [13.0.0](https://github.com/theforeman/puppet-puppet/tree/13.0.0) (2020-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppet/compare/12.1.0...13.0.0)
@@ -280,7 +348,7 @@
       `$server_http` parameter.
 * Other features:
     * Support native puppetserver package on FreeBSD
-    * Allow disabling crl when `server_ca => true` 
+    * Allow disabling crl when `server_ca => true`
     * Add SLES AIO agent support
     * Add support for Parallels PSBM
 * Other changes and fixes:

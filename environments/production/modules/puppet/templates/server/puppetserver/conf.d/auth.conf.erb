@@ -12,7 +12,13 @@ authorization: {
                 type: regex
                 method: [get, post]
             }
-            allow: <%= @server_trusted_agents << '$1' %>
+<%= scope.call_function(
+  'to_json_pretty',
+  [
+    {'allow' => @server_trusted_agents + ['$1'] + @server_trusted_certificate_extensions.map { |extension| { 'extensions' => extension } } }
+  ]
+).lines.to_a[1..-2].map{ |line| "          #{line}"}.join
+-%>
             sort-order: 500
             name: "puppetlabs v3 catalog from agents"
         },
@@ -24,7 +30,17 @@ authorization: {
                 type: regex
                 method: post
             }
+<%- if @server_trusted_agents.empty? && @server_trusted_certificate_extensions.empty? -%>
             deny: "*"
+<%- else -%>
+<%= scope.call_function(
+  'to_json_pretty',
+  [
+    {'allow' => @server_trusted_agents + @server_trusted_certificate_extensions.map { |extension| { 'extensions' => extension } } }
+  ]
+).lines.to_a[1..-2].map{ |line| "          #{line}"}.join
+-%>
+<%- end -%>
             sort-order: 500
             name: "puppetlabs v4 catalog for services"
         },
@@ -111,6 +127,28 @@ authorization: {
             sort-order: 500
             name: "puppetlabs cert statuses"
         },
+<%- if @server_ca_client_self_delete -%>
+        {
+            name: "Allow nodes to delete their own certificates",
+            match-request: {
+                path: "^/puppet-ca/v1/certificate(_status|_request)?/([^/]+)$"
+                type: regex
+                method: [delete]
+            },
+            allow: [
+                "$2",
+<%- @server_admin_api_whitelist.each do |client| -%>
+                "<%= client %>",
+<%- end -%>
+                {
+                    extensions: {
+                        pp_cli_auth: "true"
+                    }
+                }
+            ]
+            sort-order: 500
+        },
+<%- end -%>
 <%- end -%>
         {
             # Allow unauthenticated access to the status service endpoint
