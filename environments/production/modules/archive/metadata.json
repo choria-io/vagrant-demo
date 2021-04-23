@@ -1,24 +1,8 @@
 {
-  "name": "puppet-archive",
-  "version": "4.6.0",
-  "author": "Vox Pupuli",
-  "summary": "Compressed archive file download and extraction with native types/providers for Windows and Unix",
-  "license": "Apache-2.0",
-  "source": "https://github.com/voxpupuli/puppet-archive",
-  "project_page": "https://github.com/voxpupuli/puppet-archive",
-  "issues_url": "https://github.com/voxpupuli/puppet-archive/issues",
-  "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.18.0 < 7.0.0"
-    }
-  ],
-  "data_provider": null,
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
@@ -26,7 +10,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
@@ -34,7 +17,6 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
-        "6",
         "7",
         "8"
       ]
@@ -42,9 +24,7 @@
     {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": [
-        "6",
-        "7",
-        "8"
+        "7"
       ]
     },
     {
@@ -58,6 +38,13 @@
       "operatingsystemrelease": [
         "16.04",
         "18.04"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "9",
+        "10"
       ]
     },
     {
@@ -109,8 +96,22 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.5.8 < 7.0.0"
+      "version_requirement": ">= 6.1.0 < 8.0.0"
     }
   ],
-  "description": "The archive module provides native puppet resources for managing compressed file download and extraction with optional checksum verification and cleanup."
+  "name": "puppet-archive",
+  "version": "5.0.0",
+  "source": "https://github.com/voxpupuli/puppet-archive",
+  "author": "Vox Pupuli",
+  "license": "Apache-2.0",
+  "summary": "Compressed archive file download and extraction with native types/providers for Windows and Unix",
+  "description": "The archive module provides native puppet resources for managing compressed file download and extraction with optional checksum verification and cleanup.",
+  "project_page": "https://github.com/voxpupuli/puppet-archive",
+  "issues_url": "https://github.com/voxpupuli/puppet-archive/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.18.0 < 8.0.0"
+    }
+  ]
 }

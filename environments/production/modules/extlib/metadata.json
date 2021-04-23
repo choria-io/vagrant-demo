@@ -1,6 +1,6 @@
 {
   "name": "puppet-extlib",
-  "version": "5.0.0",
+  "version": "4.2.0",
   "author": "Vox Pupuli",
   "summary": "extlib provides functions out of scope puppetlabs/stdlib",
   "license": "Apache-2.0",
@@ -31,16 +31,14 @@
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6",
-        "7",
-        "8"
+        "7"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6",
-        "7",
-        "8"
+        "7"
       ]
     },
     {
@@ -54,8 +52,7 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "8",
-        "9",
-        "10"
+        "9"
       ]
     },
     {

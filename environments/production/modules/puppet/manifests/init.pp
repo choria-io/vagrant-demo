@@ -148,7 +148,13 @@
 #                                           Windows and ['systemd.timer'] on other
 #                                           systems.
 #
-# $auth_template::                          Use a custom template for /etc/puppetlabs/puppet/auth.conf
+# $auth_template::                          Use a custom template for the auth
+#                                           configuration.
+#
+# $use_srv_records::                        Whether DNS SRV records will be used to resolve
+#                                           the Puppet master
+#
+# $srv_domain::                             Search domain for SRV records
 #
 # $pluginsource::                           URL to retrieve Puppet plugins from during pluginsync
 #
@@ -221,9 +227,6 @@
 #
 # $server_external_nodes::                  External nodes classifier executable
 #
-# $server_trusted_external_command::        The external trusted facts script to use.
-#                                           (Puppet >= 6.11 only).
-#
 # $server_git_repo::                        Use git repository as a source of modules
 #
 # $server_environments_owner::              The owner of the environments directory
@@ -245,9 +248,16 @@
 # $server_git_branch_map::                  Git branch to puppet env mapping for the
 #                                           default post receive hook
 #
-# $server_storeconfigs::                    Whether to enable storeconfigs
+# $server_storeconfigs_backend::            Do you use storeconfigs?
+#                                           false if you don't, "puppetdb" for puppetdb
 #
 # $server_certname::                        The name to use when handling certificates.
+#
+# $server_puppetdb_host::                   PuppetDB host
+#
+# $server_puppetdb_port::                   PuppetDB port
+#
+# $server_puppetdb_swf::                    PuppetDB soft_write_failure
 #
 # === Advanced server parameters:
 #
@@ -287,6 +297,10 @@
 # $server_foreman_ssl_key::                 Key for authenticating against Foreman server
 #
 # $server_puppet_basedir::                  Where is the puppet code base located
+#
+# $server_enc_api::                         What version of enc script to deploy.
+#
+# $server_report_api::                      What version of report processor to deploy.
 #
 # $server_request_timeout::                 Timeout in node.rb script for fetching
 #                                           catalog from Foreman (in seconds).
@@ -407,9 +421,6 @@
 # $server_ca_auth_required::                Whether client certificates are needed to access the puppet-admin api
 #                                           Defaults to true
 #
-# $server_ca_client_self_delete::           Adds a rule to auth.conf, that allows a client to delete its own certificate
-#                                           Defaults to false
-#
 # $server_use_legacy_auth_conf::            Should the puppetserver use the legacy puppet auth.conf?
 #                                           Defaults to false (the puppetserver will use its own conf.d/auth.conf)
 #
@@ -455,28 +466,8 @@
 #
 # $server_puppetserver_experimental::       For Puppetserver 5, enable the /puppet/experimental route? Defaults to true
 #
-# $server_puppetserver_auth_template::      Template for generating /etc/puppetlabs/puppetserver/conf.d/auth.conf 
-#
 # $server_puppetserver_trusted_agents::     Certificate names of puppet agents that are allowed to fetch *all* catalogs
 #                                           Defaults to [] and all agents are only allowed to fetch their own catalogs.
-#
-# $server_puppetserver_trusted_certificate_extensions:: An array of hashes of certificate extensions and values to be used in auth.conf
-#                                           A puppet client certificate containing valid extension(s) will be allowed to fetch
-#                                           *any* catalog.
-#                                           Defaults to [] and no certificate extensions are recognised as being allowed
-#                                           to fetch *any* catalog.
-#                                           Example: [{ 'pp_authorization' => 'catalog' }]
-#                                           Any client certificate containing the `pp_authorization` extension with value `catalog`
-#                                           will be permitted to fetch any catalog.
-#                                           Complicated example: [
-#                                             { '1.3.6.1.4.1.34380.1.3.1'  => 'catalog' },
-#                                             { '1.3.6.1.4.1.34380.1.1.13' => 'jenkins_server', '1.3.6.1.4.1.34380.1.1.24' => 'prod' }
-#                                           ]
-#                                           Clients presenting a certificate with `pp_authorization = catalog` *or* with `pp_role`
-#                                           *and* `pp_apptier` extensions set
-#                                           correctly will be authorized to fetch any catalog.
-#                                           NB. If server_ca == false, use oids instead of extension shortnames.
-#                                           See https://tickets.puppetlabs.com/browse/SERVER-1689
 #
 # $server_compile_mode::                    Used to control JRuby's "CompileMode", which may improve performance.
 #                                           Defaults to undef (off).
@@ -520,13 +511,6 @@
 #                                           Defaults to false
 #
 # $server_max_open_files::                  Increase the max open files limit for Puppetserver.
-#                                           Defaults to undef
-#
-# $server_versioned_code_id::               The path to an executable script that Puppet Server invokes to generate a code_id
-#                                           Defaults to undef
-#
-# $server_versioned_code_content::          Contains the path to an executable script that Puppet Server
-#                                           invokes when on static_file_content requests.
 #                                           Defaults to undef
 #
 # === Usage:
@@ -627,7 +611,6 @@ class puppet (
   Boolean $server_ca_crl_sync = $puppet::params::server_ca_crl_sync,
   Optional[Boolean] $server_crl_enable = $puppet::params::server_crl_enable,
   Boolean $server_ca_auth_required = $puppet::params::server_ca_auth_required,
-  Boolean $server_ca_client_self_delete = $puppet::params::server_ca_client_self_delete,
   Array[String] $server_ca_client_whitelist = $puppet::params::server_ca_client_whitelist,
   Optional[Puppet::Custom_trusted_oid_mapping] $server_custom_trusted_oid_mapping = $puppet::params::server_custom_trusted_oid_mapping,
   Boolean $server_http = $puppet::params::server_http,
@@ -639,7 +622,6 @@ class puppet (
   Optional[Stdlib::Absolutepath] $server_puppetserver_logdir = $puppet::params::server_puppetserver_logdir,
   Optional[Pattern[/^[\d]\.[\d]+\.[\d]+$/]] $server_puppetserver_version = $puppet::params::server_puppetserver_version,
   Variant[Undef, String[0], Stdlib::Absolutepath] $server_external_nodes = $puppet::params::server_external_nodes,
-  Optional[Stdlib::Absolutepath] $server_trusted_external_command = $puppet::params::server_trusted_external_command,
   Array[String] $server_cipher_suites = $puppet::params::server_cipher_suites,
   Optional[String] $server_config_version = $puppet::params::server_config_version,
   Integer[0] $server_connect_timeout = $puppet::params::server_connect_timeout,
@@ -661,7 +643,7 @@ class puppet (
   Integer[0] $server_idle_timeout = $puppet::params::server_idle_timeout,
   String $server_post_hook_content = $puppet::params::server_post_hook_content,
   String $server_post_hook_name = $puppet::params::server_post_hook_name,
-  Boolean $server_storeconfigs = $puppet::params::server_storeconfigs,
+  Variant[Undef, Boolean, Enum['active_record', 'puppetdb']] $server_storeconfigs_backend = $puppet::params::server_storeconfigs_backend,
   Array[Stdlib::Absolutepath] $server_ruby_load_paths = $puppet::params::server_ruby_load_paths,
   Stdlib::Absolutepath $server_ssl_dir = $puppet::params::server_ssl_dir,
   Boolean $server_ssl_dir_manage = $puppet::params::server_ssl_dir_manage,
@@ -671,6 +653,8 @@ class puppet (
   Optional[Variant[String, Array[String]]] $server_package = $puppet::params::server_package,
   Optional[String] $server_version = $puppet::params::server_version,
   String $server_certname = $puppet::params::server_certname,
+  Enum['v2'] $server_enc_api = $puppet::params::server_enc_api,
+  Enum['v2'] $server_report_api = $puppet::params::server_report_api,
   Integer[0] $server_request_timeout = $puppet::params::server_request_timeout,
   Boolean $server_strict_variables = $puppet::params::server_strict_variables,
   Hash[String, Data] $server_additional_settings = $puppet::params::server_additional_settings,
@@ -681,6 +665,9 @@ class puppet (
   Optional[Stdlib::Absolutepath] $server_foreman_ssl_key = $puppet::params::server_foreman_ssl_key,
   Boolean $server_foreman_facts = $puppet::params::server_foreman_facts,
   Optional[Stdlib::Absolutepath] $server_puppet_basedir = $puppet::params::server_puppet_basedir,
+  Optional[String] $server_puppetdb_host = $puppet::params::server_puppetdb_host,
+  Integer[0, 65535] $server_puppetdb_port = $puppet::params::server_puppetdb_port,
+  Boolean $server_puppetdb_swf = $puppet::params::server_puppetdb_swf,
   Enum['current', 'future'] $server_parser = $puppet::params::server_parser,
   Variant[Undef, Enum['unlimited'], Pattern[/^\d+[smhdy]?$/]] $server_environment_timeout = $puppet::params::server_environment_timeout,
   String $server_jvm_java_bin = $puppet::params::server_jvm_java_bin,
@@ -702,17 +689,15 @@ class puppet (
   Integer[0] $server_web_idle_timeout = $puppet::params::server_web_idle_timeout,
   Boolean $server_puppetserver_jruby9k = $puppet::params::server_puppetserver_jruby9k,
   Optional[Boolean] $server_puppetserver_metrics = $puppet::params::server_puppetserver_metrics,
-  Boolean $server_metrics_jmx_enable = $puppet::params::server_metrics_jmx_enable,
-  Boolean $server_metrics_graphite_enable = $puppet::params::server_metrics_graphite_enable,
-  String $server_metrics_graphite_host = $puppet::params::server_metrics_graphite_host,
-  Integer $server_metrics_graphite_port = $puppet::params::server_metrics_graphite_port,
-  String $server_metrics_server_id = $puppet::params::server_metrics_server_id,
-  Integer $server_metrics_graphite_interval = $puppet::params::server_metrics_graphite_interval,
-  Optional[Array] $server_metrics_allowed = $puppet::params::server_metrics_allowed,
+  Boolean $server_metrics_jmx_enable = $::puppet::params::server_metrics_jmx_enable,
+  Boolean $server_metrics_graphite_enable = $::puppet::params::server_metrics_graphite_enable,
+  String $server_metrics_graphite_host = $::puppet::params::server_metrics_graphite_host,
+  Integer $server_metrics_graphite_port = $::puppet::params::server_metrics_graphite_port,
+  String $server_metrics_server_id = $::puppet::params::server_metrics_server_id,
+  Integer $server_metrics_graphite_interval = $::puppet::params::server_metrics_graphite_interval,
+  Optional[Array] $server_metrics_allowed = $::puppet::params::server_metrics_allowed,
   Boolean $server_puppetserver_experimental = $puppet::params::server_puppetserver_experimental,
-  Optional[String[1]] $server_puppetserver_auth_template = $puppet::params::server_puppetserver_auth_template,
   Array[String] $server_puppetserver_trusted_agents = $puppet::params::server_puppetserver_trusted_agents,
-  Array[Hash] $server_puppetserver_trusted_certificate_extensions = $puppet::params::server_puppetserver_trusted_certificate_extensions,
   Optional[Enum['off', 'jit', 'force']] $server_compile_mode = $puppet::params::server_compile_mode,
   Optional[Integer[1]] $server_acceptor_threads = undef,
   Optional[Integer[1]] $server_selector_threads = undef,
@@ -723,8 +708,6 @@ class puppet (
   Boolean $server_ca_allow_auth_extensions = $puppet::params::server_ca_allow_auth_extensions,
   Boolean $server_ca_enable_infra_crl = $puppet::params::server_ca_enable_infra_crl,
   Optional[Integer[1]] $server_max_open_files = $puppet::params::server_max_open_files,
-  Optional[Stdlib::Absolutepath] $server_versioned_code_id = undef,
-  Optional[Stdlib::Absolutepath] $server_versioned_code_content = undef,
 ) inherits puppet::params {
   contain puppet::config
 

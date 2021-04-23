@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-systemd",
-  "version": "2.12.0",
+  "version": "3.0.0",
   "author": "camptocamp",
   "summary": "Puppet Systemd module",
   "license": "Apache-2.0",
@@ -10,11 +10,11 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 < 7.0.0"
+      "version_requirement": ">= 4.13.1 < 8.0.0"
     },
     {
       "name": "puppetlabs/inifile",
-      "version_requirement": ">= 1.6.0 < 5.0.0"
+      "version_requirement": ">= 1.6.0 < 6.0.0"
     }
   ],
   "data_provider": null,
@@ -31,7 +31,8 @@
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "16.04",
-        "18.04"
+        "18.04",
+        "20.04"
       ]
     },
     {
@@ -82,7 +83,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.10 < 7.0.0"
+      "version_requirement": ">= 6.1.0 < 8.0.0"
     }
   ],
   "pdk-version": "1.18.0",

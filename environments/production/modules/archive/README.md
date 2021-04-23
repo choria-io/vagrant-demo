@@ -21,6 +21,7 @@
    * [Network files](#network-files)
    * [Extract customization](#extract-customization)
    * [S3 Bucket](#s3-bucket)
+   * [GS Bucket](#gs-bucket)
    * [Migrating from puppet-staging](#migrating-from-puppet-staging)
 1. [Reference](#reference)
 1. [Development](#development)
@@ -92,6 +93,18 @@ class { 'archive':
   seven_zip_name     => '7-Zip 9.20 (x64 edition)',
   seven_zip_source   => 'C:/Windows/Temp/7z920-x64.msi',
   seven_zip_provider => 'windows',
+}
+```
+
+To automatically load archives as part of this class you can define the
+`archives` parameter.
+
+```puppet
+class { 'archive':
+  archives => { '/tmp/jta-1.1.jar' => {
+                  'ensure' => 'present',
+                  'source'  => 'http://central.maven.org/maven2/javax/transaction/jta/1.1/jta-1.1.jar',
+                  }, }
 }
 ```
 
@@ -305,9 +318,29 @@ archive { '/tmp/gravatar.png':
 NOTE: Alternative s3 provider support can be implemented by overriding the
 [s3_download method](lib/puppet/provider/archive/ruby.rb):
 
+### GS bucket
+
+GSUtil support is implemented via the [GSUtil Package](https://cloud.google.com/storage/docs/gsutil).
+On non-Windows systems, the `archive` class will install this dependency when
+the `gsutil_install` parameter is set to `true`:
+
+```puppet
+class { 'archive':
+  gsutil_install => true,
+}
+
+# See Google Cloud SDK cli guide for credential and configuration settings:
+# https://cloud.google.com/storage/docs/quickstart-gsutil
+
+archive { '/tmp/gravatar.png':
+  ensure => present,
+  source => 'gs://bodecoio/gravatar.png',
+}
+```
+
 ### Download customizations
 
-In some cases you may need custom flags for curl/wget/s3 which can be
+In some cases you may need custom flags for curl/wget/s3/gsutil which can be
 supplied via `download_options`. Since this parameter is provider specific,
 beware of the order of defaults:
 
@@ -401,7 +434,8 @@ archive { '/tmp/staging/master.zip':
 
 ### Classes
 
-* `archive`: install 7zip package (Windows only) and aws cli for s3 support.
+* `archive`: install 7zip package (Windows only) and aws cli or gsutil for s3/gs support.
+  It also permits passing an `archives` argument to generate `archive` resources.
 * `archive::staging`: install package dependencies and creates staging directory
   for backwards compatibility. Use the archive class instead if you do not need
   the staging directory.
@@ -427,7 +461,7 @@ archive { '/tmp/staging/master.zip':
 * `ensure`: whether archive file should be present/absent (default: present)
 * `path`: namevar, archive file fully qualified file path.
 * `filename`: archive file name (derived from path).
-* `source`: archive file source, supports http|https|ftp|file|s3 uri.
+* `source`: archive file source, supports http|https|ftp|file|s3|gs uri.
 * `username`: username to download source file.
 * `password`: password to download source file.
 * `allow_insecure`: Ignore HTTPS certificate errors (true|false). (default: false)

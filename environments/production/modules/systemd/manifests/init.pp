@@ -46,8 +46,8 @@
 #   Takes a boolean argument or one of "udp" and "tcp".
 #
 # @param use_stub_resolver
-#   Takes a boolean argument. When "false" (default) it uses /var/run/systemd/resolve/resolv.conf
-#   as /etc/resolv.conf. When "true", it uses /var/run/systemd/resolve/stub-resolv.conf
+#   Takes a boolean argument. When "false" (default) it uses /run/systemd/resolve/resolv.conf
+#   as /etc/resolv.conf. When "true", it uses /run/systemd/resolve/stub-resolv.conf
 # @param manage_networkd
 #   Manage the systemd network daemon
 #
@@ -150,8 +150,6 @@ class systemd (
   Hash                                                   $dropin_files = {},
   Hash                                                   $udev_rules = {},
 ) {
-  contain systemd::systemctl::daemon_reload
-
   create_resources('systemd::service_limits', $service_limits)
 
   if $manage_resolved and $facts['systemd_internal_services'] and $facts['systemd_internal_services']['systemd-resolved.service'] {
