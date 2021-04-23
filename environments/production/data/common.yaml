@@ -21,7 +21,7 @@ mcollective::site_policies:
     classes: "*"
 
 mcollective_choria::config:
-  use_srv_records: false
+  use_srv: false
 
 mcollective::plugin_classes:
   - mcollective_data_sysctl
