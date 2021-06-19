@@ -148,6 +148,13 @@ Examples:
                           :required => false,
                           :default => 1,
                           :type => Integer
+
+        self.class.option :__run_as,
+                          :arguments => ["--run-as USERNAME"],
+                          :description => "Run task as user USERNAME",
+                          :required => false,
+                          :default => nil,
+                          :type => String
       end
 
       def say(msg="")
@@ -179,6 +186,8 @@ Examples:
           :task => task,
           :files => meta["files"].to_json
         }
+
+        request[:run_as] = configuration[:__run_as] if configuration[:__run_as]
 
         request[:input] = input.to_json if input
 

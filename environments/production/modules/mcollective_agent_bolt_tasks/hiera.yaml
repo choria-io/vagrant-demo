@@ -8,5 +8,7 @@ defaults:
 hierarchy:
   - name: "plugin"
     path: "plugin.yaml"
+  - name: "os-specific"
+    path: "os/%{facts.os.family}.yaml"
   - name: "defaults"
     path: "defaults.yaml"

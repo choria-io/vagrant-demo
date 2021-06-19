@@ -1,2 +1,2 @@
 mcollective_choria::gem_dependencies:
-  "choria-mcorpc-support": "2.24.3"
+  "choria-mcorpc-support": "2.24.4"
