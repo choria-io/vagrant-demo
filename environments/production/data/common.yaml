@@ -1,5 +1,7 @@
 prometheus::node_exporter::extra_options: "--collector.textfile.directory=/var/lib/node_exporter/textfile"
 
+choria::broker::stream_store: /var/lib/choria
+
 choria::manage_package_repo: true
 
 choria::server_config:
