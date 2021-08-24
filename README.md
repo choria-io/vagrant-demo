@@ -6,6 +6,7 @@ This is a demo environment that sets up a working Choria installation using Vagr
 
 This setup builds a 3 node cluster, 1 Puppet Server + Choria Broker and 2 other nodes, all running CentOS 7.
 
+ * [Choria Streams](https://choria.io/docs/streams/)
  * [Puppet Tasks](https://choria.io/docs/tasks)
  * [Choria Playbooks](https://choria.io/docs/playbooks)
  * [Puppet Agent](https://forge.puppet.com/choria/mcollective_agent_puppet)
@@ -44,7 +45,7 @@ $ vagrant ssh puppet
 Now you need a unique certificate for you as a user (Authentication):
 
 ```
-$ mco choria request_cert
+$ choria enroll
 Requesting certificate for '/home/vagrant/.puppetlabs/etc/puppet/ssl/certs/vagrant.mcollective.pem'
 Waiting up to 240 seconds for it to be signed
 
@@ -54,7 +55,7 @@ Certificate /home/vagrant/.puppetlabs/etc/puppet/ssl/certs/vagrant.mcollective.p
 You can do a quick connectivity test:
 
 ```
-$ mco ping
+$ choria ping
 puppet.choria                            time=25.25 ms
 choria0.choria                           time=25.49 ms
 choria1.choria                           time=25.75 ms
@@ -69,7 +70,7 @@ choria1.choria                           time=25.75 ms
 Choria has Puppet integrated discovery features so you can address your server estate by metadata and not their names. Lets get a report of the roles assigned to the nodes:
 
 ```
-$ mco facts role
+$ choria facts role
 Report for fact: role
 
         managed                                  found 2 times
@@ -81,18 +82,9 @@ Finished processing 3 / 3 hosts in 12.51 ms
 We can see what nodes are `managed` ones:
 
 ```
-$ mco find -F role=managed
+$ choria find -F role=managed
 choria0.choria
 choria1.choria
-```
-
-To see what this `-F` means:
-
-```
-$ mco describe_filter -F role=managed
--F filter expands to the following fact comparisons:
-
-  Check if fact 'role' == 'managed'
 ```
 
 Lets check when the `managed` nodes last ran Puppet, we use discovery to pick the nodes rather than having to remember hostnames:
@@ -132,7 +124,7 @@ Finished processing 2 / 2 hosts in 8.44 ms
 We can also discover based on which Puppet Classes are on the nodes:
 
 ```
-$ mco find -W choria::broker
+$ choria find -W choria::broker
 puppet.choria
 ```
 
@@ -143,7 +135,7 @@ Review the section on the [Choria CLI Interaction Model](https://choria.io/docs/
 We saw a few node names above, lets look at one in particular:
 
 ```
-$ mco inventory puppet.choria
+$ choria inventory puppet.choria
 Inventory for puppet.choria:
 
    Server Statistics:
@@ -453,7 +445,7 @@ RPC requests to the network which provides these RPC end points.
 The last command can be run by interacting with the RPC layer directly:
 
 ```
-$ mco rpc process list pattern=ruby --display all
+$ choria req process list pattern=ruby --display all
 ```
 
 Here you can see you're using the *rpc application* to interact with the *process agent* calling
@@ -485,7 +477,7 @@ Agents:
 And you can ask MCollective to show you available actions and arguments for each:
 
 ```
-$ mco plugin doc agent/process
+$ choria plugin doc agent/process
 ```
 
 This will produce auto generated help for the agent showing the available actions etc.
@@ -539,7 +531,7 @@ $ choria scout watch
 In another terminal we can force an immediate check of all `swap` checks:
 
 ```
-$ mco rpc choria_util machine_transition name=swap transition=FORCE_CHECK
+$ choria req choria_util machine_transition name=swap transition=FORCE_CHECK
 ```
 
 The first running `choria scout watch` should see several check transitions and events.
