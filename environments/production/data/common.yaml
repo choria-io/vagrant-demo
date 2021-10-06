@@ -5,6 +5,8 @@ choria::broker::stream_store: /var/lib/choria
 choria::manage_package_repo: true
 
 choria::server_config:
+  collectives: choria
+  main_collective: choria
   plugin.choria.machine.store: /etc/choria/machine
   plugin.choria.prometheus_textfile_directory: /var/lib/node_exporter/textfile
 
@@ -22,8 +24,9 @@ mcollective::site_policies:
     facts: "*"
     classes: "*"
 
-mcollective_choria::config:
-  use_srv: false
+mcollective::main_collective: choria
+mcollective::collectives:
+    - choria
 
 mcollective::plugin_classes:
   - mcollective_data_sysctl
