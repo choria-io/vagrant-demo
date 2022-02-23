@@ -1,6 +1,6 @@
 {
   "name": "choria-mcollective_choria",
-  "version": "0.21.2",
+  "version": "0.21.3",
   "author": "R.I.Pienaar <rip@devco.net>",
   "summary": "Configuration of the Choria MCollective Compatibility Layer",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
   "project_page": "https://github.com/choria-io/general/",
   "issues_url": "https://github.com/choria-io/general/discussions",
   "dependencies": [
-    { "name": "choria/mcollective","version_requirement":">= 0.13.4 < 2.0.0"}
+    { "name": "choria/mcollective","version_requirement":">= 0.14.0 < 2.0.0"}
   ],
   "requirements": [
     {
