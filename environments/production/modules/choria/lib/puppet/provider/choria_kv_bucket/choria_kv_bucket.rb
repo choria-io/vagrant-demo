@@ -1,6 +1,6 @@
 require "puppet/resource_api/simple_provider"
 
-class Puppet::Provider::ChoriaGovernor::ChoriaGovernor < Puppet::ResourceApi::SimpleProvider
+class Puppet::Provider::ChoriaKvBucket::ChoriaKvBucket < Puppet::ResourceApi::SimpleProvider
   def get(context)
     run("list", "present")
   end
@@ -46,7 +46,7 @@ class Puppet::Provider::ChoriaGovernor::ChoriaGovernor < Puppet::ResourceApi::Si
     choria = Puppet::Util.which("choria")
     raise("cannot find choria executable") if choria == ""
 
-    cmd = [choria, "governor", "api", "--%s" % action, "--config=%s" % config_file]
+    cmd = [choria, "kv", "api", "--%s" % action, "--config=%s" % config_file]
 
     args.each do |k, v|
       k = k.to_s.gsub("_", "-")
