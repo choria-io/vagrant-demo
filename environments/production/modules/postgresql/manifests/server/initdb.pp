@@ -13,18 +13,7 @@ class postgresql::server::initdb {
   $data_checksums = $postgresql::server::data_checksums
   $group          = $postgresql::server::group
   $user           = $postgresql::server::user
-  $psql_path      = $postgresql::server::psql_path
-  $port           = $postgresql::server::port
   $module_workdir = $postgresql::server::module_workdir
-
-  # Set the defaults for the postgresql_psql resource
-  Postgresql_psql {
-    psql_user  => $user,
-    psql_group => $group,
-    psql_path  => $psql_path,
-    port       => $port,
-    cwd        => $module_workdir,
-  }
 
   if $facts['os']['family'] == 'RedHat' and $facts['os']['selinux']['enabled'] == true {
     $seltype = 'postgresql_db_t'
@@ -146,45 +135,7 @@ class postgresql::server::initdb {
       require   => File[$require_before_initdb],
       cwd       => $module_workdir,
     }
-    # The package will take care of this for us the first time, but if we
-    # ever need to init a new db we need to copy these files explicitly
-    if $facts['os']['name'] == 'Debian' or $facts['os']['name'] == 'Ubuntu' {
-      if $facts['os']['release']['major'] in ['6', '7', '10.04', '12.04'] {
-        file { 'server.crt':
-          ensure  => file,
-          path    => "${datadir}/server.crt",
-          source  => 'file:///etc/ssl/certs/ssl-cert-snakeoil.pem',
-          owner   => $postgresql::server::user,
-          group   => $postgresql::server::group,
-          mode    => '0644',
-          require => Exec['postgresql_initdb'],
-        }
-        file { 'server.key':
-          ensure  => file,
-          path    => "${datadir}/server.key",
-          source  => 'file:///etc/ssl/private/ssl-cert-snakeoil.key',
-          owner   => $postgresql::server::user,
-          group   => $postgresql::server::group,
-          mode    => '0600',
-          require => Exec['postgresql_initdb'],
-        }
-      }
-    }
   } elsif $encoding != undef {
-    # [workaround]
-    # by default pg_createcluster encoding derived from locale
-    # but it do does not work by installing postgresql via puppet because puppet
-    # always override LANG to 'C'
-    postgresql_psql { "Set template1 encoding to ${encoding}":
-      command => "UPDATE pg_database
-        SET datistemplate = FALSE
-        WHERE datname = 'template1'
-        ;
-        UPDATE pg_database
-        SET encoding = pg_char_to_encoding('${encoding}'), datistemplate = TRUE
-        WHERE datname = 'template1'",
-      unless  => "SELECT datname FROM pg_database WHERE
-        datname = 'template1' AND encoding = pg_char_to_encoding('${encoding}')",
-    }
+    include postgresql::server::late_initdb
   }
 }

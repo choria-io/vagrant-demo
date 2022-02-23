@@ -2,6 +2,62 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.5.0](https://github.com/puppetlabs/puppetlabs-postgresql/tree/v7.5.0) (2021-09-27)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-postgresql/compare/v7.4.1...v7.5.0)
+
+### Added
+
+- Use Puppet-Datatype Sensitive for Passwords [\#1279](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1279) ([cocker-cc](https://github.com/cocker-cc))
+
+### Fixed
+
+- \(IAC-1598\) - Remove Support for Debian 8 [\#1302](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1302) ([david22swan](https://github.com/david22swan))
+- Inline file contents in the catalog [\#1299](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1299) ([ekohl](https://github.com/ekohl))
+- Fix changing default encoding [\#1296](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1296) ([smortex](https://github.com/smortex))
+
+## [v7.4.1](https://github.com/puppetlabs/puppetlabs-postgresql/tree/v7.4.1) (2021-08-25)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-postgresql/compare/v7.4.0...v7.4.1)
+
+### Fixed
+
+- \(maint\) Allow stdlib 8.0.0 [\#1293](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1293) ([smortex](https://github.com/smortex))
+
+## [v7.4.0](https://github.com/puppetlabs/puppetlabs-postgresql/tree/v7.4.0) (2021-08-24)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-postgresql/compare/v7.3.0...v7.4.0)
+
+### Added
+
+- pdksync - \(IAC-1709\) - Add Support for Debian 11 [\#1288](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1288) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- drop code for Debian 6/7 and Ubuntu 10.04/12.04 [\#1290](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1290) ([evgeni](https://github.com/evgeni))
+
+## [v7.3.0](https://github.com/puppetlabs/puppetlabs-postgresql/tree/v7.3.0) (2021-08-03)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-postgresql/compare/v7.2.0...v7.3.0)
+
+### Added
+
+- MODULES-11049 - Implement default privileges changes [\#1267](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1267) ([mtancoigne](https://github.com/mtancoigne))
+
+### Fixed
+
+- Do not add version component to repo definition [\#1282](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1282) ([weastur](https://github.com/weastur))
+- \(MODULES-8700\) Autorequire the service in postgresql\_psql [\#1276](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1276) ([ekohl](https://github.com/ekohl))
+
+## [v7.2.0](https://github.com/puppetlabs/puppetlabs-postgresql/tree/v7.2.0) (2021-05-24)
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-postgresql/compare/v7.1.0...v7.2.0)
+
+### Added
+
+- \(MODULES-11069\) add default version for fedora 34 [\#1272](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1272) ([lweller](https://github.com/lweller))
+- MODULES-11047 - Allow managing rights for PUBLIC role [\#1266](https://github.com/puppetlabs/puppetlabs-postgresql/pull/1266) ([mtancoigne](https://github.com/mtancoigne))
+
 ## [v7.1.0](https://github.com/puppetlabs/puppetlabs-postgresql/tree/v7.1.0) (2021-04-12)
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-postgresql/compare/v7.0.3...v7.1.0)

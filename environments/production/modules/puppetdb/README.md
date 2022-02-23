@@ -30,7 +30,7 @@ will also provide a dashboard you can use to view the current state of your
 system.
 
 For more information about PuppetDB
-[please see the official PuppetDB documentation.](http://docs.puppetlabs.com/puppetdb/)
+[please see the official PuppetDB documentation.](https://puppet.com/docs/puppetdb/latest/)
 
 
 Setup
@@ -439,7 +439,7 @@ or `embedded`. The `embedded` option is not supported on PuppetDB
 4.0.0 or later. `embedded` can be used for very small installations or
 for testing, but is not recommended for use in production
 environments. For more info, see the [puppetdb
-docs](http://docs.puppetlabs.com/puppetdb/).
+docs](https://puppet.com/docs/puppetdb/latest/).
 
 #### `database_host`
 
@@ -497,19 +497,20 @@ settings and fail if it is not able to do so. Defaults to `true`.
 #### `node_ttl`
 
 The length of time a node can go without receiving any new data before it's
-automatically deactivated. (defaults to '0', which disables auto-deactivation).
-This option is supported in PuppetDB >= 1.1.0.
+automatically deactivated. (defaults to '7d', which is a 7-day period. Set to
+'0d' to disable auto-deactivation).  This option is supported in PuppetDB >=
+1.1.0.
 
 #### `node_purge_ttl`
 
 The length of time a node can be deactivated before it's deleted from the
-database. (defaults to '0', which disables purging). This option is supported in
-PuppetDB >= 1.2.0.
+database. (defaults to '14d', which is a 14-day period. Set to '0d' to disable
+purging). This option is supported in PuppetDB >= 1.2.0.
 
 #### `report_ttl`
 
 The length of time reports should be stored before being deleted. (defaults to
-`7d`, which is a 7-day period). This option is supported in PuppetDB >= 1.1.0.
+`14d`, which is a 14-day period). This option is supported in PuppetDB >= 1.1.0.
 
 #### `gc_interval`
 
@@ -605,25 +606,26 @@ Which database backend to use for the read database. Only supports
 `postgres` (default). This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_host`
-*This parameter must be set to enable the PuppetDB read-database.*
+*This parameter must be set to use another PuppetDB instance for queries.*
 
-The hostname or IP address of the read database server. Defaults to `undef`.
-The default is to use the regular database for reads and writes. This option is
-supported in PuppetDB >= 1.6.
+The hostname or IP address of the read database server. If set to `undef`, and 
+`manage_database` is set to `true`, it will use the value of the `database_host` 
+parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_port`
 
-The port that the read database server listens on. Defaults to `5432`. This
-option is supported in PuppetDB >= 1.6.
+The port that the read database server listens on. If `read_database_host`
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of 
+the `database_port` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_database_username`
 
-The name of the read database user to connect as. Defaults to `puppetdb`. This
+The name of the read database user to connect as. Defaults to `puppetdb-read`. This
 option is supported in PuppetDB >= 1.6.
 
 #### `read_database_password`
 
-The password for the read database user. Defaults to `puppetdb`. This option is
+The password for the read database user. Defaults to `puppetdb-read`. This option is
 supported in PuppetDB >= 1.6.
 
 #### `manage_read_db_password`
@@ -634,8 +636,9 @@ Defaults to `true`
 
 #### `read_database_name`
 
-The name of the read database instance to connect to. Defaults to `puppetdb`.
-This option is supported in PuppetDB >= 1.6.
+The name of the read database instance to connect to. If `read_database_host`
+is set to `undef`, and `manage_database` is set to `true`, it will use the value of
+the `database_name` parameter. This option is supported in PuppetDB >= 1.6.
 
 #### `read_log_slow_statements`
 
