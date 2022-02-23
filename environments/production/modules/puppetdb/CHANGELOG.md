@@ -2,6 +2,19 @@
 
 Release notes for the puppetlabs-puppetdb module.
 
+#### 7.10.0 - 2021/12/16
+* Add support for Debian 11
+* Allow puppetlabs/stdlib 8.0.0
+* Default to PostgreSQL 11 when using PuppetDB 7.0.0 or later
+* Update minimum version of puppetlabs/postgresql module to 6.5.0
+
+#### 7.9.0 - 2021/06/23
+
+* When `manage_database` is true, it will create a read-only user in postgres
+  and configure PuppetDB to use that user for its read-database connection
+  pool
+* Update module dependencies for inifile, firewall, and stdlib
+
 #### 7.8.0 - 2021/03/25
 
 * Added an option `postgresql_ssl_on` to enable an SSL connection between

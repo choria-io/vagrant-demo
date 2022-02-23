@@ -167,6 +167,7 @@ class postgresql::globals (
   $default_version = $facts['os']['family'] ? {
     /^(RedHat|Linux)/ => $facts['os']['name'] ? {
       'Fedora' => $facts['os']['release']['major'] ? {
+        /^(34)$/       => '13',
         /^(32|33)$/    => '12',
         /^(31)$/       => '11.6',
         /^(30)$/       => '11.2',
@@ -191,16 +192,13 @@ class postgresql::globals (
     },
     'Debian' => $facts['os']['name'] ? {
       'Debian' => $facts['os']['release']['major'] ? {
-        '6'     => '8.4',
-        '7'     => '9.1',
         '8'     => '9.4',
         '9'     => '9.6',
         '10'    => '11',
+        '11'    => '13',
         default => undef,
       },
       'Ubuntu' => $facts['os']['release']['major'] ? {
-        /^(10.04|10.10|11.04)$/ => '8.4',
-        /^(11.10|12.04|12.10|13.04|13.10)$/ => '9.1',
         /^(14.04)$/ => '9.3',
         /^(14.10|15.04|15.10)$/ => '9.4',
         /^(16.04|16.10)$/ => '9.5',

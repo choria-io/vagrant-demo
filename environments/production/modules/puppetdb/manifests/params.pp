@@ -24,7 +24,12 @@ class puppetdb::params inherits puppetdb::globals {
   } else {
     $manage_pg_repo            = false
   }
-  $postgres_version          = '9.6'
+
+  if $puppetdb_version in ['latest','present'] or versioncmp($puppetdb_version, '7.0.0') >= 0 {
+    $postgres_version          = '11'
+  } else {
+    $postgres_version          = '9.6'
+  }
 
   # The remaining database settings are not used for an embedded database
   $database_host          = 'localhost'
@@ -61,8 +66,8 @@ class puppetdb::params inherits puppetdb::globals {
   $read_database_host                = undef
   $read_database_port                = '5432'
   $read_database_name                = 'puppetdb'
-  $read_database_username            = 'puppetdb'
-  $read_database_password            = 'puppetdb'
+  $read_database_username            = 'puppetdb-read'
+  $read_database_password            = 'puppetdb-read'
   $manage_read_db_password           = true
   $read_database_jdbc_ssl_properties = ''
   $read_database_validate            = true
