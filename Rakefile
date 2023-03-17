@@ -23,7 +23,7 @@ task :update do
   rm_rf "environments/production/modules"
   mkdir_p "environments/production/modules"
 
-  sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/concat --version 6.4.0"
+  sh "puppet module install --modulepath `pwd`/environments/production/modules puppetlabs/concat --version 7.3.3"
 
   modules.each do |mod|
     sh "puppet module install --modulepath `pwd`/environments/production/modules %s" % mod
