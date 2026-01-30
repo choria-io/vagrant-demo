@@ -1,9 +1,36 @@
+---
+puppetdb::postgres_version: "13"
+puppetdb::manage_package_repo: false
+puppetdb::manage_firewall: false
+
+postgresql::globals::manage_dnf_module: true
+postgresql::globals::server_package_name: 'postgresql-server'
+postgresql::globals::contrib_package_name: 'postgresql-contrib'
+postgresql::globals::client_package_name: 'postgresql'
+postgresql::globals::datadir: '/var/lib/pgsql/data'
+postgresql::globals::bindir: '/usr/bin'
+postgresql::globals::service_name: 'postgresql'
+
+# Explicitly define all core puppet paths for both [main] and [server]
+# sections to prevent the server from defaulting to /vagrant.
+puppet::config:
+  main:
+    environmentpath: "$codedir/environments"
+    basemodulepath: "$codedir/modules:/opt/puppetlabs/puppet/modules"
+  server:
+    environmentpath: "$codedir/environments"
+    basemodulepath: "$codedir/modules:/opt/puppetlabs/puppet/modules"
+
 prometheus::node_exporter::extra_options: "--collector.textfile.directory=/var/lib/node_exporter/textfile"
 
+# Configurações do Choria Broker
+choria::broker::network_broker: true
 choria::broker::stream_store: /var/lib/choria
-
+# Forçar IPv4 no broker e no monitoramento
+choria::broker::listen_address: "0.0.0.0"
+choria::broker::stats_listen_address: "127.0.0.1"
+choria::broker::stats_port: 8222
 choria::manage_package_repo: true
-
 choria::server_config:
   collectives: choria
   main_collective: choria
@@ -35,9 +62,8 @@ mcollective::plugin_classes:
   - mcollective_agent_nettest
   - mcollective_agent_bolt_tasks
 
-extra_packages: 
+extra_packages:
   - epel-release
-  - nagios-plugins-ntp
   - nagios-plugins-http
   - nagios-plugins-load
   - nagios-plugins-swap
@@ -47,18 +73,12 @@ checks:
   heartbeat:
     builtin: heartbeat
     check_interval: 1m
-
   ntp_peer:
     plugin: /usr/lib64/nagios/plugins/check_ntp_peer
     arguments: -w 10 -c 30 -H localhost
-
   swap:
     plugin: /usr/lib64/nagios/plugins/check_swap
     arguments: -w 30% -c 20%
-
   zombieprocs:
     plugin: /usr/lib64/nagios/plugins/check_procs
     arguments: -w 5 -c 10 -s Z
-
-puppetdb::postgres_version: "11"
-puppetdb::manage_firewall: false

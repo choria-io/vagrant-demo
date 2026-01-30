@@ -1,17 +1,23 @@
 class profiles::puppetserver {
-  include puppetdb
-
-  class{"puppet":
-    server => true,
-    server_reports => "puppetdb",
-    server_foreman => false,
-    server_external_nodes => "",  
-    runmode => "unmanaged",
-    codedir => "/vagrant",
-    server_envs_dir => "/vagrant/environments"
+  # Desabilita firewall para ambiente de laboratório
+  service { 'firewalld':
+    ensure => stopped,
+    enable => false,
   }
 
-  class{"puppet::server::puppetdb":
-    server => "puppet.choria",
+  include puppetdb
+
+  class { 'puppet':
+    server                => true,
+    server_reports        => 'puppetdb',
+    server_foreman        => false,
+    server_external_nodes => '',
+    runmode               => 'unmanaged',
+    codedir               => '/etc/puppetlabs/code',
+    server_envs_dir       => '/etc/puppetlabs/code/environments',
+  }
+
+  class { 'puppet::server::puppetdb':
+    server => 'puppet.choria',
   }
 }
